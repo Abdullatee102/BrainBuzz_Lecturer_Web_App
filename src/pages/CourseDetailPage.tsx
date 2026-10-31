@@ -21,6 +21,7 @@ import {
   FileQuestion,
   Info,
 } from 'lucide-react';
+import { QuestionBankSection } from '../components/questions/QuestionBankSection';
 
 export const CourseDetailPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -271,13 +272,12 @@ export const CourseDetailPage: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Scope Disclaimer / Roadmap Note */}
-      <div className="flex items-start gap-3 p-4 bg-indigo-50/70 border border-indigo-200/60 rounded-xl text-xs text-indigo-900">
-        <Info className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
-        <div className="leading-relaxed">
-          <span className="font-semibold text-indigo-950">Lecturer Workflows In Progress:</span> Question bank authoring, assignment distribution, student submission grading, and attendance monitoring are currently undergoing backend staging and will be enabled in subsequent milestones.
-        </div>
-      </div>
+      {/* Question Bank & Authoring Workflow (BB-07F.3) */}
+      <QuestionBankSection
+        courseId={data.courseId}
+        courseCode={data.code}
+        courseTitle={data.title}
+      />
     </div>
   );
 };

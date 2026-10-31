@@ -121,3 +121,78 @@ export interface ApiErrorResponse {
     message: string;
   }>;
 }
+
+export type QuestionStatus =
+  | 'DRAFT'
+  | 'SUBMITTED'
+  | 'UNDER_REVIEW'
+  | 'REVISION_REQUIRED'
+  | 'REJECTED'
+  | 'APPROVED'
+  | 'PUBLISHED'
+  | 'ARCHIVED';
+
+export interface GradingPoint {
+  concept: string;
+  weight: number;
+  aliases?: string[];
+  keywords?: string[];
+}
+
+export interface QuestionItem {
+  id: string;
+  courseId: string;
+  courseCode?: string;
+  courseTitle?: string;
+  originOfferingId?: string | null;
+  academicSession?: string | null;
+  semester?: string | null;
+  section?: string | null;
+  authorLecturerId?: string | null;
+  authorName?: string | null;
+  status: QuestionStatus;
+  type: 'cbt' | 'theory';
+  question: string;
+  options?: string[] | null;
+  correctAnswer: string;
+  gradingPoints?: GradingPoint[];
+  explanation?: string | null;
+  points: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  imageUrl?: string | null;
+  currentVersion: number;
+  reviewFeedback?: string | null;
+  rejectionReason?: string | null;
+  reviewedByAdminId?: string | null;
+  reviewedAt?: string | null;
+  publishedByAdminId?: string | null;
+  publishedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateQuestionPayload {
+  offeringId?: string;
+  courseId?: string;
+  type: 'cbt' | 'theory';
+  question: string;
+  options?: string[];
+  correctAnswer: string;
+  gradingPoints?: GradingPoint[];
+  explanation?: string | null;
+  points?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  imageUrl?: string | null;
+}
+
+export interface UpdateQuestionPayload {
+  type?: 'cbt' | 'theory';
+  question?: string;
+  options?: string[];
+  correctAnswer?: string;
+  gradingPoints?: GradingPoint[];
+  explanation?: string | null;
+  points?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  imageUrl?: string | null;
+}
