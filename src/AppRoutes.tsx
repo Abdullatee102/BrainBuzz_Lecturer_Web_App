@@ -7,6 +7,7 @@ import { LecturerLayout } from './components/layout/LecturerLayout';
 import { DashboardPage } from './pages/DashboardPage';
 import { CoursesPage } from './pages/CoursesPage';
 import { CourseDetailPage } from './pages/CourseDetailPage';
+import { AssessmentMonitorPage } from './pages/AssessmentMonitorPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/courses/:courseId" element={<CourseDetailPage />} />
+        <Route path="/assessments/:assessmentId/monitor" element={<AssessmentMonitorPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

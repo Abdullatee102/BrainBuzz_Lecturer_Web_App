@@ -80,6 +80,7 @@ export interface CourseMetrics {
 
 export interface AssignedCourseItem {
   assignmentId: string;
+  offeringId?: string;
   academicSession: string;
   assignmentStatus: AssignmentStatus;
   assignedAt: string;
@@ -196,3 +197,140 @@ export interface UpdateQuestionPayload {
   difficulty?: 'easy' | 'medium' | 'hard';
   imageUrl?: string | null;
 }
+
+// =====================================================
+// ASSESSMENTS (BB-07F.4)
+// =====================================================
+
+export type AssessmentType = 'CBT' | 'THEORY' | 'MIXED' | 'ASSIGNMENT';
+export type AssessmentStatus = 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'ARCHIVED';
+
+export interface AssessmentItem {
+  id: string;
+  offeringId: string;
+  courseId: string;
+  courseCode?: string;
+  courseTitle?: string;
+  academicSession?: string;
+  semester?: string;
+  creatorLecturerId: string;
+  creatorName?: string | null;
+  title: string;
+  description?: string | null;
+  type: AssessmentType;
+  status: AssessmentStatus;
+  operationalStatus?: string;
+  totalMarks: number;
+  passMarks?: number | null;
+  durationMinutes: number;
+  startTime: string;
+  endTime: string;
+  maxAttempts: number;
+  isRandomized: boolean;
+  allowLateSubmission?: boolean;
+  lateSubmissionDeadline?: string | null;
+  resultReleasePolicy: string;
+  publishedAt?: string | null;
+  cancelledAt?: string | null;
+  cancellationReason?: string | null;
+  createdAt: string;
+  updatedAt?: string;
+  questionCount?: number;
+  questions?: Array<{
+    id: string;
+    questionId: string;
+    orderIndex: number;
+    allocatedMarks: number;
+    type: string;
+    question: string;
+    options?: string[] | null;
+    correctAnswer?: string;
+    gradingPoints?: GradingPoint[];
+    explanation?: string | null;
+  }>;
+}
+
+export interface CreateAssessmentPayload {
+  title: string;
+  description?: string | null;
+  type: AssessmentType;
+  durationMinutes: number;
+  startTime: string;
+  endTime: string;
+  passMarks?: number | null;
+  maxAttempts?: number;
+  isRandomized?: boolean;
+  allowLateSubmission?: boolean;
+  lateSubmissionDeadline?: string | null;
+  resultReleasePolicy?: string;
+}
+
+export interface UpdateAssessmentPayload {
+  title?: string;
+  description?: string | null;
+  type?: AssessmentType;
+  durationMinutes?: number;
+  startTime?: string;
+  endTime?: string;
+  passMarks?: number | null;
+  maxAttempts?: number;
+  isRandomized?: boolean;
+  allowLateSubmission?: boolean;
+  lateSubmissionDeadline?: string | null;
+}
+
+// =====================================================
+// ASSESSMENT LIVE MONITORING (BB-07F.5)
+// =====================================================
+
+export interface AssessmentMonitorStats {
+  totalEligibleStudents: number;
+  startedCount: number;
+  activeOnlineCount: number;
+  disconnectedCount: number;
+  submittedCount: number;
+  timedOutCount: number;
+  unstartedCount: number;
+}
+
+export interface AssessmentRosterAttempt {
+  id: string;
+  attemptNumber: number;
+  status: 'IN_PROGRESS' | 'SUBMITTED' | 'TIMED_OUT' | 'CANCELLED';
+  startedAt: string;
+  submittedAt?: string | null;
+  expiresAt: string;
+  lastHeartbeatAt: string;
+  isLate: boolean;
+  remainingSeconds: number;
+  elapsedMinutes: number;
+  answeredCount: number;
+  totalQuestionsCount: number;
+  connectionStatus: 'NOT_STARTED' | 'ONLINE' | 'DISCONNECTED' | 'COMPLETED';
+}
+
+export interface AssessmentRosterItem {
+  studentId: string;
+  fullName: string;
+  email: string;
+  username: string | null;
+  attempt: AssessmentRosterAttempt | null;
+}
+
+export interface AssessmentMonitorEvent {
+  id: string;
+  attemptId: string;
+  eventType: string;
+  eventData: any;
+  serverTimestamp: string;
+  studentName: string;
+}
+
+export interface AssessmentMonitorData {
+  assessment: AssessmentItem;
+  stats: AssessmentMonitorStats;
+  roster: AssessmentRosterItem[];
+  recentEvents: AssessmentMonitorEvent[];
+}
+
+

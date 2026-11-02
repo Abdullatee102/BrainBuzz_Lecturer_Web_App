@@ -20,11 +20,14 @@ import {
   ShieldCheck,
   FileQuestion,
   Info,
+  CalendarClock,
 } from 'lucide-react';
 import { QuestionBankSection } from '../components/questions/QuestionBankSection';
+import { AssessmentsSection } from '../components/assessments/AssessmentsSection';
 
 export const CourseDetailPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
+  const [activeTab, setActiveTab] = React.useState<'assessments' | 'questions'>('assessments');
 
   const {
     data,
@@ -272,12 +275,49 @@ export const CourseDetailPage: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Question Bank & Authoring Workflow (BB-07F.3) */}
-      <QuestionBankSection
-        courseId={data.courseId}
-        courseCode={data.code}
-        courseTitle={data.title}
-      />
+      {/* Navigation Tabs */}
+      <div className="flex items-center gap-3 border-b border-slate-200">
+        <button
+          onClick={() => setActiveTab('assessments')}
+          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+            activeTab === 'assessments'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <CalendarClock className="w-4 h-4" />
+          <span>Official Assessments (BB-07F.4)</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('questions')}
+          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+            activeTab === 'questions'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <FileQuestion className="w-4 h-4" />
+          <span>Question Bank (BB-07F.3)</span>
+        </button>
+      </div>
+
+      {/* Tab Panels */}
+      {activeTab === 'assessments' ? (
+        <AssessmentsSection
+          offeringId={data.offeringId || data.assignmentId}
+          courseId={data.courseId}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      ) : (
+        <QuestionBankSection
+          courseId={data.courseId}
+          offeringId={data.offeringId || data.assignmentId}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      )}
     </div>
   );
 };
