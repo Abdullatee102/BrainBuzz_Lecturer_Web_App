@@ -7,6 +7,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { QuestionModal } from './QuestionModal';
+import { BulkImportModal } from './BulkImportModal';
 import {
   FileQuestion,
   Plus,
@@ -21,6 +22,7 @@ import {
   XCircle,
   HelpCircle,
   Eye,
+  Upload,
 } from 'lucide-react';
 
 interface QuestionBankSectionProps {
@@ -39,6 +41,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
   const queryClient = useQueryClient();
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<QuestionItem | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
@@ -204,10 +207,17 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
           </p>
         </div>
 
-        <Button variant="primary" size="sm" onClick={handleOpenCreate}>
-          <Plus className="w-4 h-4 mr-1.5" />
-          <span>Author Question Draft</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => setIsBulkImportOpen(true)}>
+            <Upload className="w-4 h-4 mr-1.5" />
+            <span>Bulk Import</span>
+          </Button>
+
+          <Button variant="primary" size="sm" onClick={handleOpenCreate}>
+            <Plus className="w-4 h-4 mr-1.5" />
+            <span>Author Question Draft</span>
+          </Button>
+        </div>
       </div>
 
       {actionError && (
@@ -281,6 +291,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
           {filteredQuestions.map((q) => {
             const isDraft = q.status === 'DRAFT';
             const isRevision = q.status === 'REVISION_REQUIRED';
+            const isRejected = q.status === 'REJECTED';
             const isSubmitted = q.status === 'SUBMITTED';
 
             return (
@@ -301,30 +312,32 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2">
-                      {(isDraft || isRevision) && (
+                      {(isDraft || isRevision || isRejected) && (
                         <>
                           <Button
-                            variant="outline"
+                            variant={isRejected ? "outline" : "outline"}
                             size="sm"
                             onClick={() => handleOpenEdit(q)}
                             className="h-7 text-xs px-2.5"
                           >
                             <Edit2 className="w-3 h-3 mr-1" />
-                            <span>Edit</span>
+                            <span>{isRejected ? 'Revise & Re-draft' : 'Edit'}</span>
                           </Button>
 
-                          <Button
-                            variant="primary"
-                            size="sm"
-                            onClick={() => submitMutation.mutate(q.id)}
-                            disabled={submitMutation.isPending}
-                            className="h-7 text-xs px-2.5"
-                          >
-                            <Send className="w-3 h-3 mr-1" />
-                            <span>Submit</span>
-                          </Button>
+                          {!isRejected && (
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              onClick={() => submitMutation.mutate(q.id)}
+                              disabled={submitMutation.isPending}
+                              className="h-7 text-xs px-2.5"
+                            >
+                              <Send className="w-3 h-3 mr-1" />
+                              <span>Submit</span>
+                            </Button>
+                          )}
 
-                          {isDraft && (
+                          {(isDraft || isRejected) && (
                             <Button
                               variant="danger"
                               size="sm"
@@ -462,6 +475,19 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
         initialData={editingQuestion}
         courseId={courseId}
         offeringId={offeringId}
+      />
+
+      {/* Bulk Import Modal */}
+      <BulkImportModal
+        isOpen={isBulkImportOpen}
+        onClose={() => setIsBulkImportOpen(false)}
+        onSuccess={() => {
+          queryClient.invalidateQueries({ queryKey: ['lecturerQuestions', courseId, offeringId] });
+          queryClient.invalidateQueries({ queryKey: ['assignedCourseDetails', courseId] });
+        }}
+        courseId={courseId}
+        offeringId={offeringId}
+        courseCode={courseCode}
       />
     </div>
   );

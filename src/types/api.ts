@@ -333,4 +333,142 @@ export interface AssessmentMonitorData {
   recentEvents: AssessmentMonitorEvent[];
 }
 
+// =====================================================
+// ASSESSMENT FORMAL GRADING & RUBRIC EVALUATION (BB-07F.6)
+// =====================================================
+
+export type GradingStatus =
+  | 'PENDING_GRADING'
+  | 'AUTO_GRADED'
+  | 'NEEDS_THEORY_GRADING'
+  | 'PARTIALLY_GRADED'
+  | 'COMPLETED'
+  | 'FAILED';
+
+export interface RubricScoreItem {
+  concept: string;
+  maxWeight: number;
+  awardedWeight: number;
+  comment?: string;
+}
+
+export interface AttemptGradeSummary {
+  id: string;
+  cbtScore: number;
+  theoryScore: number;
+  totalScore: number;
+  maxPossibleScore: number;
+  percentage: number;
+  isPassing: boolean | null;
+  status: GradingStatus;
+  cbtGradedAt?: string | null;
+  theoryGradedAt?: string | null;
+  finalGradedAt?: string | null;
+}
+
+export interface LecturerGradingRosterItem {
+  attemptId: string;
+  attemptNumber: number;
+  status: 'SUBMITTED' | 'TIMED_OUT';
+  startedAt: string;
+  submittedAt: string | null;
+  isLate: boolean;
+  student: {
+    id: string;
+    fullName: string;
+    email: string;
+    username: string | null;
+  };
+  grade: AttemptGradeSummary | null;
+}
+
+export interface LecturerGradingOverviewData {
+  assessment: {
+    id: string;
+    offeringId: string;
+    courseId: string;
+    title: string;
+    type: string;
+    status: string;
+    totalMarks: number;
+    passMarks: number | null;
+    startTime: string;
+    endTime: string;
+  };
+  stats: {
+    totalSubmitted: number;
+    autoGradedCount: number;
+    needsTheoryCount: number;
+    partiallyGradedCount: number;
+    completedCount: number;
+    averageScore: number | null;
+  };
+  roster: LecturerGradingRosterItem[];
+}
+
+export interface QuestionGradingDetail {
+  assessmentQuestionId: string;
+  questionId: string;
+  orderIndex: number;
+  allocatedMarks: number;
+  type: string;
+  question: string;
+  options: string[] | null;
+  correctAnswer: string;
+  explanation?: string | null;
+  gradingPoints: Array<{ concept: string; weight: number; aliases?: string[] }>;
+  studentAnswer: string | null;
+  savedAt: string | null;
+  grade: {
+    id: string;
+    maxMarks: number;
+    awardedMarks: number;
+    isCorrect: boolean | null;
+    gradingMethod: string;
+    rubricScores: RubricScoreItem[] | null;
+    feedback: string | null;
+    gradedBy: string | null;
+    gradedAt: string;
+  } | null;
+}
+
+export interface GradingAuditLogItem {
+  id: string;
+  actorId: string | null;
+  actorRole: string;
+  action: string;
+  previousScore: number | null;
+  newScore: number;
+  reason: string | null;
+  createdAt: string;
+  actorFullName: string | null;
+}
+
+export interface AttemptGradingDeskData {
+  assessment: {
+    id: string;
+    title: string;
+    type: string;
+    totalMarks: number;
+    passMarks: number | null;
+  };
+  attempt: {
+    id: string;
+    attemptNumber: number;
+    status: string;
+    startedAt: string;
+    submittedAt: string | null;
+    isLate: boolean;
+    student: {
+      id: string;
+      fullName: string;
+      email: string;
+      username: string | null;
+    };
+  };
+  grade: AttemptGradeSummary | null;
+  questions: QuestionGradingDetail[];
+  auditLogs: GradingAuditLogItem[];
+}
+
 

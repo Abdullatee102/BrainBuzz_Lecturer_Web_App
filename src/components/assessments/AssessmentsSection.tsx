@@ -30,6 +30,7 @@ import {
   CalendarClock,
   Sparkles,
   Activity,
+  Award,
 } from 'lucide-react';
 
 interface AssessmentsSectionProps {
@@ -407,13 +408,24 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                       {/* PUBLISHED Actions */}
                       {item.status === 'PUBLISHED' && (
                         <>
-                          <Link to={`/assessments/${item.id}/monitor`}>
+                          <Link to={`/assessments/${item.id}/grading`}>
                             <Button
                               variant="primary"
                               size="sm"
-                              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                              className="bg-indigo-600 hover:bg-indigo-700 text-white"
                             >
-                              <Activity className="w-3.5 h-3.5 mr-1" />
+                              <Award className="w-3.5 h-3.5 mr-1" />
+                              Grading Desk
+                            </Button>
+                          </Link>
+
+                          <Link to={`/assessments/${item.id}/monitor`}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+                            >
+                              <Activity className="w-3.5 h-3.5 mr-1 text-emerald-600" />
                               Live Monitor
                             </Button>
                           </Link>
