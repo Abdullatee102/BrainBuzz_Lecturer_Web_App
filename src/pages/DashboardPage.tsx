@@ -223,7 +223,7 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div className="self-end sm:self-auto">
-                    <Link to={`/courses/${assignment.courseId}`}>
+                    <Link to={`/courses/${assignment.courseId || (assignment as any).id}`}>
                       <Button variant="outline" size="sm">
                         <span>Course Details</span>
                         <ArrowRight className="w-3.5 h-3.5 ml-1" />

@@ -95,7 +95,7 @@ export const CourseTable: React.FC<CourseTableProps> = ({ courses }) => {
 
                 {/* Action */}
                 <td className="py-4 px-4 text-right">
-                  <Link to={`/courses/${course.courseId}`}>
+                  <Link to={`/courses/${course.courseId || course.assignmentId}`}>
                     <Button variant="outline" size="sm" className="group-hover:border-indigo-300">
                       <span>View Details</span>
                       <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
@@ -149,7 +149,7 @@ export const CourseTable: React.FC<CourseTableProps> = ({ courses }) => {
                 </span>
               </div>
 
-              <Link to={`/courses/${course.courseId}`}>
+              <Link to={`/courses/${course.courseId || course.assignmentId}`}>
                 <Button variant="outline" size="sm">
                   <span>Details</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />

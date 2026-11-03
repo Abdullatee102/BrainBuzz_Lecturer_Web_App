@@ -50,8 +50,17 @@ export const CoursesPage: React.FC = () => {
     },
   });
 
-  const courses = data?.data || [];
-  const pagination = data?.pagination;
+  const courses = Array.isArray(data?.data)
+    ? data.data
+    : Array.isArray((data?.data as any)?.courses)
+    ? (data?.data as any).courses
+    : Array.isArray((data as any)?.courses)
+    ? (data as any).courses
+    : [];
+  const pagination =
+    (data?.data as any)?.pagination ||
+    data?.pagination ||
+    (data as any)?.pagination;
 
   const handleClearFilters = () => {
     setSearchTerm('');
