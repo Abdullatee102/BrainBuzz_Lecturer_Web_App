@@ -8,10 +8,9 @@ import {
   X,
   GraduationCap,
   ShieldCheck,
-  UserCheck,
 } from 'lucide-react';
-import { cn } from '../../lib/utils';
 import { Badge } from '../ui/Badge';
+import { cn } from '../../lib/utils';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -23,7 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   const navigation = [
     {
-      name: 'Overview Dashboard',
+      name: 'Dashboard',
       to: '/dashboard',
       icon: LayoutDashboard,
     },
@@ -85,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               Faculty Portal
             </span>
             <Badge variant="purple" size="sm">
-              BB-07 Pilot
+              Active
             </Badge>
           </div>
         </div>
@@ -134,7 +133,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           <button
             onClick={() => logout()}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-rose-300 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-900/40 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors border border-slate-800"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>

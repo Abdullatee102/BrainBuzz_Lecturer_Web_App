@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Layers,
   FileQuestion,
+  FileText,
   ChevronDown,
   ChevronUp,
   ShieldCheck,
@@ -82,14 +83,17 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
     queryFn: async () => {
       const response = await apiClient.get<{
         status: string;
-        data: AssessmentItem[];
+        data: { assessments?: AssessmentItem[]; total?: number } | AssessmentItem[];
       }>(`/lecturer/offerings/${offeringId}/assessments`);
-      return response.data.data || [];
+      const raw = response.data?.data;
+      if (Array.isArray(raw)) return raw;
+      if (raw && Array.isArray((raw as any).assessments)) return (raw as any).assessments;
+      return [];
     },
     enabled: !!offeringId,
   });
 
-  const assessments: AssessmentItem[] = assessmentsData || [];
+  const assessments: AssessmentItem[] = Array.isArray(assessmentsData) ? assessmentsData : [];
 
   // Mutations
   const publishMutation = useMutation({
@@ -416,6 +420,17 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                             >
                               <Award className="w-3.5 h-3.5 mr-1" />
                               Grading Desk
+                            </Button>
+                          </Link>
+
+                          <Link to={`/assessments/${item.id}/gradebook`}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-purple-700 border-purple-300 hover:bg-purple-50"
+                            >
+                              <FileText className="w-3.5 h-3.5 mr-1 text-purple-600" />
+                              Gradebook
                             </Button>
                           </Link>
 

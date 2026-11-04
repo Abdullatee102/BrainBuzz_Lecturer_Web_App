@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, X, Info } from 'lucide-react';
+import { Sparkles, X } from 'lucide-react';
 
 export const PilotBanner: React.FC = () => {
   const [dismissed, setDismissed] = useState(false);
@@ -16,10 +16,10 @@ export const PilotBanner: React.FC = () => {
         <div className="flex items-center gap-2 min-w-0">
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 font-semibold text-[10px] uppercase tracking-wider flex-shrink-0">
             <Sparkles className="w-3 h-3 text-indigo-300" />
-            Pilot Release
+            Faculty Workspace
           </span>
           <p className="text-slate-200 truncate">
-            <span className="font-medium text-white">Academic Faculty Portal (BB-07):</span> This system is currently in active pilot evaluation. Course assignments and question metrics are live.
+            <span className="font-medium text-white">Academic Faculty Portal:</span> Active course allocations, official assessments, and examination grading desks are live.
           </p>
         </div>
 

@@ -21,13 +21,21 @@ import {
   FileQuestion,
   Info,
   CalendarClock,
+  Award,
+  UserCheck,
+  FolderArchive,
 } from 'lucide-react';
 import { QuestionBankSection } from '../components/questions/QuestionBankSection';
 import { AssessmentsSection } from '../components/assessments/AssessmentsSection';
+import { OfferingGradebookSection } from '../components/courses/OfferingGradebookSection';
+import { AttendanceSection } from '../components/attendance/AttendanceSection';
+import { MaterialsSection } from '../components/materials/MaterialsSection';
 
 export const CourseDetailPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
-  const [activeTab, setActiveTab] = React.useState<'assessments' | 'questions'>('assessments');
+  const [activeTab, setActiveTab] = React.useState<
+    'assessments' | 'questions' | 'gradebook' | 'attendance' | 'materials'
+  >('assessments');
 
   const {
     data,
@@ -245,16 +253,16 @@ export const CourseDetailPage: React.FC = () => {
         <CardContent>
           <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
             <div>
-              <dt className="text-[11px] uppercase font-semibold text-slate-400">Course Identifier</dt>
-              <dd className="font-mono text-slate-800 font-medium mt-1 truncate" title={data.courseId}>
-                {data.courseId}
+              <dt className="text-[11px] uppercase font-semibold text-slate-400">Course Allocation</dt>
+              <dd className="font-semibold text-slate-800 mt-1">
+                {data.code} ({formatLevel(data.level)})
               </dd>
             </div>
 
             <div>
-              <dt className="text-[11px] uppercase font-semibold text-slate-400">Assignment ID</dt>
-              <dd className="font-mono text-slate-800 font-medium mt-1 truncate" title={data.assignmentId}>
-                {data.assignmentId}
+              <dt className="text-[11px] uppercase font-semibold text-slate-400">Academic Term</dt>
+              <dd className="text-slate-800 font-medium mt-1">
+                {data.academicSession} • {formatSemester(data.semester)}
               </dd>
             </div>
 
@@ -267,7 +275,7 @@ export const CourseDetailPage: React.FC = () => {
 
             <div>
               <dt className="text-[11px] uppercase font-semibold text-slate-400">Department</dt>
-              <dd className="text-slate-800 font-medium mt-1">
+              <dd className="text-slate-800 font-medium mt-1 truncate" title={`${data.departmentName} (${data.facultyName})`}>
                 {data.departmentName}
               </dd>
             </div>
@@ -286,7 +294,7 @@ export const CourseDetailPage: React.FC = () => {
           }`}
         >
           <CalendarClock className="w-4 h-4" />
-          <span>Official Assessments (BB-07F.4)</span>
+          <span>Official Assessments</span>
         </button>
 
         <button
@@ -298,22 +306,76 @@ export const CourseDetailPage: React.FC = () => {
           }`}
         >
           <FileQuestion className="w-4 h-4" />
-          <span>Question Bank (BB-07F.3)</span>
+          <span>Question Bank</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('gradebook')}
+          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+            activeTab === 'gradebook'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Award className="w-4 h-4" />
+          <span>Course Gradebook</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('attendance')}
+          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+            activeTab === 'attendance'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <UserCheck className="w-4 h-4" />
+          <span>Attendance</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('materials')}
+          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+            activeTab === 'materials'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <FolderArchive className="w-4 h-4" />
+          <span>Course Materials</span>
         </button>
       </div>
 
       {/* Tab Panels */}
       {activeTab === 'assessments' ? (
         <AssessmentsSection
-          offeringId={data.offeringId || data.assignmentId}
+          offeringId={data.offeringId || ''}
           courseId={data.courseId}
           courseCode={data.code}
           courseTitle={data.title}
         />
-      ) : (
+      ) : activeTab === 'questions' ? (
         <QuestionBankSection
           courseId={data.courseId}
-          offeringId={data.offeringId || data.assignmentId}
+          offeringId={data.offeringId || ''}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      ) : activeTab === 'gradebook' ? (
+        <OfferingGradebookSection
+          offeringId={data.offeringId || ''}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      ) : activeTab === 'attendance' ? (
+        <AttendanceSection
+          offeringId={data.offeringId || ''}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      ) : (
+        <MaterialsSection
+          offeringId={data.offeringId || ''}
           courseCode={data.code}
           courseTitle={data.title}
         />
