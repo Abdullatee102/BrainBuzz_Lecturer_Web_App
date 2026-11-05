@@ -20,7 +20,14 @@ export interface LecturerUser {
   status: AccountStatus;
   facultyId?: string | null;
   departmentId?: string | null;
+  facultyName?: string | null;
+  departmentName?: string | null;
+  phoneNumber?: string | null;
+  bio?: string | null;
+  photoURL?: string | null;
 }
+
+export type Question = QuestionItem;
 
 export interface AuthTokens {
   accessToken: string;

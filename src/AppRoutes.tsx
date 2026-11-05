@@ -10,6 +10,7 @@ import { CourseDetailPage } from './pages/CourseDetailPage';
 import { AssessmentMonitorPage } from './pages/AssessmentMonitorPage';
 import { AssessmentGradingPage } from './pages/AssessmentGradingPage';
 import { AssessmentGradebookPage } from './pages/AssessmentGradebookPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/assessments/:assessmentId/monitor" element={<AssessmentMonitorPage />} />
         <Route path="/assessments/:assessmentId/grading" element={<AssessmentGradingPage />} />
         <Route path="/assessments/:assessmentId/gradebook" element={<AssessmentGradebookPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   X,
   Upload,
-  FileText,
+  FileSpreadsheet,
   AlertCircle,
   CheckCircle2,
   Copy,
   Check,
   RefreshCw,
+  Download,
+  AlertTriangle,
   FileCode,
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { apiClient, getErrorMessage } from '../../lib/api';
-import type { CreateQuestionPayload } from '../../types/api';
 
 interface BulkImportModalProps {
   isOpen: boolean;
@@ -24,53 +25,28 @@ interface BulkImportModalProps {
   courseCode: string;
 }
 
-interface ParsedQuestion {
+interface ParsedImportRow {
   rowIndex: number;
   type: 'cbt' | 'theory';
   question: string;
   options?: string[];
   correctAnswer: string;
-  gradingPoints?: { concept: string; weight: number; keywords?: string[] }[];
-  explanation?: string;
   points: number;
   difficulty: 'easy' | 'medium' | 'hard';
   isValid: boolean;
-  validationError?: string;
+  errors: string[];
+  isDuplicateInFile?: boolean;
+  isDuplicateInBank?: boolean;
 }
 
-const SAMPLE_CSV = `type,question,options,correctAnswer,points,difficulty,explanation
-cbt,"What is the primary function of an Operating System?","Manage hardware resources|Compile programs|Design websites|Generate graphics",Manage hardware resources,2,medium,"The OS serves as an intermediary between user applications and system hardware."
-cbt,"Which data structure operates on a FIFO basis?","Queue|Stack|Tree|Graph",Queue,1,easy,"FIFO stands for First-In, First-Out, characteristic of Queues."
-theory,"Explain the difference between concurrency and parallelism.","",Concurrency is dealing with multiple tasks concurrently while parallelism is executing them simultaneously on multiple cores.,5,hard,"Concurrency is about structure, parallelism is about execution."`;
-
-const SAMPLE_JSON = `[
-  {
-    "type": "cbt",
-    "question": "What is the primary function of an Operating System?",
-    "options": [
-      "Manage hardware resources",
-      "Compile programs",
-      "Design websites",
-      "Generate graphics"
-    ],
-    "correctAnswer": "Manage hardware resources",
-    "points": 2,
-    "difficulty": "medium",
-    "explanation": "The OS manages hardware and system resources."
-  },
-  {
-    "type": "theory",
-    "question": "Explain the difference between concurrency and parallelism.",
-    "correctAnswer": "Concurrency is dealing with multiple things at once; parallelism is doing multiple things at once.",
-    "gradingPoints": [
-      { "concept": "Definition of concurrency (handling multiple tasks)", "weight": 2.5 },
-      { "concept": "Definition of parallelism (simultaneous execution on hardware)", "weight": 2.5 }
-    ],
-    "points": 5,
-    "difficulty": "hard",
-    "explanation": "Concurrency is about structure; parallelism is about execution."
-  }
-]`;
+interface ImportSummary {
+  totalRows: number;
+  validCount: number;
+  invalidCount: number;
+  duplicateCount: number;
+  canImport: boolean;
+  rows: ParsedImportRow[];
+}
 
 export const BulkImportModal: React.FC<BulkImportModalProps> = ({
   isOpen,
@@ -80,500 +56,350 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
   offeringId,
   courseCode,
 }) => {
-  const [format, setFormat] = useState<'csv' | 'json'>('csv');
-  const [inputText, setInputText] = useState('');
-  const [parsedQuestions, setParsedQuestions] = useState<ParsedQuestion[]>([]);
-  const [isParsed, setIsParsed] = useState(false);
-  const [copiedSample, setCopiedSample] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isDownloadingTemplate, setIsDownloadingTemplate] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
-  const [importProgress, setImportProgress] = useState<{ current: number; total: number } | null>(null);
-  const [importResult, setImportResult] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+  const [importSummary, setImportSummary] = useState<ImportSummary | null>(null);
+  const [allowPartial, setAllowPartial] = useState(true);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [importResult, setImportResult] = useState<{ count: number } | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   if (!isOpen) return null;
 
-  const handleCopySample = () => {
-    const text = format === 'csv' ? SAMPLE_CSV : SAMPLE_JSON;
-    navigator.clipboard.writeText(text);
-    setCopiedSample(true);
-    setTimeout(() => setCopiedSample(false), 2000);
+  const targetOfferingId = offeringId || courseId;
+
+  // 1. Download Excel Template (.xlsx)
+  const handleDownloadTemplate = async () => {
+    setIsDownloadingTemplate(true);
+    try {
+      const response = await apiClient.get('/lecturer/questions/template', {
+        responseType: 'blob',
+      });
+
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Brain_Buzz_Questions_Template.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err: any) {
+      alert(`Failed to download template: ${getErrorMessage(err)}`);
+    } finally {
+      setIsDownloadingTemplate(false);
+    }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 2. Select File and Validate with Backend
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
-      setInputText(content || '');
-      setIsParsed(false);
-      setParsedQuestions([]);
-      setImportResult(null);
-    };
-    reader.readAsText(file);
-  };
-
-  const parseCsvLine = (line: string): string[] => {
-    const result: string[] = [];
-    let current = '';
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      if (char === '"') {
-        if (inQuotes && line[i + 1] === '"') {
-          current += '"';
-          i++;
-        } else {
-          inQuotes = !inQuotes;
-        }
-      } else if (char === ',' && !inQuotes) {
-        result.push(current.trim());
-        current = '';
-      } else {
-        current += char;
-      }
-    }
-    result.push(current.trim());
-    return result;
-  };
-
-  const handleParse = () => {
+    setSelectedFile(file);
+    setImportSummary(null);
     setImportResult(null);
-    if (!inputText.trim()) {
-      setParsedQuestions([]);
-      setIsParsed(true);
-      return;
-    }
+    setImportError(null);
 
-    const items: ParsedQuestion[] = [];
-
-    if (format === 'json') {
-      try {
-        const rawJson = JSON.parse(inputText);
-        if (!Array.isArray(rawJson)) {
-          alert('JSON must be an array of question objects.');
-          return;
-        }
-
-        rawJson.forEach((item: any, idx: number) => {
-          const type = (item.type || 'cbt').toLowerCase() === 'theory' ? 'theory' : 'cbt';
-          const question = String(item.question || '').trim();
-          const correctAnswer = String(item.correctAnswer || '').trim();
-          const points = Number(item.points) > 0 ? Number(item.points) : 1;
-          const diff = ['easy', 'medium', 'hard'].includes(item.difficulty)
-            ? item.difficulty
-            : 'medium';
-          const explanation = item.explanation ? String(item.explanation).trim() : undefined;
-
-          let isValid = true;
-          let validationError: string | undefined;
-
-          if (!question) {
-            isValid = false;
-            validationError = 'Question text is required.';
-          } else if (type === 'cbt') {
-            const opts = Array.isArray(item.options) ? item.options.map((o: any) => String(o).trim()) : [];
-            if (opts.length < 2) {
-              isValid = false;
-              validationError = 'CBT requires at least 2 options.';
-            } else if (!correctAnswer) {
-              isValid = false;
-              validationError = 'Correct answer is required.';
-            } else if (!opts.some((opt: string) => opt.toLowerCase() === correctAnswer.toLowerCase())) {
-              isValid = false;
-              validationError = 'Correct answer must match one of the options.';
-            }
-          } else if (type === 'theory') {
-            if (!correctAnswer) {
-              isValid = false;
-              validationError = 'Model answer is required for theory questions.';
-            }
-          }
-
-          items.push({
-            rowIndex: idx + 1,
-            type,
-            question,
-            options: type === 'cbt' ? item.options : undefined,
-            correctAnswer,
-            gradingPoints: type === 'theory' ? item.gradingPoints : undefined,
-            explanation,
-            points,
-            difficulty: diff,
-            isValid,
-            validationError,
-          });
-        });
-      } catch (err: any) {
-        alert(`Failed to parse JSON: ${err.message}`);
-        return;
-      }
-    } else {
-      // CSV parser
-      const lines = inputText
-        .split(/\r?\n/)
-        .map((l) => l.trim())
-        .filter((l) => l.length > 0);
-
-      if (lines.length <= 1) {
-        alert('CSV must contain a header row and at least one question row.');
-        return;
-      }
-
-      const rows = lines.slice(1);
-      rows.forEach((line, idx) => {
-        const cols = parseCsvLine(line);
-        // format: type, question, options (pipe-separated), correctAnswer, points, difficulty, explanation
-        const rawType = (cols[0] || 'cbt').toLowerCase();
-        const type: 'cbt' | 'theory' = rawType === 'theory' ? 'theory' : 'cbt';
-        const question = (cols[1] || '').trim();
-        const rawOptions = (cols[2] || '').trim();
-        const correctAnswer = (cols[3] || '').trim();
-        const points = Number(cols[4]) > 0 ? Number(cols[4]) : 1;
-        const diff = ['easy', 'medium', 'hard'].includes(cols[5]?.toLowerCase() || '')
-          ? (cols[5].toLowerCase() as any)
-          : 'medium';
-        const explanation = cols[6]?.trim() || undefined;
-
-        let isValid = true;
-        let validationError: string | undefined;
-
-        if (!question) {
-          isValid = false;
-          validationError = 'Question text is required.';
-        } else if (type === 'cbt') {
-          const options = rawOptions ? rawOptions.split('|').map((o) => o.trim()).filter(Boolean) : [];
-          if (options.length < 2) {
-            isValid = false;
-            validationError = 'CBT requires at least 2 pipe-separated options (e.g. Opt1|Opt2).';
-          } else if (!correctAnswer) {
-            isValid = false;
-            validationError = 'Correct answer is required.';
-          } else if (!options.some((opt) => opt.toLowerCase() === correctAnswer.toLowerCase())) {
-            isValid = false;
-            validationError = 'Correct answer must match one of the pipe-separated options.';
-          }
-        } else if (type === 'theory') {
-          if (!correctAnswer) {
-            isValid = false;
-            validationError = 'Model answer is required for theory.';
-          }
-        }
-
-        const options = type === 'cbt' ? rawOptions.split('|').map((o) => o.trim()).filter(Boolean) : undefined;
-
-        items.push({
-          rowIndex: idx + 1,
-          type,
-          question,
-          options,
-          correctAnswer,
-          points,
-          difficulty: diff,
-          explanation,
-          isValid,
-          validationError,
-        });
-      });
-    }
-
-    setParsedQuestions(items);
-    setIsParsed(true);
+    await validateFile(file);
   };
 
-  const handleStartImport = async () => {
-    const validQuestions = parsedQuestions.filter((q) => q.isValid);
-    if (validQuestions.length === 0) {
-      alert('No valid questions to import.');
-      return;
+  const validateFile = async (file: File) => {
+    setIsValidating(true);
+    setImportError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await apiClient.post<{ status: string; data: ImportSummary }>(
+        `/lecturer/questions/offerings/${targetOfferingId}/bulk-import`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+
+      setImportSummary(response.data.data);
+    } catch (err: any) {
+      setImportError(getErrorMessage(err));
+    } finally {
+      setIsValidating(false);
     }
+  };
+
+  // 3. Confirm and Import
+  const handleConfirmImport = async () => {
+    if (!selectedFile || !importSummary) return;
 
     setIsImporting(true);
-    setImportProgress({ current: 0, total: validQuestions.length });
-    const errors: string[] = [];
-    let successCount = 0;
+    setImportError(null);
 
-    for (let i = 0; i < validQuestions.length; i++) {
-      const q = validQuestions[i]!;
-      setImportProgress({ current: i + 1, total: validQuestions.length });
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-      try {
-        const payload: CreateQuestionPayload = {
-          courseId,
-          offeringId,
-          type: q.type,
-          question: q.question,
-          options: q.type === 'cbt' ? q.options : undefined,
-          correctAnswer: q.correctAnswer,
-          gradingPoints: q.type === 'theory' ? (q.gradingPoints as any) : undefined,
-          points: q.points,
-          difficulty: q.difficulty,
-          explanation: q.explanation,
-        };
+      const response = await apiClient.post<{ status: string; data: { importedCount: number } }>(
+        `/lecturer/questions/offerings/${targetOfferingId}/bulk-import?confirm=true&allowPartial=${allowPartial}`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
 
-        await apiClient.post('/lecturer/questions', payload);
-        successCount++;
-      } catch (err: any) {
-        errors.push(`Row ${q.rowIndex} (${q.question.slice(0, 30)}...): ${getErrorMessage(err)}`);
-      }
-    }
-
-    setIsImporting(false);
-    setImportResult({
-      success: successCount,
-      failed: errors.length,
-      errors,
-    });
-
-    if (successCount > 0) {
+      const count = response.data.data.importedCount || 0;
+      setImportResult({ count });
       onSuccess();
+    } catch (err: any) {
+      setImportError(getErrorMessage(err));
+    } finally {
+      setIsImporting(false);
     }
   };
 
-  const validCount = parsedQuestions.filter((q) => q.isValid).length;
-  const invalidCount = parsedQuestions.length - validCount;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8 flex flex-col max-h-[90vh]">
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50/80">
-          <div>
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Upload className="w-5 h-5 text-indigo-600" />
-              <span>Bulk Import Questions — {courseCode}</span>
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Paste or upload questions in CSV or JSON format for batch authoring.
-            </p>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/80">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400">
+              <FileSpreadsheet className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                Bulk Question Import ({courseCode})
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Upload questions via Excel workbook (.xlsx), CSV, or JSON
+              </p>
+            </div>
           </div>
+
           <button
             onClick={onClose}
             disabled={isImporting}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-5">
-          {/* Format Selection & Helper */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
-              <button
-                type="button"
-                onClick={() => {
-                  setFormat('csv');
-                  setIsParsed(false);
-                }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  format === 'csv'
-                    ? 'bg-white text-indigo-700 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span>CSV Format</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setFormat('json');
-                  setIsParsed(false);
-                }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  format === 'json'
-                    ? 'bg-white text-indigo-700 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <FileCode className="w-3.5 h-3.5" />
-                <span>JSON Format</span>
-              </button>
+        {/* Modal Body */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* Step 1: Download Template Banner */}
+          <div className="p-4 rounded-xl border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-xs font-bold text-indigo-950 dark:text-indigo-200">
+                Need the official question workbook?
+              </h3>
+              <p className="text-[11px] text-indigo-700 dark:text-indigo-400 mt-0.5">
+                Download the pre-formatted Excel template with sample CBT & Theory rows and instructions.
+              </p>
             </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={handleCopySample} className="text-xs h-8">
-                {copiedSample ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600 mr-1.5" />
-                    <span>Copied Sample</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5 mr-1.5" />
-                    <span>Copy Sample {format.toUpperCase()}</span>
-                  </>
-                )}
-              </Button>
-
-              <label className="cursor-pointer">
-                <input
-                  type="file"
-                  accept={format === 'csv' ? '.csv,text/csv' : '.json,application/json'}
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow-sm">
-                  <Upload className="w-3.5 h-3.5 mr-1.5" />
-                  <span>Upload File</span>
-                </span>
-              </label>
-            </div>
-          </div>
-
-          {/* Raw Text Input */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
-              Data Input ({format.toUpperCase()})
-            </label>
-            <textarea
-              value={inputText}
-              onChange={(e) => {
-                setInputText(e.target.value);
-                setIsParsed(false);
-              }}
-              placeholder={
-                format === 'csv'
-                  ? `type,question,options,correctAnswer,points,difficulty,explanation\ncbt,"Sample question?","OptA|OptB|OptC|OptD",OptA,1,easy,"Explanation here"`
-                  : `[\n  {\n    "type": "cbt",\n    "question": "Sample question?",\n    "options": ["OptA", "OptB"],\n    "correctAnswer": "OptA"\n  }\n]`
-              }
-              rows={7}
-              className="w-full font-mono text-xs p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-slate-50/50"
-            />
-          </div>
-
-          {/* Parse Button */}
-          <div className="flex items-center justify-between">
             <Button
               variant="outline"
               size="sm"
-              onClick={handleParse}
-              disabled={!inputText.trim() || isImporting}
-              className="text-xs h-8"
+              onClick={handleDownloadTemplate}
+              disabled={isDownloadingTemplate}
+              className="text-xs bg-white dark:bg-slate-800 shadow-sm flex-shrink-0"
             >
-              <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-              <span>Validate & Preview Questions</span>
+              {isDownloadingTemplate ? (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                  <span>Downloading...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-3.5 h-3.5 mr-1.5 text-indigo-600 dark:text-indigo-400" />
+                  <span>Download .xlsx Template</span>
+                </>
+              )}
             </Button>
-
-            {isParsed && (
-              <div className="flex items-center gap-2 text-xs">
-                <span className="text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-medium">
-                  {validCount} Valid
-                </span>
-                {invalidCount > 0 && (
-                  <span className="text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-full font-medium">
-                    {invalidCount} Invalid
-                  </span>
-                )}
-              </div>
-            )}
           </div>
 
-          {/* Validation / Preview Table */}
-          {isParsed && (
-            <div className="space-y-2">
-              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                Preview & Validation ({parsedQuestions.length} Questions)
-              </h3>
-              {parsedQuestions.length === 0 ? (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs text-slate-500">
-                  No questions parsed. Check your format and try again.
-                </div>
-              ) : (
-                <div className="border border-slate-200 rounded-xl overflow-hidden max-h-56 overflow-y-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-100/75 border-b border-slate-200 text-slate-700 font-semibold sticky top-0">
-                      <tr>
-                        <th className="py-2 px-3 w-12 text-center">#</th>
-                        <th className="py-2 px-3 w-20">Type</th>
-                        <th className="py-2 px-3">Question Prompt</th>
-                        <th className="py-2 px-3 w-24">Diff / Pts</th>
-                        <th className="py-2 px-3 w-32">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {parsedQuestions.map((q) => (
-                        <tr
-                          key={q.rowIndex}
-                          className={q.isValid ? 'hover:bg-slate-50/50' : 'bg-rose-50/40'}
-                        >
-                          <td className="py-2 px-3 text-center font-mono text-slate-400">
-                            {q.rowIndex}
-                          </td>
-                          <td className="py-2 px-3">
-                            <Badge variant={q.type === 'cbt' ? 'info' : 'purple'}>
-                              {q.type.toUpperCase()}
-                            </Badge>
-                          </td>
-                          <td className="py-2 px-3">
-                            <div className="font-medium text-slate-900 truncate max-w-md">
-                              {q.question}
-                            </div>
-                            <div className="text-[11px] text-slate-500 truncate max-w-md">
-                              Ans: {q.correctAnswer}
-                            </div>
-                          </td>
-                          <td className="py-2 px-3 text-slate-500 text-[11px]">
-                            {q.difficulty} • {q.points} pt
-                          </td>
-                          <td className="py-2 px-3">
-                            {q.isValid ? (
-                              <div className="flex items-center gap-1 text-emerald-700 text-[11px] font-semibold">
-                                <CheckCircle2 className="w-3.5 h-3.5" />
-                                <span>Valid</span>
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-1 text-rose-700 text-[11px] font-semibold" title={q.validationError}>
-                                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                                <span className="truncate">{q.validationError}</span>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+          {/* Step 2: Upload Area */}
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+              Select Question File (.xlsx, .csv, .json)
+            </label>
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-6 text-center hover:border-indigo-500 dark:hover:border-indigo-400 cursor-pointer bg-slate-50/50 dark:bg-slate-800/30 transition-colors"
+            >
+              <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+              <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                {selectedFile ? selectedFile.name : 'Click to browse or drop workbook here'}
+              </p>
+              <p className="text-[11px] text-slate-400 mt-1">
+                Supported formats: Microsoft Excel (.xlsx), CSV, JSON
+              </p>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".xlsx,.xls,.csv,.json"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </div>
+
+          {/* Loading validation */}
+          {isValidating && (
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+              <RefreshCw className="w-4 h-4 animate-spin text-indigo-600" />
+              <span>Parsing workbook and validating questions on server...</span>
             </div>
           )}
 
-          {/* Import Results Notification */}
-          {importResult && (
-            <div
-              className={`p-4 rounded-xl border text-xs space-y-1.5 ${
-                importResult.failed === 0
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
-                  : 'bg-amber-50 border-amber-200 text-amber-900'
-              }`}
-            >
-              <div className="font-bold flex items-center gap-1.5">
-                {importResult.failed === 0 ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                ) : (
-                  <AlertCircle className="w-4 h-4 text-amber-600" />
-                )}
-                <span>
-                  Import Complete: {importResult.success} successfully added as DRAFT
-                  {importResult.failed > 0 && `, ${importResult.failed} failed.`}
-                </span>
+          {/* Error Banner */}
+          {importError && (
+            <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-800 dark:text-rose-300 flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold">Validation Error</p>
+                <p className="mt-0.5">{importError}</p>
               </div>
-              {importResult.errors.length > 0 && (
-                <div className="mt-2 space-y-1 text-rose-800 text-[11px] max-h-24 overflow-y-auto">
-                  {importResult.errors.map((err, i) => (
-                    <div key={i}>• {err}</div>
-                  ))}
+            </div>
+          )}
+
+          {/* Validation & Preview Summary */}
+          {importSummary && (
+            <div className="space-y-4">
+              {/* Metrics Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Rows</span>
+                  <span className="text-sm font-extrabold text-slate-900 dark:text-slate-100 mt-0.5 block">
+                    {importSummary.totalRows}
+                  </span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
+                  <span className="text-[10px] uppercase font-bold text-emerald-600 block">Valid Questions</span>
+                  <span className="text-sm font-extrabold text-emerald-700 dark:text-emerald-300 mt-0.5 block">
+                    {importSummary.validCount}
+                  </span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800">
+                  <span className="text-[10px] uppercase font-bold text-rose-600 block">Invalid Rows</span>
+                  <span className="text-sm font-extrabold text-rose-700 dark:text-rose-300 mt-0.5 block">
+                    {importSummary.invalidCount}
+                  </span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800">
+                  <span className="text-[10px] uppercase font-bold text-amber-600 block">Duplicates</span>
+                  <span className="text-sm font-extrabold text-amber-700 dark:text-amber-300 mt-0.5 block">
+                    {importSummary.duplicateCount}
+                  </span>
+                </div>
+              </div>
+
+              {/* Partial Import Toggle if errors exist */}
+              {importSummary.invalidCount > 0 && (
+                <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                    <span className="text-amber-900 dark:text-amber-300 font-medium">
+                      Some rows contain errors. Would you like to import only the valid rows?
+                    </span>
+                  </div>
+                  <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-amber-900 dark:text-amber-200">
+                    <input
+                      type="checkbox"
+                      checked={allowPartial}
+                      onChange={(e) => setAllowPartial(e.target.checked)}
+                      className="rounded border-amber-400 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span>Allow partial import</span>
+                  </label>
                 </div>
               )}
+
+              {/* Rows Preview Table */}
+              <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden max-h-56 overflow-y-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold sticky top-0">
+                    <tr>
+                      <th className="py-2 px-3 w-10 text-center">#</th>
+                      <th className="py-2 px-3 w-16">Type</th>
+                      <th className="py-2 px-3">Question Prompt</th>
+                      <th className="py-2 px-3 w-28">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {importSummary.rows.map((row) => (
+                      <tr
+                        key={row.rowIndex}
+                        className={
+                          row.isValid
+                            ? 'hover:bg-slate-50/50 dark:hover:bg-slate-800/40'
+                            : 'bg-rose-50/30 dark:bg-rose-950/20'
+                        }
+                      >
+                        <td className="py-2 px-3 text-center font-mono text-slate-400">
+                          {row.rowIndex}
+                        </td>
+                        <td className="py-2 px-3">
+                          <Badge variant={row.type === 'cbt' ? 'info' : 'purple'} size="sm">
+                            {row.type.toUpperCase()}
+                          </Badge>
+                        </td>
+                        <td className="py-2 px-3">
+                          <div className="font-medium text-slate-900 dark:text-slate-100 truncate max-w-md">
+                            {row.question}
+                          </div>
+                          {row.errors.length > 0 && (
+                            <div className="text-[10px] text-rose-600 dark:text-rose-400 mt-0.5 space-y-0.5">
+                              {row.errors.map((err, idx) => (
+                                <div key={idx}>• {err}</div>
+                              ))}
+                            </div>
+                          )}
+                        </td>
+                        <td className="py-2 px-3">
+                          {row.isValid ? (
+                            <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>Valid</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-1 text-rose-600 dark:text-rose-400 text-[11px] font-semibold">
+                              <AlertCircle className="w-3.5 h-3.5" />
+                              <span>Invalid</span>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Import Complete Notification */}
+          {importResult && (
+            <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+              <div>
+                <p className="font-bold text-sm">Import Completed Successfully!</p>
+                <p className="mt-0.5">
+                  {importResult.count} questions added to the question bank as DRAFT.
+                </p>
+              </div>
             </div>
           )}
         </div>
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-between px-6 py-3.5 border-t border-slate-200 bg-slate-50/80">
+        <div className="flex items-center justify-between px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80">
           <Button variant="outline" size="sm" onClick={onClose} disabled={isImporting}>
             Cancel
           </Button>
@@ -581,20 +407,28 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
           <Button
             variant="primary"
             size="sm"
-            onClick={handleStartImport}
-            disabled={!isParsed || validCount === 0 || isImporting}
+            onClick={handleConfirmImport}
+            disabled={
+              !importSummary ||
+              isImporting ||
+              (!allowPartial && importSummary.invalidCount > 0) ||
+              importSummary.validCount === 0 ||
+              Boolean(importResult)
+            }
           >
             {isImporting ? (
               <>
                 <RefreshCw className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                <span>
-                  Importing ({importProgress?.current}/{importProgress?.total})...
-                </span>
+                <span>Importing to Bank...</span>
               </>
             ) : (
               <>
                 <Upload className="w-3.5 h-3.5 mr-1.5" />
-                <span>Import {validCount} Valid Question{validCount !== 1 ? 's' : ''}</span>
+                <span>
+                  Confirm Import (
+                  {allowPartial ? importSummary?.validCount || 0 : importSummary?.totalRows || 0}{' '}
+                  Questions)
+                </span>
               </>
             )}
           </Button>
@@ -603,4 +437,3 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
     </div>
   );
 };
-

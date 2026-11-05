@@ -8,6 +8,7 @@ import { Button } from '../ui/Button';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { QuestionModal } from './QuestionModal';
 import { BulkImportModal } from './BulkImportModal';
+import { PrintablePaperModal } from './PrintablePaperModal';
 import {
   FileQuestion,
   Plus,
@@ -23,6 +24,7 @@ import {
   HelpCircle,
   Eye,
   Upload,
+  Printer,
 } from 'lucide-react';
 
 interface QuestionBankSectionProps {
@@ -42,6 +44,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
+  const [isPrintPaperOpen, setIsPrintPaperOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<QuestionItem | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
@@ -207,13 +210,24 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setIsBulkImportOpen(true)}>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsPrintPaperOpen(true)}
+            disabled={questions.length === 0}
+            className="text-xs"
+          >
+            <Printer className="w-4 h-4 mr-1.5 text-slate-600 dark:text-slate-300" />
+            <span>Printable Paper</span>
+          </Button>
+
+          <Button variant="outline" size="sm" onClick={() => setIsBulkImportOpen(true)} className="text-xs">
             <Upload className="w-4 h-4 mr-1.5" />
             <span>Bulk Import</span>
           </Button>
 
-          <Button variant="primary" size="sm" onClick={handleOpenCreate}>
+          <Button variant="primary" size="sm" onClick={handleOpenCreate} className="text-xs">
             <Plus className="w-4 h-4 mr-1.5" />
             <span>Author Question Draft</span>
           </Button>
@@ -488,6 +502,16 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
         courseId={courseId}
         offeringId={offeringId}
         courseCode={courseCode}
+      />
+
+      {/* Printable Paper Modal */}
+      <PrintablePaperModal
+        isOpen={isPrintPaperOpen}
+        onClose={() => setIsPrintPaperOpen(false)}
+        offeringId={offeringId || courseId}
+        courseCode={courseCode}
+        courseTitle={courseTitle}
+        questions={questions as any}
       />
     </div>
   );
