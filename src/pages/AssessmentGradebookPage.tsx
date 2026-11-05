@@ -233,7 +233,7 @@ export const AssessmentGradebookPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Breadcrumb & Navigation */}
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <Link to={`/courses/${assessment.courseId}`}>
           <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
             <ArrowLeft className="w-4 h-4 mr-1.5" />
@@ -241,7 +241,7 @@ export const AssessmentGradebookPage: React.FC = () => {
           </Button>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
           <Link to={`/assessments/${assessment.id}/grading`}>
             <Button variant="outline" size="sm" className="text-indigo-600 border-indigo-200 hover:bg-indigo-50">
               <Award className="w-3.5 h-3.5 mr-1.5" />

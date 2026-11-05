@@ -24,17 +24,21 @@ import {
   Award,
   UserCheck,
   FolderArchive,
+  Megaphone,
+  MessageSquare,
 } from 'lucide-react';
 import { QuestionBankSection } from '../components/questions/QuestionBankSection';
 import { AssessmentsSection } from '../components/assessments/AssessmentsSection';
 import { OfferingGradebookSection } from '../components/courses/OfferingGradebookSection';
 import { AttendanceSection } from '../components/attendance/AttendanceSection';
 import { MaterialsSection } from '../components/materials/MaterialsSection';
+import { AnnouncementsSection } from '../components/announcements/AnnouncementsSection';
+import { DiscussionsSection } from '../components/discussions/DiscussionsSection';
 
 export const CourseDetailPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const [activeTab, setActiveTab] = React.useState<
-    'assessments' | 'questions' | 'gradebook' | 'attendance' | 'materials'
+    'assessments' | 'questions' | 'gradebook' | 'attendance' | 'materials' | 'announcements' | 'discussions'
   >('assessments');
 
   const {
@@ -283,11 +287,11 @@ export const CourseDetailPage: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center gap-3 border-b border-slate-200">
+      {/* Navigation Tabs (Mobile-responsive Horizontal Scroll) */}
+      <div className="flex items-center gap-1.5 border-b border-slate-200 overflow-x-auto scrollbar-none pb-0.5 flex-nowrap">
         <button
           onClick={() => setActiveTab('assessments')}
-          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
             activeTab === 'assessments'
               ? 'border-indigo-600 text-indigo-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -299,7 +303,7 @@ export const CourseDetailPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('questions')}
-          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
             activeTab === 'questions'
               ? 'border-indigo-600 text-indigo-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -311,7 +315,7 @@ export const CourseDetailPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('gradebook')}
-          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
             activeTab === 'gradebook'
               ? 'border-indigo-600 text-indigo-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -323,7 +327,7 @@ export const CourseDetailPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('attendance')}
-          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
             activeTab === 'attendance'
               ? 'border-indigo-600 text-indigo-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -335,7 +339,7 @@ export const CourseDetailPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('materials')}
-          className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold transition-colors border-b-2 ${
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
             activeTab === 'materials'
               ? 'border-indigo-600 text-indigo-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -344,37 +348,79 @@ export const CourseDetailPage: React.FC = () => {
           <FolderArchive className="w-4 h-4" />
           <span>Course Materials</span>
         </button>
+
+        <button
+          onClick={() => setActiveTab('announcements')}
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
+            activeTab === 'announcements'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Megaphone className="w-4 h-4" />
+          <span>Announcements</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('discussions')}
+          className={`flex items-center gap-2 pb-3 px-3 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
+            activeTab === 'discussions'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <MessageSquare className="w-4 h-4" />
+          <span>Discussions</span>
+        </button>
       </div>
 
       {/* Tab Panels */}
-      {activeTab === 'assessments' ? (
+      {activeTab === 'assessments' && (
         <AssessmentsSection
           offeringId={data.offeringId || ''}
           courseId={data.courseId}
           courseCode={data.code}
           courseTitle={data.title}
         />
-      ) : activeTab === 'questions' ? (
+      )}
+      {activeTab === 'questions' && (
         <QuestionBankSection
           courseId={data.courseId}
           offeringId={data.offeringId || ''}
           courseCode={data.code}
           courseTitle={data.title}
         />
-      ) : activeTab === 'gradebook' ? (
+      )}
+      {activeTab === 'gradebook' && (
         <OfferingGradebookSection
           offeringId={data.offeringId || ''}
           courseCode={data.code}
           courseTitle={data.title}
         />
-      ) : activeTab === 'attendance' ? (
+      )}
+      {activeTab === 'attendance' && (
         <AttendanceSection
           offeringId={data.offeringId || ''}
           courseCode={data.code}
           courseTitle={data.title}
         />
-      ) : (
+      )}
+      {activeTab === 'materials' && (
         <MaterialsSection
+          offeringId={data.offeringId || ''}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      )}
+      {activeTab === 'announcements' && (
+        <AnnouncementsSection
+          offeringId={data.offeringId || ''}
+          courseCode={data.code}
+          courseTitle={data.title}
+        />
+      )}
+      {activeTab === 'discussions' && (
+        <DiscussionsSection
           offeringId={data.offeringId || ''}
           courseCode={data.code}
           courseTitle={data.title}

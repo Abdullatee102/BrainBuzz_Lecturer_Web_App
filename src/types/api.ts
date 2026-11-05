@@ -815,6 +815,104 @@ export interface OfferingMaterialsResponse {
   };
 }
 
+// =====================================================
+// COURSE ANNOUNCEMENTS & DISCUSSIONS ENGINE (BB-07I)
+// =====================================================
+
+export type AnnouncementPriority = 'NORMAL' | 'IMPORTANT' | 'URGENT';
+export type AnnouncementStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+
+export interface CourseAnnouncementItem {
+  id: string;
+  offeringId: string;
+  lecturerId: string;
+  title: string;
+  content: string;
+  priority: AnnouncementPriority;
+  status: AnnouncementStatus;
+  attachmentUrl?: string | null;
+  attachmentName?: string | null;
+  publishedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  author: {
+    id: string;
+    fullName: string;
+    avatarUrl?: string | null;
+  };
+}
+
+export interface OfferingAnnouncementsResponse {
+  offering: {
+    id: string;
+    academicSession: string;
+    semester: string;
+    courseCode: string;
+    courseTitle: string;
+  };
+  announcements: CourseAnnouncementItem[];
+  metrics: {
+    total: number;
+    published: number;
+    draft: number;
+    archived: number;
+    urgent: number;
+  };
+}
+
+export interface CourseDiscussionReplyItem {
+  id: string;
+  discussionId: string;
+  authorRole: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  author: {
+    id: string;
+    fullName: string;
+    avatarUrl?: string | null;
+    role: string;
+  };
+}
+
+export interface CourseDiscussionItem {
+  id: string;
+  offeringId: string;
+  announcementId?: string | null;
+  title: string;
+  content: string;
+  authorRole: string;
+  isPinned: boolean;
+  isLocked: boolean;
+  replyCount: number;
+  lastActivityAt: string;
+  createdAt: string;
+  updatedAt: string;
+  author: {
+    id: string;
+    fullName: string;
+    email: string;
+    avatarUrl?: string | null;
+    role: string;
+  };
+}
+
+export interface OfferingDiscussionsResponse {
+  offering: {
+    id: string;
+    code: string;
+    title: string;
+    academicSession: string;
+    semester: string;
+  };
+  discussions: CourseDiscussionItem[];
+}
+
+export interface DiscussionDetailsResponse {
+  discussion: CourseDiscussionItem;
+  replies: CourseDiscussionReplyItem[];
+}
+
 
 
 
