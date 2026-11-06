@@ -258,13 +258,13 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
-      <div className="bg-white rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 h-[90vh] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 dark:border-slate-800 h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-slate-50/50">
+        <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0 bg-slate-50/50 dark:bg-slate-800/50">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-base sm:text-lg font-bold text-slate-900">{session.title}</h3>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">{session.title}</h3>
               <Badge variant="purple" size="sm">
                 {session.sessionType}
               </Badge>
@@ -281,27 +281,27 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                 {session.status}
               </Badge>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Date: {new Date(session.sessionDate).toLocaleDateString()} • {session.courseCode} ({session.academicSession} - {session.semester})
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100"
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Action / Banner Bar */}
-        <div className="px-5 py-3 bg-white border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 flex-shrink-0">
+        <div className="px-5 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 flex-shrink-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-slate-500 font-medium">Quick Bulk Actions:</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Quick Bulk Actions:</span>
             <Button
               variant="outline"
               size="sm"
               onClick={() => markAll('PRESENT')}
-              className="text-xs py-1 h-7 text-emerald-700 hover:bg-emerald-50"
+              className="text-xs py-1 h-7 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
             >
               All Unmarked Present
             </Button>
@@ -309,7 +309,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
               variant="outline"
               size="sm"
               onClick={() => markAll('ABSENT')}
-              className="text-xs py-1 h-7 text-rose-700 hover:bg-rose-50"
+              className="text-xs py-1 h-7 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40"
             >
               All Unmarked Absent
             </Button>
@@ -322,7 +322,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
               placeholder="Search students..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>
         </div>
@@ -344,17 +344,17 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
         {/* Roster Table */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold sticky top-0 z-10">
+            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold sticky top-0 z-10">
               <tr>
                 <th className="py-2.5 px-3">Student</th>
                 <th className="py-2.5 px-3">Attendance Status</th>
                 <th className="py-2.5 px-3">Remarks</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
               {filteredRoster.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="py-8 text-center text-slate-400 italic">
+                  <td colSpan={3} className="py-8 text-center text-slate-400 dark:text-slate-500 italic">
                     No students found matching your search.
                   </td>
                 </tr>
@@ -366,10 +366,10 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                     isMarkedInitially: false,
                   };
                   return (
-                    <tr key={st.studentId} className="hover:bg-slate-50/70 transition-colors">
+                    <tr key={st.studentId} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="py-3 px-3">
-                        <div className="font-semibold text-slate-900">{st.fullName}</div>
-                        <div className="text-[11px] text-slate-400">
+                        <div className="font-semibold text-slate-900 dark:text-slate-100">{st.fullName}</div>
+                        <div className="text-[11px] text-slate-400 dark:text-slate-500">
                           {st.username || st.email || 'No matric'} {st.level ? `• ${st.level}L` : ''}
                         </div>
                       </td>
@@ -384,18 +384,18 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                                 statusOpt === 'PRESENT'
                                   ? isSelected
                                     ? 'bg-emerald-600 text-white font-bold border-emerald-600 shadow-sm'
-                                    : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                                    : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/40'
                                   : statusOpt === 'LATE'
                                   ? isSelected
                                     ? 'bg-amber-600 text-white font-bold border-amber-600 shadow-sm'
-                                    : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                                    : 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/40'
                                   : statusOpt === 'EXCUSED'
                                   ? isSelected
                                     ? 'bg-indigo-600 text-white font-bold border-indigo-600 shadow-sm'
-                                    : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100'
+                                    : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/40'
                                   : isSelected
                                   ? 'bg-rose-600 text-white font-bold border-rose-600 shadow-sm'
-                                  : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100';
+                                  : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800 hover:bg-rose-100 dark:hover:bg-rose-900/40';
 
                               return (
                                 <button
@@ -412,7 +412,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                             }
                           )}
                           {state.isMarkedInitially && (
-                            <span className="text-[10px] text-slate-400 italic ml-1">
+                            <span className="text-[10px] text-slate-400 dark:text-slate-500 italic ml-1">
                               (Saved)
                             </span>
                           )}
@@ -426,7 +426,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                           placeholder="Optional notes..."
                           value={state.remarks}
                           onChange={(e) => handleRemarksChange(st.studentId, e.target.value)}
-                          className="w-full text-xs px-2.5 py-1 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+                          className="w-full text-xs px-2.5 py-1 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                         />
                       </td>
                     </tr>
@@ -438,9 +438,9 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between flex-shrink-0">
-          <div className="text-xs text-slate-500">
-            Total Students: <span className="font-semibold">{roster.length}</span>
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between flex-shrink-0">
+          <div className="text-xs text-slate-500 dark:text-slate-400">
+            Total Students: <span className="font-semibold text-slate-900 dark:text-slate-100">{roster.length}</span>
           </div>
 
           <div className="flex items-center gap-2">

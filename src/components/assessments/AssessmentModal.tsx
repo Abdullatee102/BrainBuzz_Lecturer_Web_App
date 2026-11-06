@@ -137,21 +137,21 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
           <div>
-            <h2 className="text-base font-bold text-slate-900">
+            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
               {assessmentToEdit ? 'Edit Assessment Draft' : 'Create Academic Assessment'}
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Course Offering: <span className="font-semibold text-slate-700">{courseCode}</span>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Course Offering: <span className="font-semibold text-slate-700 dark:text-slate-300">{courseCode}</span>
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -160,14 +160,14 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           {errorMessage && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
               Assessment Title <span className="text-rose-500">*</span>
             </label>
             <input
@@ -176,12 +176,12 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., CSC201 Mid-Semester CBT Assessment"
-              className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+              className="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
               Instructions / Description
             </label>
             <textarea
@@ -189,19 +189,19 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Provide instructions for students regarding permitted materials, timing, etc."
-              className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white resize-none"
+              className="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800 resize-none"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Assessment Type <span className="text-rose-500">*</span>
               </label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as AssessmentType)}
-                className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
               >
                 <option value="CBT">CBT (Computer-Based Test)</option>
                 <option value="THEORY">Theory (Rubric Evaluated)</option>
@@ -211,7 +211,7 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Attempt Duration (Minutes) <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -223,7 +223,7 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
                   required
                   value={durationMinutes}
                   onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                  className="w-full pl-9 pr-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                  className="w-full pl-9 pr-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
                 />
               </div>
             </div>
@@ -231,7 +231,7 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Start Time (WAT / Local) <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -240,13 +240,13 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
                   required
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                  className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Closing Deadline (WAT / Local) <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -255,7 +255,7 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
                   required
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                  className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
                 />
               </div>
             </div>
@@ -263,7 +263,7 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Pass Marks (Optional)
               </label>
               <input
@@ -272,12 +272,12 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
                 value={passMarks}
                 onChange={(e) => setPassMarks(e.target.value === '' ? '' : Number(e.target.value))}
                 placeholder="e.g. 15"
-                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Max Allowed Attempts
               </label>
               <input
@@ -286,35 +286,35 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
                 max={5}
                 value={maxAttempts}
                 onChange={(e) => setMaxAttempts(Number(e.target.value))}
-                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
               />
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex flex-col gap-2.5">
-            <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">
+            <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
               <input
                 type="checkbox"
                 checked={isRandomized}
                 onChange={(e) => setIsRandomized(e.target.checked)}
-                className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
+                className="rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
               />
               <span>Randomize question sequence for each student attempt</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700">
+            <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
               <input
                 type="checkbox"
                 checked={allowLateSubmission}
                 onChange={(e) => setAllowLateSubmission(e.target.checked)}
-                className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
+                className="rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
               />
               <span>Allow late submissions (marks penalty applied in grading)</span>
             </label>
           </div>
 
           {/* Footer Actions */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
             <Button type="button" variant="outline" size="sm" onClick={onClose} disabled={mutation.isPending}>
               Cancel
             </Button>

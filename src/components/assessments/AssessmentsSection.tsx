@@ -602,44 +602,44 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
       {/* Reschedule Modal */}
       {rescheduleAssessment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-indigo-600" />
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 border border-slate-200 dark:border-slate-800">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               Reschedule Assessment
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Update the availability window for &quot;{rescheduleAssessment.title}&quot;. Enrolled students will receive real-time push notifications.
             </p>
 
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">New Start Time</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">New Start Time</label>
                 <input
                   type="datetime-local"
                   value={rescheduleStart}
                   onChange={(e) => setRescheduleStart(e.target.value)}
-                  className="w-full text-xs border border-slate-300 rounded-lg p-2"
+                  className="w-full text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg p-2"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">New End Time</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">New End Time</label>
                 <input
                   type="datetime-local"
                   value={rescheduleEnd}
                   onChange={(e) => setRescheduleEnd(e.target.value)}
-                  className="w-full text-xs border border-slate-300 rounded-lg p-2"
+                  className="w-full text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg p-2"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Reason for Rescheduling</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Reason for Rescheduling</label>
                 <textarea
                   rows={2}
                   value={rescheduleReason}
                   onChange={(e) => setRescheduleReason(e.target.value)}
                   placeholder="e.g., Timetable adjustment"
-                  className="w-full text-xs border border-slate-300 rounded-lg p-2"
+                  className="w-full text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg p-2"
                 />
               </div>
             </div>

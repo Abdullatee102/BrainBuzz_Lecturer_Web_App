@@ -361,57 +361,57 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <Megaphone className="w-5 h-5 text-indigo-600" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <Megaphone className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 {editingAnnouncement ? 'Edit Announcement' : 'Post New Announcement'}
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {formError && (
-              <div className="mt-3 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">
+              <div className="mt-3 p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs rounded-lg">
                 {formError}
               </div>
             )}
 
             <div className="space-y-4 text-xs mt-4">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Title *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Title *</label>
                 <input
                   type="text"
                   placeholder="e.g. Midterm Test Rescheduled to Room 302"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Notice Content *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Notice Content *</label>
                 <textarea
                   rows={4}
                   placeholder="Provide detailed information for enrolled students..."
                   value={formContent}
                   onChange={(e) => setFormContent(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Priority</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Priority</label>
                   <select
                     value={formPriority}
                     onChange={(e) => setFormPriority(e.target.value as any)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="NORMAL">Normal</option>
                     <option value="IMPORTANT">Important (High Visibility)</option>
@@ -420,11 +420,11 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Publish Status</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Publish Status</label>
                   <select
                     value={formStatus}
                     onChange={(e) => setFormStatus(e.target.value as any)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="PUBLISHED">Published (Notify Students)</option>
                     <option value="DRAFT">Draft (Save for Later)</option>
@@ -434,25 +434,25 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Attachment Link (Optional)</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Attachment Link (Optional)</label>
                 <input
                   type="url"
                   placeholder="https://drive.google.com/... or resource URL"
                   value={formAttachmentUrl}
                   onChange={(e) => setFormAttachmentUrl(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               {formAttachmentUrl && (
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Attachment Display Label</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Attachment Display Label</label>
                   <input
                     type="text"
                     placeholder="e.g. Revised Syllabus Document"
                     value={formAttachmentName}
                     onChange={(e) => setFormAttachmentName(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               )}
@@ -478,11 +478,11 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-center">
             <AlertTriangle className="w-10 h-10 text-rose-500 mx-auto mb-2" />
-            <h3 className="text-sm font-bold text-slate-900">Delete Announcement?</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Delete Announcement?</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               This notice will be permanently deleted from the course offering.
             </p>
             <div className="mt-4 flex justify-center gap-2">

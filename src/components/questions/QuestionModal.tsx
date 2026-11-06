@@ -217,20 +217,20 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
               {isEditing ? 'Edit Question Draft' : 'Author Question Draft'}
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Drafts remain private to you until submitted for departmental approval.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -239,8 +239,8 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
         {/* Modal Body Form */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
           {error && (
-            <div className="flex items-start gap-2.5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs">
-              <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl text-rose-800 dark:text-rose-300 text-xs">
+              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
@@ -248,17 +248,17 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
           {/* Type Toggle & Metadata Row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Assessment Format
               </label>
-              <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl text-xs font-medium">
+              <div className="grid grid-cols-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-medium">
                 <button
                   type="button"
                   onClick={() => setType('cbt')}
                   className={`py-1.5 rounded-lg transition-all ${
                     type === 'cbt'
-                      ? 'bg-white text-indigo-700 shadow-sm font-semibold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   CBT (Options)
@@ -268,8 +268,8 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                   onClick={() => setType('theory')}
                   className={`py-1.5 rounded-lg transition-all ${
                     type === 'theory'
-                      ? 'bg-white text-indigo-700 shadow-sm font-semibold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   Theory (Rubric)
@@ -278,13 +278,13 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Difficulty Level
               </label>
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value as any)}
-                className="w-full text-xs rounded-xl border-slate-200 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full text-xs rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -293,7 +293,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Points Weight
               </label>
               <input
@@ -302,14 +302,14 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                 max="100"
                 value={points}
                 onChange={(e) => setPoints(Math.max(1, parseInt(e.target.value, 10) || 1))}
-                className="w-full text-xs rounded-xl border-slate-200 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full text-xs rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
           </div>
 
           {/* Question Text */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Question Prompt <span className="text-rose-500">*</span>
             </label>
             <textarea
@@ -317,18 +317,18 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="State the academic question clearly and concisely..."
-              className="w-full text-xs sm:text-sm rounded-xl border-slate-200 bg-white p-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full text-xs sm:text-sm rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 p-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
           </div>
 
           {/* Format-Specific Content */}
           {type === 'cbt' ? (
-            <div className="space-y-3 bg-slate-50/70 p-4 rounded-xl border border-slate-200/80">
+            <div className="space-y-3 bg-slate-50/70 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-800">
+                <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                   Multiple-Choice Options & Correct Answer
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">
                   Select the green checkmark for the correct answer
                 </span>
               </div>
@@ -343,7 +343,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                       className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
                         correctAnswer === opt.trim() && opt.trim() !== ''
                           ? 'bg-emerald-600 text-white shadow-sm'
-                          : 'bg-white border border-slate-200 text-slate-300 hover:text-emerald-500'
+                          : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-300 dark:text-slate-600 hover:text-emerald-500'
                       }`}
                     >
                       <CheckCircle2 className="w-4 h-4" />
@@ -353,13 +353,13 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                       value={opt}
                       onChange={(e) => handleOptionChange(idx, e.target.value)}
                       placeholder={`Option ${String.fromCharCode(65 + idx)}`}
-                      className="flex-1 text-xs rounded-lg border-slate-200 bg-white py-1.5 px-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                      className="flex-1 text-xs rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 py-1.5 px-3 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                     />
                     {options.length > 2 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveOption(idx)}
-                        className="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
+                        className="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -372,7 +372,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                 <button
                   type="button"
                   onClick={handleAddOption}
-                  className="inline-flex items-center gap-1.5 text-xs text-indigo-600 font-semibold hover:text-indigo-700 mt-2"
+                  className="inline-flex items-center gap-1.5 text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-700 dark:hover:text-indigo-300 mt-2"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Another Option</span>
@@ -380,9 +380,9 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
               )}
             </div>
           ) : (
-            <div className="space-y-4 bg-slate-50/70 p-4 rounded-xl border border-slate-200/80">
+            <div className="space-y-4 bg-slate-50/70 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
               <div>
-                <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                   Model / Ideal Answer <span className="text-rose-500">*</span>
                 </label>
                 <textarea
@@ -390,30 +390,30 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                   value={modelAnswer}
                   onChange={(e) => setModelAnswer(e.target.value)}
                   placeholder="Provide the comprehensive model answer..."
-                  className="w-full text-xs rounded-lg border-slate-200 bg-white p-2.5 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full text-xs rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 p-2.5 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-800">
+                  <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Grading Rubric Concepts & Weights
                   </span>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
                     Used by backend automated evaluation
                   </span>
                 </div>
 
                 <div className="space-y-2.5">
                   {gradingPoints.map((gp, idx) => (
-                    <div key={idx} className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-slate-200">
+                    <div key={idx} className="flex items-center gap-2 bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
                       <div className="flex-1">
                         <input
                           type="text"
                           value={gp.concept}
                           onChange={(e) => handleGradingPointChange(idx, 'concept', e.target.value)}
                           placeholder="Key concept (e.g., 'lexical analysis')"
-                          className="w-full text-xs rounded-lg border-slate-200 bg-slate-50 py-1 px-2.5 focus:bg-white"
+                          className="w-full text-xs rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-1 px-2.5 focus:bg-white dark:focus:bg-slate-800"
                         />
                       </div>
                       <div className="w-20">
@@ -426,14 +426,14 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                             handleGradingPointChange(idx, 'weight', parseFloat(e.target.value) || 1)
                           }
                           placeholder="Weight"
-                          className="w-full text-xs rounded-lg border-slate-200 bg-slate-50 py-1 px-2 text-center focus:bg-white"
+                          className="w-full text-xs rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-1 px-2 text-center focus:bg-white dark:focus:bg-slate-800"
                         />
                       </div>
                       {gradingPoints.length > 1 && (
                         <button
                           type="button"
                           onClick={() => handleRemoveGradingPoint(idx)}
-                          className="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
+                          className="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -445,7 +445,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                 <button
                   type="button"
                   onClick={handleAddGradingPoint}
-                  className="inline-flex items-center gap-1.5 text-xs text-indigo-600 font-semibold hover:text-indigo-700 mt-2"
+                  className="inline-flex items-center gap-1.5 text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-700 dark:hover:text-indigo-300 mt-2"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Rubric Concept</span>
@@ -456,7 +456,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
 
           {/* Explanation / Notes */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Explanation / Rationale (Optional)
             </label>
             <textarea
@@ -464,12 +464,12 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
               value={explanation}
               onChange={(e) => setExplanation(e.target.value)}
               placeholder="Add academic explanations or references for review and student feedback..."
-              className="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full text-xs rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 p-2.5 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <Button type="button" variant="outline" size="sm" onClick={onClose} disabled={isSubmitting}>
               Cancel
             </Button>

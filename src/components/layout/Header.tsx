@@ -46,10 +46,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
         )}
 
         <div className="text-right hidden sm:block">
-          <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 leading-tight">
-            {user?.fullName || 'Academic Staff'}
-          </p>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
+          <div className="flex items-center justify-end gap-1.5">
+            <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 leading-tight">
+              {user?.fullName || 'Academic Staff'}
+            </p>
+            {user && (
+              <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/60">
+                {user.customId || `LECTURER-${user.id ? user.id.replace(/-/g, '').slice(-4).toUpperCase() : 'STAFF'}`}
+              </span>
+            )}
+          </div>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
             {user?.email || 'Lecturer'}
           </p>
         </div>

@@ -13,6 +13,7 @@ export type AssignmentStatus = 'ACTIVE' | 'REVOKED' | 'INACTIVE';
 
 export interface LecturerUser {
   id: string;
+  customId?: string | null;
   fullName: string;
   email: string;
   username?: string | null;

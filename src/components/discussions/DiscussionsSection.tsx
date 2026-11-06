@@ -294,26 +294,26 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
 
       {/* Thread Details & Replies Modal */}
       {activeThreadId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 my-auto max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-slate-800 my-auto max-h-[90vh] flex flex-col">
             {/* Thread Modal Header */}
-            <div className="flex items-start justify-between pb-3 border-b border-slate-100">
+            <div className="flex items-start justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="pr-2">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   {activeDiscussion?.isPinned && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded">
-                      <Pin className="w-3 h-3 text-indigo-600" /> PINNED
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-950/60 px-2 py-0.5 rounded">
+                      <Pin className="w-3 h-3 text-indigo-600 dark:text-indigo-400" /> PINNED
                     </span>
                   )}
                   {activeDiscussion?.isLocked && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
-                      <Lock className="w-3 h-3 text-amber-600" /> LOCKED
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded">
+                      <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" /> LOCKED
                     </span>
                   )}
-                  <h3 className="text-base font-bold text-slate-900">{activeDiscussion?.title}</h3>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{activeDiscussion?.title}</h3>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-                  <span>Posted by <strong>{activeDiscussion?.author?.fullName}</strong></span>
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                  <span>Posted by <strong className="text-slate-800 dark:text-slate-200">{activeDiscussion?.author?.fullName}</strong></span>
                   <Badge variant={activeDiscussion?.authorRole === 'LECTURER' ? 'purple' : 'default'} size="sm">
                     {activeDiscussion?.authorRole}
                   </Badge>
@@ -324,7 +324,7 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
 
               <button
                 onClick={() => setActiveThreadId(null)}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -332,8 +332,8 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
 
             {/* Moderation Action Toolbar */}
             {activeDiscussion && (
-              <div className="py-2.5 px-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-xs">
-                <span className="font-semibold text-slate-600">Lecturer Moderation:</span>
+              <div className="py-2.5 px-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                <span className="font-semibold text-slate-600 dark:text-slate-400">Lecturer Moderation:</span>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
@@ -363,11 +363,11 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
                   >
                     {activeDiscussion.isLocked ? (
                       <>
-                        <Unlock className="w-3 h-3 mr-1 text-emerald-600" /> Unlock
+                        <Unlock className="w-3 h-3 mr-1 text-emerald-600 dark:text-emerald-400" /> Unlock
                       </>
                     ) : (
                       <>
-                        <Lock className="w-3 h-3 mr-1 text-amber-600" /> Lock
+                        <Lock className="w-3 h-3 mr-1 text-amber-600 dark:text-amber-400" /> Lock
                       </>
                     )}
                   </Button>
@@ -385,13 +385,13 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
             )}
 
             {/* Topic Main Content */}
-            <div className="py-4 border-b border-slate-100 text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line">
+            <div className="py-4 border-b border-slate-100 dark:border-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line">
               {activeDiscussion?.content}
             </div>
 
             {/* Replies List */}
             <div className="flex-1 overflow-y-auto py-4 space-y-3">
-              <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Replies ({activeReplies.length})
               </h4>
 
@@ -400,7 +400,7 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
                   <LoadingSpinner size="md" />
                 </div>
               ) : activeReplies.length === 0 ? (
-                <div className="p-6 text-center text-xs text-slate-500">
+                <div className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
                   No replies yet. Be the first to reply!
                 </div>
               ) : (
@@ -409,13 +409,13 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
                     key={r.id}
                     className={`p-3 rounded-xl border text-xs leading-relaxed ${
                       r.authorRole === 'LECTURER'
-                        ? 'bg-purple-50/50 border-purple-100 text-purple-950'
-                        : 'bg-slate-50/70 border-slate-100 text-slate-800'
+                        ? 'bg-purple-50/50 dark:bg-purple-950/30 border-purple-100 dark:border-purple-900/50 text-purple-950 dark:text-purple-200'
+                        : 'bg-slate-50/70 dark:bg-slate-800/50 border-slate-100 dark:border-slate-700 text-slate-800 dark:text-slate-200'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900">{r.author?.fullName}</span>
+                        <span className="font-bold text-slate-900 dark:text-slate-100">{r.author?.fullName}</span>
                         <Badge variant={r.authorRole === 'LECTURER' ? 'purple' : 'default'} size="sm">
                           {r.authorRole}
                         </Badge>
@@ -437,14 +437,14 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
 
             {/* Reply Input or Locked Notice */}
             {activeDiscussion?.isLocked ? (
-              <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-2 text-xs text-amber-800">
-                <Lock className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <div className="mt-2 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-xl flex items-center gap-2 text-xs text-amber-800 dark:text-amber-300">
+                <Lock className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                 <span>This discussion topic is locked. New replies are disabled.</span>
               </div>
             ) : (
-              <div className="mt-3 pt-3 border-t border-slate-100">
+              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                 {replyError && (
-                  <div className="mb-2 p-2 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">
+                  <div className="mb-2 p-2 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs rounded-lg">
                     {replyError}
                   </div>
                 )}
@@ -454,7 +454,7 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
                     placeholder="Write a response as lecturer..."
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
-                    className="flex-1 p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="flex-1 p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                   <Button
                     variant="primary"
@@ -474,47 +474,47 @@ export const DiscussionsSection: React.FC<DiscussionsSectionProps> = ({
 
       {/* Start New Discussion Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-indigo-600" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 Start Discussion Topic
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {createError && (
-              <div className="mt-3 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">
+              <div className="mt-3 p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs rounded-lg">
                 {createError}
               </div>
             )}
 
             <div className="space-y-4 text-xs mt-4">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Topic Title *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Topic Title *</label>
                 <input
                   type="text"
                   placeholder="e.g. Week 4 Lab Discussion & Common Questions"
                   value={threadTitle}
                   onChange={(e) => setThreadTitle(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Prompt / Description *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Prompt / Description *</label>
                 <textarea
                   rows={4}
                   placeholder="Share details, discussion prompts, or problem statements for class discussion..."
                   value={threadContent}
                   onChange={(e) => setThreadContent(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
