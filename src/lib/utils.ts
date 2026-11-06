@@ -49,3 +49,13 @@ export function formatLevel(level?: number | string | null): string {
   if (!level) return '—';
   return `${level} Level`;
 }
+
+export function getAssetUrl(url?: string | null): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+    return url;
+  }
+  const apiUrl = (import.meta as any).env?.VITE_API_URL || '';
+  const origin = apiUrl ? apiUrl.replace(/\/api\/?$/, '') : '';
+  return `${origin}${url.startsWith('/') ? '' : '/'}${url}`;
+}

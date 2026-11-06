@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -16,12 +16,11 @@ import {
   LogOut,
   X,
   GraduationCap,
-  ShieldCheck,
   Sun,
   Moon,
 } from 'lucide-react';
 import { Badge } from '../ui/Badge';
-import { cn } from '../../lib/utils';
+import { cn, getAssetUrl } from '../../lib/utils';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -30,8 +29,9 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { user, logout } = useAuth();
-  const { resolvedTheme, theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const location = useLocation();
+  const [imgError, setImgError] = useState(false);
 
   const mainNav = [
     { name: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
@@ -60,6 +60,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     }
     return location.pathname === to && !location.search.includes('tab=');
   };
+
+  const avatarSrc = !imgError ? getAssetUrl(user?.photoURL) : null;
 
   return (
     <>
@@ -207,8 +209,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center font-bold text-xs flex-shrink-0 overflow-hidden">
-                {user?.photoURL ? (
-                  <img src={user.photoURL} alt="Avatar" className="w-full h-full object-cover" />
+                {avatarSrc ? (
+                  <img
+                    src={avatarSrc}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                    onError={() => setImgError(true)}
+                  />
                 ) : (
                   user?.fullName?.charAt(0) || 'L'
                 )}

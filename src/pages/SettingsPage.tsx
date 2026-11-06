@@ -4,6 +4,7 @@ import { useTheme, type Theme } from '../context/ThemeContext';
 import { apiClient, getErrorMessage } from '../lib/api';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { getAssetUrl } from '../lib/utils';
 import {
   User,
   Mail,
@@ -31,6 +32,15 @@ export const SettingsPage: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
   const [bio, setBio] = useState(user?.bio || '');
   const [avatarPreview, setAvatarPreview] = useState<string | null>(user?.photoURL || null);
+  const [avatarError, setAvatarError] = useState(false);
+
+  const effectiveAvatarUrl = !avatarError
+    ? avatarPreview
+      ? avatarPreview.startsWith('data:')
+        ? avatarPreview
+        : getAssetUrl(avatarPreview)
+      : getAssetUrl(user?.photoURL)
+    : null;
 
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState<string | null>(null);
@@ -101,7 +111,10 @@ export const SettingsPage: React.FC = () => {
 
     // Local preview immediately
     const reader = new FileReader();
-    reader.onload = () => setAvatarPreview(reader.result as string);
+    reader.onload = () => {
+      setAvatarError(false);
+      setAvatarPreview(reader.result as string);
+    };
     reader.readAsDataURL(file);
 
     setIsUploadingAvatar(true);
@@ -118,6 +131,7 @@ export const SettingsPage: React.FC = () => {
       );
 
       setProfileSuccess('Profile picture updated successfully!');
+      setAvatarError(false);
       setAvatarPreview(res.data.photoURL);
 
       const stored = localStorage.getItem('brainbuzz_lecturer_user');
@@ -142,6 +156,7 @@ export const SettingsPage: React.FC = () => {
 
     try {
       await apiClient.delete('/lecturer/auth/profile/avatar');
+      setAvatarError(false);
       setAvatarPreview(null);
       setProfileSuccess('Profile picture removed.');
 
@@ -220,11 +235,12 @@ export const SettingsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
           <div className="relative group">
             <div className="w-20 h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-950/60 border-2 border-indigo-200 dark:border-indigo-800 flex items-center justify-center overflow-hidden shadow-inner">
-              {avatarPreview ? (
+              {effectiveAvatarUrl ? (
                 <img
-                  src={avatarPreview}
+                  src={effectiveAvatarUrl}
                   alt={user?.fullName || 'Avatar'}
                   className="w-full h-full object-cover"
+                  onError={() => setAvatarError(true)}
                 />
               ) : (
                 <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">

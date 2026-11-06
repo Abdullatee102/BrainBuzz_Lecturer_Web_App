@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiClient, getErrorMessage } from '../lib/api';
-import { Button } from '../components/ui/Button';
-import { Eye, EyeOff, Lock, Mail, AlertCircle, ShieldCheck, GraduationCap, X, KeyRound } from 'lucide-react';
 import type { LecturerLoginResponse } from '../types/api';
-
-declare global {
-  interface Window {
-    google?: any;
-  }
-}
+import { Button } from '../components/ui/Button';
+import {
+  Lock,
+  Mail,
+  GraduationCap,
+  AlertCircle,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  KeyRound,
+  X,
+  Info,
+} from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +28,7 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showGoogleDevModal, setShowGoogleDevModal] = useState(false);
   const [customToken, setCustomToken] = useState('');
+  const [infoMessage, setInfoMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(() => {
     if (searchParams.get('expired')) {
       return 'Your lecturer session has expired. Please sign in again.';
@@ -33,6 +39,7 @@ export const LoginPage: React.FC = () => {
   const handleGoogleSuccess = async (idToken: string) => {
     setIsLoading(true);
     setError(null);
+    setInfoMessage(null);
     try {
       const response = await apiClient.post<LecturerLoginResponse>('/lecturer/auth/google', {
         idToken: idToken.trim(),
@@ -77,8 +84,9 @@ export const LoginPage: React.FC = () => {
       script.async = true;
       script.defer = true;
       script.onload = () => {
-        if (window.google?.accounts?.id) {
-          window.google.accounts.id.initialize({
+        const g = (window as any).google;
+        if (g?.accounts?.id) {
+          g.accounts.id.initialize({
             client_id: clientId,
             callback: (res: any) => {
               if (res.credential) {
@@ -94,14 +102,15 @@ export const LoginPage: React.FC = () => {
 
   const handleGoogleClick = () => {
     const clientId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
-    if (clientId && window.google?.accounts?.id) {
-      window.google.accounts.id.prompt((notification: any) => {
+    const g = (window as any).google;
+    if (clientId && g?.accounts?.id) {
+      g.accounts.id.prompt((notification: any) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          setShowGoogleDevModal(true);
+          setInfoMessage('Google One-Tap is not enabled in your browser. Please enter your university credentials below.');
         }
       });
     } else {
-      setShowGoogleDevModal(true);
+      setInfoMessage('Google Single Sign-On is currently undergoing university domain verification. Please sign in below using your verified academic email and password.');
     }
   };
 
@@ -114,6 +123,7 @@ export const LoginPage: React.FC = () => {
 
     setIsLoading(true);
     setError(null);
+    setInfoMessage(null);
 
     try {
       const response = await apiClient.post<LecturerLoginResponse>('/lecturer/login', {
@@ -130,7 +140,7 @@ export const LoginPage: React.FC = () => {
       }
 
       if (user.status !== 'ACTIVE') {
-        setError(`Access denied. Your lecturer account status is ${user.status.toLowerCase()}.`);
+        setError(`Access denied. Your account status is ${user.status.toLowerCase()}.`);
         return;
       }
 
@@ -149,21 +159,38 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-900 items-center justify-center p-4">
-      <div className="w-full max-w-md bg-slate-800/90 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-700/60 p-8">
-        {/* Brand Header */}
-        <div className="flex flex-col items-center mb-8 text-center">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white font-extrabold text-2xl shadow-lg shadow-indigo-500/30 mb-4">
+    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center p-4 sm:p-6 lg:p-8">
+      {/* Background radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/30 via-slate-950 to-slate-950 pointer-events-none" />
+
+      {/* Auth Card */}
+      <div className="relative w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-2xl shadow-2xl backdrop-blur-xl p-6 sm:p-8 z-10">
+        {/* Academic Brand Header */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 mb-4 shadow-inner">
             <GraduationCap className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Brain Buzz</h1>
-          <p className="text-xs text-indigo-400 mt-1 font-semibold uppercase tracking-wider">
-            Lecturer Web Dashboard
-          </p>
-          <p className="text-xs text-slate-400 mt-1 font-normal">
-            Sign in to access your assigned academic courses
+          <h1 className="text-2xl font-bold tracking-tight text-white">
+            Lecturer Portal
+          </h1>
+          <p className="text-xs text-slate-400 mt-1 font-medium">
+            Academic Assessment & Evaluation Platform
           </p>
         </div>
+
+        {/* Informative Guidance Banner */}
+        {infoMessage && (
+          <div className="flex items-start gap-3 p-3.5 mb-4 text-xs text-indigo-200 bg-indigo-950/70 border border-indigo-800/80 rounded-xl leading-relaxed">
+            <Info className="w-4 h-4 flex-shrink-0 text-indigo-400 mt-0.5" />
+            <span className="flex-1">{infoMessage}</span>
+            <button
+              onClick={() => setInfoMessage(null)}
+              className="text-indigo-400 hover:text-white p-0.5"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
 
         {/* Error Alert */}
         {error && (
@@ -292,17 +319,27 @@ export const LoginPage: React.FC = () => {
           <p className="text-[11px] text-slate-500">
             Institutional Google Workspace accounts or verified faculty credentials only.
           </p>
+
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => setShowGoogleDevModal(true)}
+              className="text-[10px] text-slate-500 hover:text-slate-400 underline transition-colors"
+            >
+              Developer / QA Test Token Mode
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Google Token Dev/Fallback Modal */}
+      {/* Google Token Dev/Fallback Modal (Accessible only via explicit developer toggle) */}
       {showGoogleDevModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md p-6 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-700">
               <div className="flex items-center gap-2 text-white font-semibold text-base">
                 <KeyRound className="w-5 h-5 text-indigo-400" />
-                <span>Google Sign-In Token</span>
+                <span>Developer Testing — Google Token Simulation</span>
               </div>
               <button
                 onClick={() => setShowGoogleDevModal(false)}
@@ -313,14 +350,13 @@ export const LoginPage: React.FC = () => {
             </div>
 
             <p className="text-xs text-slate-400 mt-3 leading-relaxed">
-              When Google Identity Services (GIS) client ID is configured, One-Tap sign-in triggers automatically.
-              For local development or testing, you may paste a Google ID token or test token.
+              This simulated login is intended for automated test suites and local debugging. Paste a test token or simulated Google payload to authenticate.
             </p>
 
             <div className="mt-4 space-y-3">
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Google ID Token / Test Token
+                  Simulated Token String
                 </label>
                 <textarea
                   rows={3}
