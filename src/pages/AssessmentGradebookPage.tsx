@@ -8,6 +8,7 @@ import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { ErrorState } from '../components/ui/ErrorState';
+import { formatUserDisplayId } from '../lib/utils';
 import {
   ArrowLeft,
   Award,
@@ -459,8 +460,8 @@ export const AssessmentGradebookPage: React.FC = () => {
                       </div>
                     </td>
 
-                    <td className="py-3 px-4 font-mono text-slate-700">
-                      {row.matricNumber || '—'}
+                    <td className="py-3 px-4 font-mono text-slate-700 dark:text-slate-300">
+                      {row.matricNumber || formatUserDisplayId({ id: row.studentId, role: 'STUDENT' })}
                     </td>
 
                     <td className="py-3 px-4 text-center font-medium text-slate-700">

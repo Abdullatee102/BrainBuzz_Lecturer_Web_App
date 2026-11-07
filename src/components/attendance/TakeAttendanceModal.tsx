@@ -9,6 +9,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { ErrorState } from '../ui/ErrorState';
+import { formatUserDisplayId } from '../../lib/utils';
 import {
   X,
   UserCheck,
@@ -369,8 +370,8 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                     <tr key={st.studentId} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="py-3 px-3">
                         <div className="font-semibold text-slate-900 dark:text-slate-100">{st.fullName}</div>
-                        <div className="text-[11px] text-slate-400 dark:text-slate-500">
-                          {st.username || st.email || 'No matric'} {st.level ? `• ${st.level}L` : ''}
+                        <div className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
+                          {formatUserDisplayId({ matricNumber: (st as any).matricNumber, username: st.username, id: st.studentId, role: 'STUDENT' })} {st.level ? `• ${st.level}L` : ''}
                         </div>
                       </td>
 

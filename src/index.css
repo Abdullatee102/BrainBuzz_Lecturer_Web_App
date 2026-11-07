@@ -39,6 +39,11 @@
   /* Light mode explicit high contrast */
   :root:not(.dark) input, :root:not(.dark) textarea, :root:not(.dark) select {
     color: #0f172a !important;
+    background-color: #ffffff !important;
+  }
+
+  :root:not(.dark) input::placeholder, :root:not(.dark) textarea::placeholder {
+    color: #64748b !important;
   }
 
   :root:not(.dark) select option {
