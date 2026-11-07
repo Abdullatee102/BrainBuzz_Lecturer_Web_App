@@ -59,3 +59,34 @@ export function getAssetUrl(url?: string | null): string | undefined {
   const origin = apiUrl ? apiUrl.replace(/\/api\/?$/, '') : '';
   return `${origin}${url.startsWith('/') ? '' : '/'}${url}`;
 }
+
+export function formatUserDisplayId(user?: {
+  id?: string;
+  role?: string | null;
+  departmentCode?: string | null;
+  departmentName?: string | null;
+  username?: string | null;
+  matricNumber?: string | null;
+  customId?: string | null;
+} | null): string {
+  if (!user) return '—';
+  if (user.customId) return user.customId;
+  if (!user.id) return '—';
+
+  const shortHex = user.id.replace(/-/g, '').slice(-4).toUpperCase();
+  const dept = (user.departmentCode || (user.departmentName ? user.departmentName.slice(0, 3) : 'GEN')).toUpperCase();
+
+  if (user.role === 'LECTURER' || !user.role) {
+    return `LECTURER-${dept}-${shortHex}`;
+  }
+  if (user.role === 'STUDENT') {
+    if (user.matricNumber) return user.matricNumber;
+    if (user.username && /^\d{5,9}$/.test(user.username)) return user.username;
+    return `STUDENT-${dept}-${shortHex}`;
+  }
+  if (user.role === 'SUPER_ADMIN' || user.role === 'ADMIN' || (user.role && user.role.includes('ADMIN'))) {
+    return `ADMIN-${shortHex}`;
+  }
+  return `USER-${shortHex}`;
+}
+

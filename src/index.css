@@ -6,6 +6,45 @@
   html {
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
+
+  :root {
+    color-scheme: light;
+  }
+
+  :root.dark, .dark {
+    color-scheme: dark;
+  }
+
+  /* Form control high-contrast visibility across light & dark themes */
+  input, textarea, select {
+    color: #0f172a;
+    background-color: #ffffff;
+  }
+
+  .dark input, .dark textarea, .dark select {
+    color: #f8fafc !important;
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+  }
+
+  .dark input::placeholder, .dark textarea::placeholder {
+    color: #94a3b8 !important;
+  }
+
+  .dark select option {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+  }
+
+  /* Light mode explicit high contrast */
+  :root:not(.dark) input, :root:not(.dark) textarea, :root:not(.dark) select {
+    color: #0f172a !important;
+  }
+
+  :root:not(.dark) select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
 }
 
 /* Accessible Responsive Table Wrapper */

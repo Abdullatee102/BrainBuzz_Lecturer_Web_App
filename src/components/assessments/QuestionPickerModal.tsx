@@ -221,24 +221,46 @@ export const QuestionPickerModal: React.FC<QuestionPickerModalProps> = ({
               return (
                 <div
                   key={q.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
                   onClick={() => toggleSelect(q)}
-                  className={`p-4 rounded-xl border transition-all cursor-pointer select-none ${
+                  onKeyDown={(e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                      e.preventDefault();
+                      toggleSelect(q);
+                    }
+                  }}
+                  className={`p-4 rounded-xl border transition-all cursor-pointer select-none touch-manipulation active:scale-[0.99] ${
                     isSelected
                       ? 'border-indigo-500 dark:border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/40 shadow-sm'
                       : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:border-slate-300 dark:hover:border-slate-700'
                   }`}
                 >
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => toggleSelect(q)}
+                    className="sr-only"
+                    aria-label={`Select question: ${q.question}`}
+                  />
                   <div className="flex items-start gap-3">
-                    {/* Visual Checkbox Indicator */}
-                    <div
-                      className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center transition-all flex-shrink-0 ${
+                    {/* Visual Checkbox Indicator with guaranteed touch target */}
+                    <button
+                      type="button"
+                      aria-label={isSelected ? 'Deselect question' : 'Select question'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSelect(q);
+                      }}
+                      className={`mt-0.5 w-6 h-6 rounded-md border flex items-center justify-center transition-all flex-shrink-0 cursor-pointer ${
                         isSelected
                           ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs'
-                          : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
+                          : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-indigo-400'
                       }`}
                     >
-                      {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                    </div>
+                      {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
+                    </button>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">

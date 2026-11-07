@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { apiClient, getErrorMessage } from '../lib/api';
 import type { LecturerDashboardResponse } from '../types/api';
-import { formatSemester, formatLevel, formatDate } from '../lib/utils';
+import { formatSemester, formatLevel, formatDate, formatUserDisplayId } from '../lib/utils';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
@@ -77,7 +77,9 @@ export const DashboardPage: React.FC = () => {
                 {lecturer?.facultyName || 'Faculty'}
               </p>
               <div className="flex items-center gap-2 mt-1.5 text-xs text-slate-400 dark:text-slate-500 flex-wrap">
-                <span>Academic ID: {lecturer?.username || lecturer?.id?.slice(0, 8)}</span>
+                <code className="text-indigo-700 dark:text-indigo-400 font-mono font-bold bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded text-xs">
+                  ID: {formatUserDisplayId(lecturer)}
+                </code>
                 <span>•</span>
                 <span className="truncate">{lecturer?.email}</span>
               </div>
