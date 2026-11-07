@@ -55,6 +55,16 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
   // Question Picker Modal state
   const [questionPickerAssessment, setQuestionPickerAssessment] = useState<AssessmentItem | null>(null);
 
+  const alreadyAssignedQuestions = React.useMemo(() => {
+    return (
+      questionPickerAssessment?.questions?.map((q) => ({
+        questionId: q.questionId,
+        allocatedMarks: q.allocatedMarks,
+        orderIndex: q.orderIndex,
+      })) || []
+    );
+  }, [questionPickerAssessment?.id, questionPickerAssessment?.questions]);
+
   // Reschedule & Extend Modals
   const [rescheduleAssessment, setRescheduleAssessment] = useState<AssessmentItem | null>(null);
   const [rescheduleStart, setRescheduleStart] = useState('');
@@ -591,11 +601,7 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
           assessmentId={questionPickerAssessment.id}
           courseId={courseId}
           courseCode={courseCode}
-          alreadyAssigned={questionPickerAssessment.questions?.map((q) => ({
-            questionId: q.questionId,
-            allocatedMarks: q.allocatedMarks,
-            orderIndex: q.orderIndex,
-          }))}
+          alreadyAssigned={alreadyAssignedQuestions}
         />
       )}
 
