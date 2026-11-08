@@ -245,22 +245,17 @@ export const QuestionPickerModal: React.FC<QuestionPickerModalProps> = ({
                     aria-label={`Select question: ${q.question}`}
                   />
                   <div className="flex items-start gap-3">
-                    {/* Visual Checkbox Indicator with guaranteed touch target */}
-                    <button
-                      type="button"
-                      aria-label={isSelected ? 'Deselect question' : 'Select question'}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleSelect(q);
-                      }}
-                      className={`mt-0.5 w-6 h-6 rounded-md border flex items-center justify-center transition-all flex-shrink-0 cursor-pointer ${
+                    {/* Visual Checkbox Indicator */}
+                    <div
+                      aria-hidden="true"
+                      className={`mt-0.5 w-6 h-6 rounded-md border flex items-center justify-center transition-all flex-shrink-0 pointer-events-none ${
                         isSelected
                           ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs'
-                          : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-indigo-400'
+                          : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
                       }`}
                     >
                       {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
-                    </button>
+                    </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -286,23 +281,35 @@ export const QuestionPickerModal: React.FC<QuestionPickerModalProps> = ({
                       )}
                     </div>
 
-                    {isSelected && (
-                      <div
-                        className="flex items-center gap-2 flex-shrink-0 self-center"
-                        onClick={(e) => e.stopPropagation()}
+                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                      <span
+                        className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors pointer-events-none ${
+                          isSelected
+                            ? 'bg-indigo-600 text-white'
+                            : 'border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300'
+                        }`}
                       >
-                        <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Marks:</label>
-                        <input
-                          type="number"
-                          step="0.5"
-                          min="0.5"
-                          max="100"
-                          value={selectedData?.allocatedMarks || 1}
-                          onChange={(e) => updateMarks(q.id, parseFloat(e.target.value) || 1)}
-                          className="w-16 px-2 py-1 text-xs border border-indigo-300 dark:border-indigo-600 rounded-lg bg-white dark:bg-slate-800 text-center font-bold text-indigo-700 dark:text-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
-                      </div>
-                    )}
+                        {isSelected ? 'Selected' : 'Pick'}
+                      </span>
+
+                      {isSelected && (
+                        <div
+                          className="flex items-center gap-1.5"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <label className="text-[10px] font-semibold text-slate-600 dark:text-slate-300">Marks:</label>
+                          <input
+                            type="number"
+                            step="0.5"
+                            min="0.5"
+                            max="100"
+                            value={selectedData?.allocatedMarks || 1}
+                            onChange={(e) => updateMarks(q.id, parseFloat(e.target.value) || 1)}
+                            className="w-14 px-1.5 py-0.5 text-xs border border-indigo-300 dark:border-indigo-600 rounded-lg bg-white dark:bg-slate-800 text-center font-bold text-indigo-700 dark:text-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
