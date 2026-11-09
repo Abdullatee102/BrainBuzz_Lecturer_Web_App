@@ -221,11 +221,11 @@ export const MaterialsSection: React.FC<MaterialsSectionProps> = ({
       {/* Top Banner & Upload Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <span>Course Materials & Learning Resources</span>
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Academic handouts, lecture slides, lab manuals, and syllabus files for {courseCode}
           </p>
         </div>

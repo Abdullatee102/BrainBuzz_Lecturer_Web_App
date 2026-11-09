@@ -207,8 +207,8 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
       {/* Metric Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <Card className="p-4 bg-white border border-slate-200/80 shadow-sm">
-          <div className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Notices</div>
-          <div className="text-2xl font-bold text-slate-900 mt-1">{metrics.total}</div>
+          <div className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Notices</div>
+          <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{metrics.total}</div>
         </Card>
 
         <Card className="p-4 bg-emerald-50/50 border border-emerald-100 shadow-sm">
@@ -295,7 +295,7 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-2.5">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h3 className="text-sm font-bold text-slate-900">{a.title}</h3>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{a.title}</h3>
                     {getPriorityBadge(a.priority)}
                     {getStatusBadge(a.status)}
                   </div>

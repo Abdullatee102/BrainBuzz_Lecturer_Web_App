@@ -250,11 +250,11 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
       {/* Header bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <CalendarClock className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <CalendarClock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             Official Academic Assessments
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Author, schedule, and publish official CBT and Theory assessments for this course offering.
           </p>
         </div>
@@ -336,12 +336,12 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                     {/* Left Meta */}
                     <div className="space-y-1.5 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-base font-bold text-slate-900">{item.title}</h3>
+                        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{item.title}</h3>
                         <Badge variant="purple" size="sm">{item.type}</Badge>
                         {getOperationalStatusBadge(item)}
                       </div>
                       {item.description && (
-                        <p className="text-xs text-slate-600 line-clamp-2">{item.description}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">{item.description}</p>
                       )}
                       <div className="flex items-center gap-4 text-[11px] text-slate-500 flex-wrap pt-1">
                         <span className="flex items-center gap-1">
@@ -555,11 +555,11 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                             {item.questions.map((q, idx) => (
                               <div
                                 key={q.id || idx}
-                                className="bg-white p-3 rounded-lg border border-slate-200 text-xs flex items-start justify-between gap-3 shadow-xs"
+                                className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-xs flex items-start justify-between gap-3 shadow-xs"
                               >
                                 <div>
-                                  <span className="font-semibold text-slate-900 mr-2">Q{idx + 1}.</span>
-                                  <span className="text-slate-700">{q.question}</span>
+                                  <span className="font-semibold text-slate-900 dark:text-slate-100 mr-2">Q{idx + 1}.</span>
+                                  <span className="text-slate-700 dark:text-slate-300">{q.question}</span>
                                 </div>
                                 <span className="font-bold text-indigo-600 whitespace-nowrap">
                                   {q.allocatedMarks} marks
@@ -677,12 +677,12 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
       {/* Extend Deadline Modal */}
       {extendAssessment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-emerald-600" />
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 border border-slate-200 dark:border-slate-800">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               Extend Closing Deadline
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Extend the closing time for active assessment &quot;{extendAssessment.title}&quot;.
             </p>
 

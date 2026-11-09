@@ -201,11 +201,11 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <FileQuestion className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <FileQuestion className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <span>Course Question Bank & Authoring</span>
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Author, revise, and submit CBT and Theory questions for departmental review and publication.
           </p>
         </div>
@@ -235,8 +235,8 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
       </div>
 
       {actionError && (
-        <div className="flex items-start gap-2.5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs">
-          <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-2.5 p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 rounded-xl text-rose-800 dark:text-rose-300 text-xs">
+          <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <span className="font-semibold">Action Error:</span> {actionError}
           </div>
@@ -247,7 +247,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
       )}
 
       {/* Status Filter Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs border-b border-slate-200">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs border-b border-slate-200 dark:border-slate-800">
         {[
           { key: 'ALL', label: 'All Questions', count: questions.length },
           { key: 'DRAFT', label: 'Drafts', count: statusCounts['DRAFT'] || 0 },
@@ -267,14 +267,14 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
             onClick={() => setSelectedStatus(tab.key)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-t-lg font-medium transition-all ${
               selectedStatus === tab.key
-                ? 'border-b-2 border-indigo-600 text-indigo-700 font-semibold bg-indigo-50/50'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                ? 'border-b-2 border-indigo-600 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300 font-semibold bg-indigo-50/50 dark:bg-indigo-950/40'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800/50'
             }`}
           >
             <span>{tab.label}</span>
             <span
               className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                selectedStatus === tab.key ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-600'
+                selectedStatus === tab.key ? 'bg-indigo-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
               {tab.count}
@@ -291,10 +291,10 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
           Failed to load questions. {getErrorMessage(error)}
         </div>
       ) : filteredQuestions.length === 0 ? (
-        <div className="text-center py-12 bg-white border border-dashed border-slate-200 rounded-2xl p-8">
-          <FileQuestion className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-sm font-semibold text-slate-800">No questions found</h3>
-          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+        <div className="text-center py-12 bg-white dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-8">
+          <FileQuestion className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">No questions found</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
             {selectedStatus === 'ALL'
               ? 'You have not authored any questions for this course yet. Click "Author Question Draft" above to begin.'
               : `No questions currently in ${selectedStatus.replace('_', ' ')} status.`}
@@ -309,17 +309,17 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
             const isSubmitted = q.status === 'SUBMITTED';
 
             return (
-              <Card key={q.id} className="overflow-hidden border-slate-200 hover:border-slate-300 transition-colors">
+              <Card key={q.id} className="overflow-hidden border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
                 <div className="p-5 space-y-3">
                   {/* Card Header Row */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-slate-400 font-mono">v{q.currentVersion}</span>
+                      <span className="text-xs font-bold text-slate-400 dark:text-slate-500 font-mono">v{q.currentVersion}</span>
                       {getStatusBadge(q.status)}
                       <Badge variant={q.type === 'cbt' ? 'info' : 'purple'}>
                         {q.type.toUpperCase()}
                       </Badge>
-                      <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">
+                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                         {q.difficulty} • {q.points} pt{q.points !== 1 ? 's' : ''}
                       </span>
                     </div>
@@ -386,27 +386,27 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
 
                   {/* Feedback / Rejection Alert Boxes */}
                   {q.reviewFeedback && (
-                    <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start gap-2.5">
-                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="p-3 bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 rounded-xl text-xs text-amber-900 dark:text-amber-300 flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-semibold block">Reviewer Feedback:</span>
-                        <p className="mt-0.5 text-slate-700">{q.reviewFeedback}</p>
+                        <p className="mt-0.5 text-slate-700 dark:text-slate-300">{q.reviewFeedback}</p>
                       </div>
                     </div>
                   )}
 
                   {q.rejectionReason && (
-                    <div className="p-3 bg-rose-50/80 border border-rose-200 rounded-xl text-xs text-rose-900 flex items-start gap-2.5">
-                      <XCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+                    <div className="p-3 bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 rounded-xl text-xs text-rose-900 dark:text-rose-300 flex items-start gap-2.5">
+                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-semibold block">Rejection Reason:</span>
-                        <p className="mt-0.5 text-slate-700">{q.rejectionReason}</p>
+                        <p className="mt-0.5 text-slate-700 dark:text-slate-300">{q.rejectionReason}</p>
                       </div>
                     </div>
                   )}
 
                   {/* Question Prompt */}
-                  <div className="text-xs sm:text-sm font-semibold text-slate-900">
+                  <div className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                     {q.question}
                   </div>
 
@@ -420,20 +420,20 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
                             key={idx}
                             className={`flex items-center gap-2 p-2 rounded-lg text-xs font-medium ${
                               isCorrect
-                                ? 'bg-emerald-50 text-emerald-900 border border-emerald-200 font-semibold'
-                                : 'bg-slate-50 text-slate-700 border border-slate-100'
+                                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-semibold'
+                                : 'bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-800'
                             }`}
                           >
                             <span
                               className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold ${
-                                isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
+                                isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                               }`}
                             >
                               {String.fromCharCode(65 + idx)}
                             </span>
                             <span className="truncate">{opt}</span>
                             {isCorrect && (
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 ml-auto flex-shrink-0" />
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 ml-auto flex-shrink-0" />
                             )}
                           </div>
                         );
@@ -443,23 +443,23 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
 
                   {q.type === 'theory' && (
                     <div className="space-y-2 pt-1 text-xs">
-                      <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide block mb-1">
+                      <div className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide block mb-1">
                           Model Answer
                         </span>
-                        <p className="text-slate-800">{q.correctAnswer}</p>
+                        <p className="text-slate-800 dark:text-slate-200">{q.correctAnswer}</p>
                       </div>
 
                       {q.gradingPoints && q.gradingPoints.length > 0 && (
-                        <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide block mb-1.5">
+                        <div className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700">
+                          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide block mb-1.5">
                             Grading Rubric
                           </span>
                           <div className="space-y-1">
                             {q.gradingPoints.map((gp, gIdx) => (
-                              <div key={gIdx} className="flex items-center justify-between text-xs text-slate-700">
+                              <div key={gIdx} className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300">
                                 <span>• {gp.concept}</span>
-                                <span className="font-mono font-medium text-slate-500">{gp.weight} wt</span>
+                                <span className="font-mono font-medium text-slate-500 dark:text-slate-400">{gp.weight} wt</span>
                               </div>
                             ))}
                           </div>
@@ -470,8 +470,8 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
 
                   {/* Explanation Footer */}
                   {q.explanation && (
-                    <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-50">
-                      <span className="font-semibold text-slate-600">Explanation:</span> {q.explanation}
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                      <span className="font-semibold text-slate-600 dark:text-slate-300">Explanation:</span> {q.explanation}
                     </div>
                   )}
                 </div>

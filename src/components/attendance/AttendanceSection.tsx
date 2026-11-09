@@ -183,11 +183,11 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
       {/* Top Banner & Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <UserCheck className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <UserCheck className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <span>Attendance Management</span>
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Class attendance records, roster tracking, and participation analytics for {courseCode}
           </p>
         </div>
@@ -210,82 +210,82 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
               <CalendarCheck className="w-5 h-5" />
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 Sessions Held
               </p>
-              <p className="text-xl font-bold text-slate-900 mt-0.5">
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
                 {isSummaryLoading ? '...' : metrics?.totalSessions ?? 0}
               </p>
-              <p className="text-[10px] text-slate-500">Active recorded sessions</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Active recorded sessions</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
               <Users className="w-5 h-5" />
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 Enrolled Students
               </p>
-              <p className="text-xl font-bold text-slate-900 mt-0.5">
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
                 {isSummaryLoading ? '...' : metrics?.enrolledStudentsCount ?? 0}
               </p>
-              <p className="text-[10px] text-slate-500">Active course roster</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Active course roster</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
               <Percent className="w-5 h-5" />
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 Cohort Attendance
               </p>
-              <p className="text-xl font-bold text-slate-900 mt-0.5">
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
                 {isSummaryLoading ? '...' : `${metrics?.overallAttendanceRate ?? 0}%`}
               </p>
-              <p className="text-[10px] text-slate-500">Overall class attendance</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Overall class attendance</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 Avg Present/Session
               </p>
-              <p className="text-xl font-bold text-slate-900 mt-0.5">
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
                 {isSummaryLoading ? '...' : metrics?.averageAttendedPerSession ?? 0}
               </p>
-              <p className="text-[10px] text-slate-500">Students attended</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Students attended</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex items-center justify-between border-b border-slate-200">
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setActiveTab('sessions')}
             className={`pb-3 text-xs sm:text-sm font-semibold transition-colors border-b-2 ${
               activeTab === 'sessions'
-                ? 'border-indigo-600 text-indigo-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             Attendance Sessions ({sessions.length})
@@ -294,8 +294,8 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
             onClick={() => setActiveTab('students')}
             className={`pb-3 text-xs sm:text-sm font-semibold transition-colors border-b-2 ${
               activeTab === 'students'
-                ? 'border-indigo-600 text-indigo-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             Student Roster & Summary ({students.length})
@@ -359,7 +359,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                     <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-bold text-slate-900 text-sm">{session.title}</span>
+                          <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">{session.title}</span>
                           <Badge variant="purple" size="sm">
                             {session.sessionType}
                           </Badge>
@@ -429,7 +429,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                           className="flex items-center gap-1.5"
                         >
                           <UserCheck className="w-4 h-4" />
-                          <span>{session.status === 'OPEN' ? 'Take Attendance' : 'View Roster'}</span>
+                          <span>{session.status === 'OPEN' ? 'Live Check-in & Roster' : 'View Attendance Roster'}</span>
                         </Button>
 
                         {session.status === 'OPEN' && (
