@@ -238,6 +238,8 @@ export interface AssessmentItem {
   allowLateSubmission?: boolean;
   lateSubmissionDeadline?: string | null;
   resultReleasePolicy: string;
+  notificationAudienceType?: 'ACADEMIC_ENROLLED' | 'PRODUCT_ENTITLED';
+  requiredProductId?: string | null;
   publishedAt?: string | null;
   cancelledAt?: string | null;
   cancellationReason?: string | null;
@@ -271,6 +273,8 @@ export interface CreateAssessmentPayload {
   allowLateSubmission?: boolean;
   lateSubmissionDeadline?: string | null;
   resultReleasePolicy?: string;
+  notificationAudienceType?: 'ACADEMIC_ENROLLED' | 'PRODUCT_ENTITLED';
+  requiredProductId?: string | null;
 }
 
 export interface UpdateAssessmentPayload {
@@ -285,6 +289,8 @@ export interface UpdateAssessmentPayload {
   isRandomized?: boolean;
   allowLateSubmission?: boolean;
   lateSubmissionDeadline?: string | null;
+  notificationAudienceType?: 'ACADEMIC_ENROLLED' | 'PRODUCT_ENTITLED';
+  requiredProductId?: string | null;
 }
 
 // =====================================================

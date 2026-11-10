@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient, getErrorMessage } from '../../lib/api';
 import type { AssessmentItem, AssessmentType, CreateAssessmentPayload } from '../../types/api';
 import { Button } from '../ui/Button';
 import { X, Calendar, Clock, AlertCircle, ShieldAlert } from 'lucide-react';
+
+const toLocalDateTimeString = (d: Date): string => {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const year = d.getFullYear();
+  const month = pad(d.getMonth() + 1);
+  const day = pad(d.getDate());
+  const hours = pad(d.getHours());
+  const minutes = pad(d.getMinutes());
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 interface AssessmentModalProps {
   isOpen: boolean;
@@ -34,7 +44,28 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
   const [maxAttempts, setMaxAttempts] = useState(1);
   const [isRandomized, setIsRandomized] = useState(false);
   const [allowLateSubmission, setAllowLateSubmission] = useState(false);
+  const [notificationAudienceType, setNotificationAudienceType] = useState<'ACADEMIC_ENROLLED' | 'PRODUCT_ENTITLED'>('ACADEMIC_ENROLLED');
+  const [requiredProductId, setRequiredProductId] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Fetch available products for product-specific notifications
+  const { data: productsData } = useQuery({
+    queryKey: ['availableProductsCatalog'],
+    queryFn: async () => {
+      try {
+        const res = await apiClient.get('/payments/products');
+        const raw = res.data?.data;
+        if (Array.isArray(raw)) return raw;
+        if (raw && Array.isArray(raw.products)) return raw.products;
+        return [];
+      } catch (err) {
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+
+  const products: any[] = productsData || [];
 
   useEffect(() => {
     if (assessmentToEdit) {
@@ -42,15 +73,17 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
       setDescription(assessmentToEdit.description || '');
       setType(assessmentToEdit.type);
       setDurationMinutes(assessmentToEdit.durationMinutes);
-      // Format to datetime-local string (YYYY-MM-DDTHH:mm)
+      // Format to datetime-local string (YYYY-MM-DDTHH:mm) safely without UTC drift
       try {
-        setStartTime(new Date(assessmentToEdit.startTime).toISOString().slice(0, 16));
-        setEndTime(new Date(assessmentToEdit.endTime).toISOString().slice(0, 16));
+        setStartTime(toLocalDateTimeString(new Date(assessmentToEdit.startTime)));
+        setEndTime(toLocalDateTimeString(new Date(assessmentToEdit.endTime)));
       } catch (err) {}
       setPassMarks(assessmentToEdit.passMarks ?? '');
       setMaxAttempts(assessmentToEdit.maxAttempts);
       setIsRandomized(assessmentToEdit.isRandomized);
       setAllowLateSubmission(Boolean(assessmentToEdit.allowLateSubmission));
+      setNotificationAudienceType(assessmentToEdit.notificationAudienceType || 'ACADEMIC_ENROLLED');
+      setRequiredProductId(assessmentToEdit.requiredProductId || '');
     } else {
       // Default to 2 hours in the future
       const now = new Date();
@@ -60,12 +93,14 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
       setDescription('');
       setType('CBT');
       setDurationMinutes(60);
-      setStartTime(defaultStart.toISOString().slice(0, 16));
-      setEndTime(defaultEnd.toISOString().slice(0, 16));
+      setStartTime(toLocalDateTimeString(defaultStart));
+      setEndTime(toLocalDateTimeString(defaultEnd));
       setPassMarks('');
       setMaxAttempts(1);
       setIsRandomized(false);
       setAllowLateSubmission(false);
+      setNotificationAudienceType('ACADEMIC_ENROLLED');
+      setRequiredProductId('');
     }
     setErrorMessage(null);
   }, [assessmentToEdit, courseCode, isOpen]);
@@ -86,6 +121,8 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
         maxAttempts: Number(maxAttempts) || 1,
         isRandomized,
         allowLateSubmission,
+        notificationAudienceType,
+        requiredProductId: notificationAudienceType === 'PRODUCT_ENTITLED' ? requiredProductId || null : null,
       };
 
       if (assessmentToEdit) {
@@ -289,6 +326,77 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({
                 className="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800"
               />
             </div>
+          </div>
+
+          {/* Notification & Assessment Audience */}
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Assessment Target Audience & Notification Scope
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label
+                  className={`flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer transition-colors ${
+                    notificationAudienceType === 'ACADEMIC_ENROLLED'
+                      ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 font-semibold'
+                      : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="notificationAudience"
+                    value="ACADEMIC_ENROLLED"
+                    checked={notificationAudienceType === 'ACADEMIC_ENROLLED'}
+                    onChange={() => setNotificationAudienceType('ACADEMIC_ENROLLED')}
+                    className="text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span>All Enrolled Students (Standard)</span>
+                </label>
+
+                <label
+                  className={`flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer transition-colors ${
+                    notificationAudienceType === 'PRODUCT_ENTITLED'
+                      ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 font-semibold'
+                      : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="notificationAudience"
+                    value="PRODUCT_ENTITLED"
+                    checked={notificationAudienceType === 'PRODUCT_ENTITLED'}
+                    onChange={() => setNotificationAudienceType('PRODUCT_ENTITLED')}
+                    className="text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span>Product-Specific (Premium Pass)</span>
+                </label>
+              </div>
+            </div>
+
+            {notificationAudienceType === 'PRODUCT_ENTITLED' && (
+              <div className="p-3 bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 rounded-xl space-y-2">
+                <label className="block text-xs font-semibold text-amber-900 dark:text-amber-200">
+                  Select Required Active Product Entitlement:
+                </label>
+                <select
+                  value={requiredProductId}
+                  onChange={(e) => setRequiredProductId(e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                >
+                  <option value="">-- Select Active Learning Pass / Product --</option>
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.title} (₦{(p.amount / 100).toLocaleString()})
+                    </option>
+                  ))}
+                  <option value="SEMESTER_PASS_HARMATTAN_2026">Brain Buzz Semester Pass (Harmattan 2026/2027)</option>
+                  <option value="SEMESTER_PASS_RAIN_2026">Brain Buzz Semester Pass (Rain 2026/2027)</option>
+                </select>
+                <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                  Only enrolled students holding an active verified entitlement for this product will receive scheduled assessment notifications and be permitted to participate.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">

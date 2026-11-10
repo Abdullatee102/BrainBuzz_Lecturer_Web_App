@@ -201,11 +201,11 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <FileQuestion className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <span>Course Question Bank & Authoring</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
             Author, revise, and submit CBT and Theory questions for departmental review and publication.
           </p>
         </div>
@@ -267,14 +267,14 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
             onClick={() => setSelectedStatus(tab.key)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-t-lg font-medium transition-all ${
               selectedStatus === tab.key
-                ? 'border-b-2 border-indigo-600 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300 font-semibold bg-indigo-50/50 dark:bg-indigo-950/40'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                ? 'border-b-2 border-indigo-600 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300 font-semibold bg-indigo-50/50 dark:bg-indigo-950/60'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
             }`}
           >
             <span>{tab.label}</span>
             <span
               className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                selectedStatus === tab.key ? 'bg-indigo-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                selectedStatus === tab.key ? 'bg-indigo-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
               }`}
             >
               {tab.count}
@@ -406,7 +406,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
                   )}
 
                   {/* Question Prompt */}
-                  <div className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  <div className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white">
                     {q.question}
                   </div>
 
@@ -421,12 +421,12 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
                             className={`flex items-center gap-2 p-2 rounded-lg text-xs font-medium ${
                               isCorrect
                                 ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-semibold'
-                                : 'bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-800'
+                                : 'bg-slate-50 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
                             }`}
                           >
                             <span
                               className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold ${
-                                isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                                isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
                               }`}
                             >
                               {String.fromCharCode(65 + idx)}
@@ -443,21 +443,21 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
 
                   {q.type === 'theory' && (
                     <div className="space-y-2 pt-1 text-xs">
-                      <div className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700">
-                        <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide block mb-1">
+                      <div className="p-3 bg-slate-50 dark:bg-slate-950/80 rounded-lg border border-slate-200 dark:border-slate-800">
+                        <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide block mb-1">
                           Model Answer
                         </span>
-                        <p className="text-slate-800 dark:text-slate-200">{q.correctAnswer}</p>
+                        <p className="text-slate-800 dark:text-slate-200 leading-relaxed">{q.correctAnswer}</p>
                       </div>
 
                       {q.gradingPoints && q.gradingPoints.length > 0 && (
-                        <div className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700">
-                          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide block mb-1.5">
+                        <div className="p-3 bg-slate-50 dark:bg-slate-950/80 rounded-lg border border-slate-200 dark:border-slate-800">
+                          <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide block mb-1.5">
                             Grading Rubric
                           </span>
                           <div className="space-y-1">
                             {q.gradingPoints.map((gp, gIdx) => (
-                              <div key={gIdx} className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300">
+                              <div key={gIdx} className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-200">
                                 <span>• {gp.concept}</span>
                                 <span className="font-mono font-medium text-slate-500 dark:text-slate-400">{gp.weight} wt</span>
                               </div>
@@ -470,8 +470,8 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
 
                   {/* Explanation Footer */}
                   {q.explanation && (
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
-                      <span className="font-semibold text-slate-600 dark:text-slate-300">Explanation:</span> {q.explanation}
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 pt-1 border-t border-slate-100 dark:border-slate-800">
+                      <span className="font-semibold text-slate-700 dark:text-slate-200">Explanation:</span> {q.explanation}
                     </div>
                   )}
                 </div>
