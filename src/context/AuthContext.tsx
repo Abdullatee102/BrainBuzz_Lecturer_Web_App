@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { apiClient, clearLecturerSession, TOKEN_KEY, REFRESH_TOKEN_KEY, USER_KEY } from '../lib/api';
 import type { LecturerUser, AuthTokens, LecturerProfileResponse } from '../types/api';
+import { formatUserDisplayId } from '../lib/utils';
 
 interface AuthContextType {
   user: LecturerUser | null;
@@ -18,7 +19,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<LecturerUser | null>(() => {
     try {
       const saved = localStorage.getItem(USER_KEY);
-      return saved ? JSON.parse(saved) : null;
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      if (parsed) {
+        parsed.displayId = parsed.displayId || formatUserDisplayId(parsed);
+      }
+      return parsed;
     } catch {
       return null;
     }
@@ -41,8 +47,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await apiClient.get<LecturerProfileResponse>('/lecturer/me');
       if (response.data?.user) {
-        setUser(response.data.user);
-        localStorage.setItem(USER_KEY, JSON.stringify(response.data.user));
+        const enriched = {
+          ...response.data.user,
+          displayId: response.data.user.displayId || formatUserDisplayId(response.data.user),
+        };
+        setUser(enriched);
+        localStorage.setItem(USER_KEY, JSON.stringify(enriched));
       }
     } catch {
       // Token is invalid, expired, or non-lecturer
@@ -59,10 +69,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [refreshProfile]);
 
   const login = (tokens: AuthTokens, newUser: LecturerUser) => {
+    const enriched = {
+      ...newUser,
+      displayId: newUser.displayId || formatUserDisplayId(newUser),
+    };
     setToken(tokens.accessToken);
-    setUser(newUser);
+    setUser(enriched);
     localStorage.setItem(TOKEN_KEY, tokens.accessToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(newUser));
+    localStorage.setItem(USER_KEY, JSON.stringify(enriched));
     if (tokens.refreshToken) {
       localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
     }
