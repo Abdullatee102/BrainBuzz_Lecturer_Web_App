@@ -63,30 +63,38 @@ export function getAssetUrl(url?: string | null): string | undefined {
 export function formatUserDisplayId(user?: {
   id?: string;
   role?: string | null;
+  displayId?: string | null;
+  customId?: string | null;
   departmentCode?: string | null;
   departmentName?: string | null;
   username?: string | null;
   matricNumber?: string | null;
-  customId?: string | null;
 } | null): string {
   if (!user) return '—';
+  if (user.displayId) return user.displayId;
   if (user.customId) return user.customId;
   if (!user.id) return '—';
 
   const shortHex = user.id.replace(/-/g, '').slice(-4).toUpperCase();
-  const dept = (user.departmentCode || (user.departmentName ? user.departmentName.slice(0, 3) : 'GEN')).toUpperCase();
+  const role = (user.role || 'LECTURER').toUpperCase();
 
-  if (user.role === 'LECTURER' || !user.role) {
-    return `LECTURER-${dept}-${shortHex}`;
+  if (role === 'LECTURER') {
+    return `BB-LEC-${shortHex}`;
   }
-  if (user.role === 'STUDENT') {
+  if (
+    role === 'SUPER_ADMIN' ||
+    role === 'CONTENT_ADMIN' ||
+    role === 'SUPPORT_AGENT' ||
+    role === 'NOTIFICATION_ADMIN' ||
+    role === 'MODERATOR' ||
+    role.includes('ADMIN')
+  ) {
+    return `BB-ADMIN-${shortHex}`;
+  }
+  if (role === 'STUDENT') {
     if (user.matricNumber) return user.matricNumber;
-    if (user.username && /^\d{5,9}$/.test(user.username)) return user.username;
-    return `STUDENT-${dept}-${shortHex}`;
+    return `BB-STU-${shortHex}`;
   }
-  if (user.role === 'SUPER_ADMIN' || user.role === 'ADMIN' || (user.role && user.role.includes('ADMIN'))) {
-    return `ADMIN-${shortHex}`;
-  }
-  return `USER-${shortHex}`;
+  return `BB-LEC-${shortHex}`;
 }
 

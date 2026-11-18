@@ -205,7 +205,7 @@ export const PrintablePaperModal: React.FC<PrintablePaperModalProps> = ({
                   type="checkbox"
                   checked={withAnswerKey}
                   onChange={(e) => setWithAnswerKey(e.target.checked)}
-                  className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-700"
                 />
                 <span>Generate Lecturer Marking Guide (Includes Answers & Rubric)</span>
               </label>
@@ -248,7 +248,7 @@ export const PrintablePaperModal: React.FC<PrintablePaperModalProps> = ({
                       type="checkbox"
                       checked={checked}
                       onChange={() => handleToggleQuestion(q.id)}
-                      className="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                      className="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-700"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 mb-0.5">

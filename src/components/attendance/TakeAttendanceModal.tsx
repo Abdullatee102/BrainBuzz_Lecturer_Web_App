@@ -169,7 +169,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-xl">
+        <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-xl dark:bg-slate-900">
           <LoadingSpinner label="Loading session roster..." size="lg" />
         </div>
       </div>
@@ -179,7 +179,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
   if (isError || !data?.data) {
     return (
       <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
+        <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl dark:bg-slate-900">
           <ErrorState
             title="Failed to load session roster"
             message={getErrorMessage(error)}
@@ -302,7 +302,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
               variant="outline"
               size="sm"
               onClick={() => markAll('PRESENT')}
-              className="text-xs py-1 h-7 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+              className="text-xs py-1 h-7 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 dark:text-emerald-300"
             >
               All Unmarked Present
             </Button>
@@ -310,7 +310,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
               variant="outline"
               size="sm"
               onClick={() => markAll('ABSENT')}
-              className="text-xs py-1 h-7 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+              className="text-xs py-1 h-7 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 dark:text-rose-300"
             >
               All Unmarked Absent
             </Button>
@@ -336,8 +336,8 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
           </div>
         )}
         {saveErrorMsg && (
-          <div className="px-5 py-2.5 bg-rose-50 border-b border-rose-200 text-rose-800 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+          <div className="px-5 py-2.5 bg-rose-50 border-b border-rose-200 text-rose-800 text-xs flex items-center gap-2 dark:border-rose-800">
+            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 dark:text-rose-400" />
             <span>{saveErrorMsg}</span>
           </div>
         )}
@@ -465,9 +465,9 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
       {/* Modal: Mandatory Correction Reason */}
       {correctionTarget && (
         <div className="fixed inset-0 z-60 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5 dark:text-slate-100">
                 <History className="w-4 h-4 text-amber-600" />
                 <span>Attendance Correction Justification</span>
               </h4>
@@ -480,23 +480,23 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
             </div>
 
             {correctionError && (
-              <div className="mt-3 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center gap-2">
+              <div className="mt-3 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center gap-2 dark:border-rose-800 dark:text-rose-300">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 <span>{correctionError}</span>
               </div>
             )}
 
             <div className="mt-3 space-y-3 text-xs">
-              <p className="text-slate-600">
+              <p className="text-slate-600 dark:text-slate-300">
                 You are updating the saved attendance status for{' '}
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
                   {correctionTarget.studentName}
                 </span>{' '}
                 to <span className="font-bold text-indigo-600">{correctionTarget.newStatus}</span>.
               </p>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1 dark:text-slate-300">
                   Correction Reason <span className="text-rose-500">* (min 5 chars)</span>
                 </label>
                 <textarea
@@ -505,11 +505,11 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
                   placeholder="e.g. Student arrived late with medical excuse; verified by lecturer."
                   value={correctionReason}
                   onChange={(e) => setCorrectionReason(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-800"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   variant="outline"
                   size="sm"

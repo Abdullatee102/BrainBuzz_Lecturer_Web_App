@@ -155,20 +155,20 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
   const getPriorityBadge = (priority: AnnouncementPriority) => {
     if (priority === 'URGENT') {
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200">
-          <Flame className="w-3 h-3 text-rose-600" /> URGENT
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200 dark:border-rose-800">
+          <Flame className="w-3 h-3 text-rose-600 dark:text-rose-400" /> URGENT
         </span>
       );
     }
     if (priority === 'IMPORTANT') {
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200 dark:border-amber-800">
           <AlertTriangle className="w-3 h-3 text-amber-600" /> IMPORTANT
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-800">
         NORMAL
       </span>
     );
@@ -206,23 +206,23 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
     <div className="space-y-6">
       {/* Metric Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <Card className="p-4 bg-white border border-slate-200/80 shadow-sm">
+        <Card className="p-4 bg-white border border-slate-200/80 shadow-sm dark:bg-slate-900 dark:border-slate-800">
           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Notices</div>
           <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{metrics.total}</div>
         </Card>
 
         <Card className="p-4 bg-emerald-50/50 border border-emerald-100 shadow-sm">
-          <div className="text-xs font-medium text-emerald-700 uppercase tracking-wider">Active Published</div>
+          <div className="text-xs font-medium text-emerald-700 uppercase tracking-wider dark:text-emerald-300">Active Published</div>
           <div className="text-2xl font-bold text-emerald-800 mt-1">{metrics.published}</div>
         </Card>
 
         <Card className="p-4 bg-amber-50/50 border border-amber-100 shadow-sm">
-          <div className="text-xs font-medium text-amber-700 uppercase tracking-wider">Drafts</div>
+          <div className="text-xs font-medium text-amber-700 uppercase tracking-wider dark:text-amber-300">Drafts</div>
           <div className="text-2xl font-bold text-amber-800 mt-1">{metrics.draft}</div>
         </Card>
 
         <Card className="p-4 bg-rose-50/50 border border-rose-100 shadow-sm">
-          <div className="text-xs font-medium text-rose-700 uppercase tracking-wider">Urgent / Alerts</div>
+          <div className="text-xs font-medium text-rose-700 uppercase tracking-wider dark:text-rose-300">Urgent / Alerts</div>
           <div className="text-2xl font-bold text-rose-800 mt-1">{metrics.urgent}</div>
         </Card>
       </div>
@@ -230,14 +230,14 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
       {/* Action and Filter Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+          <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium dark:text-slate-300">
             <Filter className="w-3.5 h-3.5 text-slate-400" /> Filter:
           </div>
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300"
           >
             <option value="">All Statuses</option>
             <option value="PUBLISHED">Published</option>
@@ -248,7 +248,7 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300"
           >
             <option value="">All Priorities</option>
             <option value="NORMAL">Normal</option>
@@ -269,9 +269,9 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
 
       {/* Announcements List */}
       {announcements.length === 0 ? (
-        <Card className="p-12 text-center border-dashed border-2 border-slate-200 bg-slate-50/50">
+        <Card className="p-12 text-center border-dashed border-2 border-slate-200 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-800/60">
           <Megaphone className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-          <h3 className="text-sm font-semibold text-slate-800">No Announcements Posted</h3>
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">No Announcements Posted</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
             Keep students enrolled in {courseCode} updated with class announcements, exam alerts, and deadline notices.
           </p>
@@ -289,7 +289,7 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
                   ? 'border-rose-200 bg-rose-50/10'
                   : a.priority === 'IMPORTANT'
                   ? 'border-amber-200 bg-amber-50/10'
-                  : 'border-slate-200/90 bg-white'
+                  : 'border-slate-200/90 bg-white dark:border-slate-800 dark:bg-slate-900'
               }`}
             >
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-2.5">
@@ -320,7 +320,7 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={() => openEditModal(a)}
-                    className="h-8 px-2.5 text-xs text-slate-600 hover:text-slate-900"
+                    className="h-8 px-2.5 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                   >
                     <Edit2 className="w-3.5 h-3.5 mr-1" /> Edit
                   </Button>
@@ -336,13 +336,13 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
               </div>
 
               {/* Announcement Body */}
-              <p className="text-xs sm:text-sm text-slate-700 whitespace-pre-line leading-relaxed mb-3">
+              <p className="text-xs sm:text-sm text-slate-700 whitespace-pre-line leading-relaxed mb-3 dark:text-slate-300">
                 {a.content}
               </p>
 
               {/* Attachment link if present */}
               {a.attachmentUrl && (
-                <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+                <div className="pt-2 border-t border-slate-100 flex items-center gap-2 dark:border-slate-800">
                   <a
                     href={a.attachmentUrl}
                     target="_blank"

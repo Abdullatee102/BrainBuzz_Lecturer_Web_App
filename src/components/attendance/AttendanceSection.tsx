@@ -308,7 +308,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300"
             >
               <option value="">All Statuses</option>
               <option value="OPEN">Open</option>
@@ -331,9 +331,9 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
               onRetry={() => refetchSessions()}
             />
           ) : sessions.length === 0 ? (
-            <div className="text-center py-14 bg-white border border-dashed border-slate-200 rounded-2xl">
+            <div className="text-center py-14 bg-white border border-dashed border-slate-200 rounded-2xl dark:bg-slate-900 dark:border-slate-800">
               <CalendarCheck className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-              <p className="text-sm font-semibold text-slate-700">No attendance sessions recorded</p>
+              <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">No attendance sessions recorded</p>
               <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
                 Create a session for your lecture, laboratory, or tutorial class to take attendance.
               </p>
@@ -355,7 +355,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                 const rate = totalMarked > 0 ? Math.round((presentCount / totalMarked) * 100) : 0;
 
                 return (
-                  <Card key={session.id} className="hover:border-slate-300 transition-colors">
+                  <Card key={session.id} className="hover:border-slate-300 transition-colors dark:hover:border-slate-700">
                     <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -400,16 +400,16 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
 
                         {/* Breakdown Pills */}
                         <div className="flex items-center gap-2 pt-1">
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-medium border border-emerald-100">
+                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-medium border border-emerald-100 dark:text-emerald-300">
                             Present: {session.stats?.present || 0}
                           </span>
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 font-medium border border-amber-100">
+                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 font-medium border border-amber-100 dark:text-amber-300">
                             Late: {session.stats?.late || 0}
                           </span>
                           <span className="text-[11px] px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-medium border border-indigo-100">
                             Excused: {session.stats?.excused || 0}
                           </span>
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 font-medium border border-rose-100">
+                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 font-medium border border-rose-100 dark:text-rose-300">
                             Absent: {session.stats?.absent || 0}
                           </span>
                           {totalMarked > 0 && (
@@ -452,7 +452,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:text-rose-300 dark:hover:bg-rose-950/50"
                             disabled={updateSessionMutation.isPending}
                             onClick={() => {
                               if (window.confirm('Are you sure you want to cancel this session?')) {
@@ -487,7 +487,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                 placeholder="Search students by name or matriculation..."
                 value={studentSearch}
                 onChange={(e) => setStudentSearch(e.target.value)}
-                className="w-full text-xs pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full text-xs pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200"
               />
             </div>
             <p className="text-xs text-slate-500">
@@ -495,10 +495,10 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm dark:bg-slate-900 dark:border-slate-800">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold dark:bg-slate-800 dark:border-slate-800">
                   <tr>
                     <th className="py-3 px-4">Student</th>
                     <th className="py-3 px-4">Level</th>
@@ -511,7 +511,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                     <th className="py-3 px-4 text-center">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-700">
+                <tbody className="divide-y divide-slate-100 text-slate-700 dark:divide-slate-800 dark:text-slate-300">
                   {filteredStudents.length === 0 ? (
                     <tr>
                       <td colSpan={9} className="py-8 text-center text-slate-400 italic">
@@ -520,8 +520,8 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                     </tr>
                   ) : (
                     filteredStudents.map((st) => (
-                      <tr key={st.studentId} className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-3 px-4 font-medium text-slate-900">
+                      <tr key={st.studentId} className="hover:bg-slate-50/80 transition-colors dark:hover:bg-slate-800/50">
+                        <td className="py-3 px-4 font-medium text-slate-900 dark:text-slate-100">
                           <div>{st.fullName}</div>
                           <div className="text-[11px] text-slate-400">
                             {st.username || st.email || 'No matric/email'}
@@ -537,7 +537,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                         <td className="py-3 px-4 text-center text-indigo-600">
                           {st.excusedCount}
                         </td>
-                        <td className="py-3 px-4 text-center font-semibold text-rose-600">
+                        <td className="py-3 px-4 text-center font-semibold text-rose-600 dark:text-rose-400">
                           {st.absentCount}
                         </td>
                         <td className="py-3 px-4 text-center font-mono">
@@ -582,9 +582,9 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
       {/* Modal: Create Attendance Session */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 dark:text-slate-100">
                 <CalendarCheck className="w-5 h-5 text-indigo-600" />
                 <span>Create Attendance Session</span>
               </h3>
@@ -597,7 +597,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
             </div>
 
             {formError && (
-              <div className="mt-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+              <div className="mt-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2 dark:border-rose-800 dark:text-rose-300">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 <span>{formError}</span>
               </div>
@@ -611,7 +611,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
               className="mt-4 space-y-4"
             >
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                   Session Title / Topic <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -620,19 +620,19 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                   placeholder="e.g. Week 4: Concurrency & Threads"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-800"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                     Session Type
                   </label>
                   <select
                     value={newType}
                     onChange={(e) => setNewType(e.target.value as AttendanceSessionType)}
-                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white dark:border-slate-800 dark:bg-slate-900"
                   >
                     <option value="LECTURE">Lecture</option>
                     <option value="LAB">Lab</option>
@@ -643,7 +643,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                     Session Date <span className="text-rose-500">*</span>
                   </label>
                   <input
@@ -651,39 +651,39 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                     required
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-800"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                     Start Time
                   </label>
                   <input
                     type="time"
                     value={newStartTime}
                     onChange={(e) => setNewStartTime(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-800"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                     End Time
                   </label>
                   <input
                     type="time"
                     value={newEndTime}
                     onChange={(e) => setNewEndTime(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-800"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                   Session Notes (Optional)
                 </label>
                 <textarea
@@ -691,11 +691,11 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                   placeholder="Additional context or location (e.g. Lab 204)"
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-800"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   type="button"
                   variant="outline"
@@ -734,10 +734,10 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
       {/* Modal: Student History */}
       {selectedStudentHistoryId && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-200 max-h-[85vh] flex flex-col">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-shrink-0">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-200 max-h-[85vh] flex flex-col dark:bg-slate-900 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-shrink-0 dark:border-slate-800">
               <div>
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 dark:text-slate-100">
                   <History className="w-5 h-5 text-indigo-600" />
                   <span>Student Attendance History</span>
                 </h3>
@@ -765,10 +765,10 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                 studentHistoryData.data.records.map((rec) => (
                   <div
                     key={rec.recordId}
-                    className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs"
+                    className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs dark:bg-slate-800 dark:border-slate-800"
                   >
                     <div>
-                      <p className="font-semibold text-slate-900">{rec.sessionTitle}</p>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100">{rec.sessionTitle}</p>
                       <p className="text-[11px] text-slate-500">
                         {new Date(rec.sessionDate).toLocaleDateString('en-GB', {
                           day: 'numeric',
@@ -803,8 +803,8 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
 
               {/* Audit Corrections for this student */}
               {studentHistoryData?.data?.auditLogs && studentHistoryData.data.auditLogs.length > 0 && (
-                <div className="mt-4 pt-3 border-t border-slate-200">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
+                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 dark:text-slate-300">
                     Correction Audit History
                   </h4>
                   <div className="space-y-2">
@@ -813,10 +813,10 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
                         key={audit.id}
                         className="p-2.5 bg-amber-50/50 border border-amber-200/60 rounded-lg text-xs"
                       >
-                        <p className="font-semibold text-slate-800">
+                        <p className="font-semibold text-slate-800 dark:text-slate-200">
                           Changed: {audit.previousStatus} → {audit.newStatus}
                         </p>
-                        <p className="text-[11px] text-slate-600 mt-0.5">Reason: {audit.reason}</p>
+                        <p className="text-[11px] text-slate-600 mt-0.5 dark:text-slate-300">Reason: {audit.reason}</p>
                         <p className="text-[10px] text-slate-400 mt-0.5">
                           By: {audit.performedBy} on {new Date(audit.createdAt).toLocaleString()}
                         </p>
@@ -827,7 +827,7 @@ export const AttendanceSection: React.FC<AttendanceSectionProps> = ({
               )}
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex justify-end flex-shrink-0">
+            <div className="pt-3 border-t border-slate-100 flex justify-end flex-shrink-0 dark:border-slate-800">
               <Button
                 variant="outline"
                 size="sm"

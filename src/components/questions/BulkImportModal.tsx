@@ -262,7 +262,7 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
           {/* Error Banner */}
           {importError && (
             <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-800 dark:text-rose-300 flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5 dark:text-rose-400" />
               <div>
                 <p className="font-semibold">Validation Error</p>
                 <p className="mt-0.5">{importError}</p>
@@ -288,7 +288,7 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
                   </span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800">
-                  <span className="text-[10px] uppercase font-bold text-rose-600 block">Invalid Rows</span>
+                  <span className="text-[10px] uppercase font-bold text-rose-600 block dark:text-rose-400">Invalid Rows</span>
                   <span className="text-sm font-extrabold text-rose-700 dark:text-rose-300 mt-0.5 block">
                     {importSummary.invalidCount}
                   </span>

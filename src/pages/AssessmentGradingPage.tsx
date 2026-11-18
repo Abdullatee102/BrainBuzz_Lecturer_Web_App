@@ -163,12 +163,12 @@ export const AssessmentGradingPage: React.FC = () => {
 
   if (isError && isForbiddenError(error)) {
     return (
-      <div className="max-w-xl mx-auto my-12 bg-white border border-rose-200 rounded-2xl p-8 text-center shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto mb-4">
+      <div className="max-w-xl mx-auto my-12 bg-white border border-rose-200 rounded-2xl p-8 text-center shadow-sm dark:bg-slate-900 dark:border-rose-800">
+        <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto mb-4 dark:text-rose-400 dark:border-rose-800">
           <ShieldAlert className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-slate-900">Access Denied (403 Forbidden)</h2>
-        <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Access Denied (403 Forbidden)</h2>
+        <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed dark:text-slate-300">
           You are not actively assigned to this course offering. Formal grading is restricted to authorized academic staff.
         </p>
         <div className="mt-6">
@@ -185,10 +185,10 @@ export const AssessmentGradingPage: React.FC = () => {
 
   if (isError || !overviewData) {
     return (
-      <div className="max-w-xl mx-auto my-12 bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm">
+      <div className="max-w-xl mx-auto my-12 bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm dark:bg-slate-900 dark:border-slate-800">
         <AlertCircle className="w-12 h-12 text-rose-500 mx-auto mb-3" />
-        <h2 className="text-lg font-bold text-slate-900">Failed to Load Grading Workspace</h2>
-        <p className="text-xs text-slate-600 mt-1">{getErrorMessage(error)}</p>
+        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Failed to Load Grading Workspace</h2>
+        <p className="text-xs text-slate-600 mt-1 dark:text-slate-300">{getErrorMessage(error)}</p>
         <Button variant="outline" size="sm" className="mt-4" onClick={() => refetch()}>
           Retry
         </Button>
@@ -230,7 +230,7 @@ export const AssessmentGradingPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2 text-xs text-slate-500 mb-1">
             <Link to="/courses" className="hover:text-indigo-600 transition-colors">
@@ -239,10 +239,10 @@ export const AssessmentGradingPage: React.FC = () => {
             <span>/</span>
             <span>Assessments</span>
             <span>/</span>
-            <span className="text-slate-700 font-medium">Formal Grading Desk</span>
+            <span className="text-slate-700 font-medium dark:text-slate-300">Formal Grading Desk</span>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{assessment.title}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">{assessment.title}</h1>
             <Badge variant="purple">{assessment.type}</Badge>
             <Badge variant="default">Total Marks: {assessment.totalMarks}</Badge>
           </div>
@@ -264,36 +264,36 @@ export const AssessmentGradingPage: React.FC = () => {
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 dark:border-slate-800">
           <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Submissions</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{stats.totalSubmitted}</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1 dark:text-slate-100">{stats.totalSubmitted}</p>
         </Card>
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 dark:border-slate-800">
           <p className="text-[11px] font-semibold text-sky-600 uppercase tracking-wider">Auto-Graded</p>
           <p className="text-2xl font-bold text-sky-700 mt-1">{stats.autoGradedCount}</p>
         </Card>
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 dark:border-slate-800">
           <p className="text-[11px] font-semibold text-amber-600 uppercase tracking-wider">Needs Theory</p>
-          <p className="text-2xl font-bold text-amber-700 mt-1">{stats.needsTheoryCount}</p>
+          <p className="text-2xl font-bold text-amber-700 mt-1 dark:text-amber-300">{stats.needsTheoryCount}</p>
         </Card>
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 dark:border-slate-800">
           <p className="text-[11px] font-semibold text-purple-600 uppercase tracking-wider">Partial</p>
-          <p className="text-2xl font-bold text-purple-700 mt-1">{stats.partiallyGradedCount}</p>
+          <p className="text-2xl font-bold text-purple-700 mt-1 dark:text-purple-300">{stats.partiallyGradedCount}</p>
         </Card>
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 dark:border-slate-800">
           <p className="text-[11px] font-semibold text-emerald-600 uppercase tracking-wider">Completed</p>
-          <p className="text-2xl font-bold text-emerald-700 mt-1">{stats.completedCount}</p>
+          <p className="text-2xl font-bold text-emerald-700 mt-1 dark:text-emerald-300">{stats.completedCount}</p>
         </Card>
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 dark:border-slate-800">
           <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Avg Score</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">
+          <p className="text-2xl font-bold text-slate-900 mt-1 dark:text-slate-100">
             {stats.averageScore !== null ? `${stats.averageScore}` : '—'}
           </p>
         </Card>
       </div>
 
       {/* Roster Controls */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-xs dark:bg-slate-900 dark:border-slate-800">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -301,7 +301,7 @@ export const AssessmentGradingPage: React.FC = () => {
             placeholder="Search students by name, email, or matric number..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
           />
         </div>
 
@@ -310,7 +310,7 @@ export const AssessmentGradingPage: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
           >
             <option value="ALL">All Grading States</option>
             <option value="NEEDS_THEORY_GRADING">Needs Theory Grading</option>
@@ -322,10 +322,10 @@ export const AssessmentGradingPage: React.FC = () => {
       </div>
 
       {/* Submissions Roster */}
-      <Card className="border border-slate-200 overflow-hidden">
+      <Card className="border border-slate-200 overflow-hidden dark:border-slate-800">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase font-semibold text-[10px] tracking-wider">
+          <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+            <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase font-semibold text-[10px] tracking-wider dark:bg-slate-800 dark:border-slate-800 dark:text-slate-300">
               <tr>
                 <th className="py-3 px-4">Student</th>
                 <th className="py-3 px-4">Attempt</th>
@@ -337,7 +337,7 @@ export const AssessmentGradingPage: React.FC = () => {
                 <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filteredRoster.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-slate-400 text-xs">
@@ -350,8 +350,8 @@ export const AssessmentGradingPage: React.FC = () => {
                   const gStatus = g?.status || 'PENDING_GRADING';
 
                   return (
-                    <tr key={item.attemptId} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-4 font-medium text-slate-900">
+                    <tr key={item.attemptId} className="hover:bg-slate-50/70 transition-colors dark:hover:bg-slate-800/50">
+                      <td className="py-3 px-4 font-medium text-slate-900 dark:text-slate-100">
                         <div>{item.student.fullName}</div>
                         <div className="text-[11px] text-slate-400 font-normal">
                           {item.student.username ? `${item.student.username} • ` : ''}
@@ -372,13 +372,13 @@ export const AssessmentGradingPage: React.FC = () => {
                             })
                           : '—'}
                       </td>
-                      <td className="py-3 px-4 font-semibold text-slate-700">
+                      <td className="py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
                         {g ? `${g.cbtScore}` : '—'}
                       </td>
-                      <td className="py-3 px-4 font-semibold text-slate-700">
+                      <td className="py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
                         {g ? `${g.theoryScore}` : '—'}
                       </td>
-                      <td className="py-3 px-4 font-bold text-slate-900">
+                      <td className="py-3 px-4 font-bold text-slate-900 dark:text-slate-100">
                         {g ? `${g.totalScore} / ${g.maxPossibleScore}` : '—'}
                       </td>
                       <td className="py-3 px-4">{getGradingStatusBadge(gStatus)}</td>
@@ -404,11 +404,11 @@ export const AssessmentGradingPage: React.FC = () => {
       {/* Attempt Evaluation Desk Modal / Drawer */}
       {selectedAttemptId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
             {/* Modal Header */}
-            <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+            <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50 dark:border-slate-800 dark:bg-slate-800">
               <div>
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 dark:text-slate-100">
                   <Award className="w-5 h-5 text-indigo-600" />
                   Grading Desk: {attemptDeskData?.attempt.student.fullName || 'Student Attempt'}
                 </h3>
@@ -431,7 +431,7 @@ export const AssessmentGradingPage: React.FC = () => {
               {isAttemptLoading ? (
                 <LoadingSpinner label="Loading attempt questions and rubrics..." size="md" className="py-12" />
               ) : attemptError ? (
-                <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
+                <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs dark:border-rose-800 dark:text-rose-300">
                   {getErrorMessage(attemptError)}
                 </div>
               ) : attemptDeskData ? (
@@ -441,11 +441,11 @@ export const AssessmentGradingPage: React.FC = () => {
                     <div className="flex items-center gap-6">
                       <div>
                         <p className="text-[10px] font-semibold text-indigo-600 uppercase">CBT Score</p>
-                        <p className="text-lg font-bold text-slate-900">{attemptDeskData.grade?.cbtScore ?? 0}</p>
+                        <p className="text-lg font-bold text-slate-900 dark:text-slate-100">{attemptDeskData.grade?.cbtScore ?? 0}</p>
                       </div>
                       <div>
                         <p className="text-[10px] font-semibold text-indigo-600 uppercase">Theory Score</p>
-                        <p className="text-lg font-bold text-slate-900">{attemptDeskData.grade?.theoryScore ?? 0}</p>
+                        <p className="text-lg font-bold text-slate-900 dark:text-slate-100">{attemptDeskData.grade?.theoryScore ?? 0}</p>
                       </div>
                       <div>
                         <p className="text-[10px] font-semibold text-indigo-600 uppercase">Total Marks</p>
@@ -465,15 +465,15 @@ export const AssessmentGradingPage: React.FC = () => {
                   )}
 
                   {actionError && (
-                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs flex items-center gap-2 dark:border-rose-800">
+                      <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 dark:text-rose-400" />
                       <span>{actionError}</span>
                     </div>
                   )}
 
                   {/* Questions List */}
                   <div className="space-y-4">
-                    <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                    <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 dark:text-slate-200">
                       <FileCheck className="w-4 h-4 text-indigo-600" />
                       Examination Responses & Rubric Evaluation
                     </h4>
@@ -487,12 +487,12 @@ export const AssessmentGradingPage: React.FC = () => {
                       return (
                         <div
                           key={q.assessmentQuestionId}
-                          className="bg-white rounded-xl border border-slate-200 p-4 space-y-3 hover:border-slate-300 transition-colors"
+                          className="bg-white rounded-xl border border-slate-200 p-4 space-y-3 hover:border-slate-300 transition-colors dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700"
                         >
                           {/* Question Top Header */}
-                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 dark:border-slate-800">
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-xs text-slate-800">Question {idx + 1}</span>
+                              <span className="font-bold text-xs text-slate-800 dark:text-slate-200">Question {idx + 1}</span>
                               <Badge variant={isTheory ? 'purple' : 'info'} size="sm">
                                 {q.type.toUpperCase()}
                               </Badge>
@@ -514,15 +514,15 @@ export const AssessmentGradingPage: React.FC = () => {
                           </div>
 
                           {/* Question Prompt */}
-                          <p className="text-xs font-medium text-slate-800 whitespace-pre-wrap">{q.question}</p>
+                          <p className="text-xs font-medium text-slate-800 whitespace-pre-wrap dark:text-slate-200">{q.question}</p>
 
                           {/* Student's Answer */}
-                          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 dark:bg-slate-800 dark:border-slate-800">
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
                               Student&apos;s Submitted Response:
                             </span>
                             {q.studentAnswer && q.studentAnswer.trim() ? (
-                              <p className="text-xs text-slate-900 whitespace-pre-wrap font-mono">
+                              <p className="text-xs text-slate-900 whitespace-pre-wrap font-mono dark:text-slate-100">
                                 {q.studentAnswer}
                               </p>
                             ) : (
@@ -543,30 +543,30 @@ export const AssessmentGradingPage: React.FC = () => {
 
                           {/* Theory Rubric Section */}
                           {isTheory && (
-                            <div className="space-y-3 pt-2 border-t border-slate-100">
+                            <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
                               {/* Rubric Criteria Table */}
                               {q.gradingPoints && q.gradingPoints.length > 0 && (
                                 <div className="space-y-1">
-                                  <span className="text-[11px] font-semibold text-slate-700 block">
+                                  <span className="text-[11px] font-semibold text-slate-700 block dark:text-slate-300">
                                     Scoring Rubric Criteria:
                                   </span>
-                                  <div className="border border-slate-200 rounded-lg overflow-hidden text-xs">
+                                  <div className="border border-slate-200 rounded-lg overflow-hidden text-xs dark:border-slate-800">
                                     <table className="w-full text-left">
-                                      <thead className="bg-slate-50 text-[10px] uppercase text-slate-500 font-semibold border-b border-slate-200">
+                                      <thead className="bg-slate-50 text-[10px] uppercase text-slate-500 font-semibold border-b border-slate-200 dark:bg-slate-800 dark:border-slate-800">
                                         <tr>
                                           <th className="py-1.5 px-3">Criterion / Core Concept</th>
                                           <th className="py-1.5 px-3">Aliases / Keywords</th>
                                           <th className="py-1.5 px-3 text-right">Max Weight</th>
                                         </tr>
                                       </thead>
-                                      <tbody className="divide-y divide-slate-100">
+                                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                         {q.gradingPoints.map((pt, pIdx) => (
                                           <tr key={pIdx}>
-                                            <td className="py-1.5 px-3 font-medium text-slate-800">{pt.concept}</td>
+                                            <td className="py-1.5 px-3 font-medium text-slate-800 dark:text-slate-200">{pt.concept}</td>
                                             <td className="py-1.5 px-3 text-slate-500 text-[11px]">
                                               {pt.aliases && pt.aliases.length > 0 ? pt.aliases.join(', ') : '—'}
                                             </td>
-                                            <td className="py-1.5 px-3 text-right font-semibold text-slate-700">
+                                            <td className="py-1.5 px-3 text-right font-semibold text-slate-700 dark:text-slate-300">
                                               {pt.weight}
                                             </td>
                                           </tr>
@@ -611,7 +611,7 @@ export const AssessmentGradingPage: React.FC = () => {
                                     type="button"
                                     variant="ghost"
                                     size="sm"
-                                    className="text-purple-700 hover:bg-purple-100/80 text-[11px] h-6 px-2"
+                                    className="text-purple-700 hover:bg-purple-100/80 text-[11px] h-6 px-2 dark:text-purple-300"
                                     onClick={() => {
                                       setQuestionMarks((prev) => ({
                                         ...prev,
@@ -633,7 +633,7 @@ export const AssessmentGradingPage: React.FC = () => {
                               {/* Lecturer Score Input & Feedback */}
                               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                                 <div>
-                                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                                  <label className="block text-[11px] font-bold text-slate-700 mb-1 dark:text-slate-300">
                                     Awarded Marks (Max: {q.allocatedMarks})
                                   </label>
                                   <input
@@ -649,12 +649,12 @@ export const AssessmentGradingPage: React.FC = () => {
                                         [q.assessmentQuestionId]: val,
                                       }));
                                     }}
-                                    className="w-full text-xs font-bold border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full text-xs font-bold border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
                                   />
                                 </div>
 
                                 <div className="sm:col-span-2">
-                                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                                  <label className="block text-[11px] font-bold text-slate-700 mb-1 dark:text-slate-300">
                                     Qualitative Feedback for Student
                                   </label>
                                   <input
@@ -668,7 +668,7 @@ export const AssessmentGradingPage: React.FC = () => {
                                         [q.assessmentQuestionId]: val,
                                       }));
                                     }}
-                                    className="w-full text-xs border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full text-xs border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
                                   />
                                 </div>
                               </div>
@@ -681,8 +681,8 @@ export const AssessmentGradingPage: React.FC = () => {
 
                   {/* Audit Trail Section */}
                   {attemptDeskData.auditLogs && attemptDeskData.auditLogs.length > 0 && (
-                    <div className="space-y-2 pt-4 border-t border-slate-200">
-                      <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <div className="space-y-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+                      <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 dark:text-slate-300">
                         <History className="w-4 h-4 text-slate-500" />
                         Grading Audit History
                       </h4>
@@ -690,10 +690,10 @@ export const AssessmentGradingPage: React.FC = () => {
                         {attemptDeskData.auditLogs.map((log) => (
                           <div
                             key={log.id}
-                            className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-200 flex items-center justify-between"
+                            className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-200 flex items-center justify-between dark:text-slate-300 dark:bg-slate-800 dark:border-slate-800"
                           >
                             <div>
-                              <span className="font-semibold text-slate-800">{log.action}: </span>
+                              <span className="font-semibold text-slate-800 dark:text-slate-200">{log.action}: </span>
                               <span>
                                 {log.previousScore !== null ? `${log.previousScore} -> ` : ''}
                                 <strong>{log.newScore}</strong> marks
@@ -717,7 +717,7 @@ export const AssessmentGradingPage: React.FC = () => {
 
                   {/* Re-evaluation reason input */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                       Reason for Grading or Score Adjustment (Optional)
                     </label>
                     <input
@@ -725,7 +725,7 @@ export const AssessmentGradingPage: React.FC = () => {
                       placeholder="e.g. Regular theory marking session or Rubric re-check"
                       value={gradingReason}
                       onChange={(e) => setGradingReason(e.target.value)}
-                      className="w-full text-xs border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"
+                      className="w-full text-xs border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
                     />
                   </div>
                 </>
@@ -733,7 +733,7 @@ export const AssessmentGradingPage: React.FC = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+            <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between dark:border-slate-800 dark:bg-slate-800">
               <Button variant="ghost" size="sm" onClick={() => setSelectedAttemptId(null)}>
                 Close
               </Button>

@@ -25,11 +25,11 @@ export const PaginationControl: React.FC<PaginationControlProps> = ({
   const end = Math.min(currentPage * limit, totalItems);
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t border-slate-200">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t border-slate-200 dark:bg-slate-900 dark:border-slate-800">
       <div className="text-xs text-slate-500">
-        Showing <span className="font-semibold text-slate-700">{start}</span> to{' '}
-        <span className="font-semibold text-slate-700">{end}</span> of{' '}
-        <span className="font-semibold text-slate-700">{totalItems}</span> courses
+        Showing <span className="font-semibold text-slate-700 dark:text-slate-300">{start}</span> to{' '}
+        <span className="font-semibold text-slate-700 dark:text-slate-300">{end}</span> of{' '}
+        <span className="font-semibold text-slate-700 dark:text-slate-300">{totalItems}</span> courses
       </div>
 
       <div className="flex items-center gap-1.5">
@@ -38,14 +38,14 @@ export const PaginationControl: React.FC<PaginationControlProps> = ({
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1 || isLoading}
-          className="h-8 px-2.5 text-xs text-slate-600"
+          className="h-8 px-2.5 text-xs text-slate-600 dark:text-slate-300"
           aria-label="Previous page"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Previous</span>
         </Button>
 
-        <span className="px-2.5 py-1 text-xs font-medium text-slate-700">
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300">
           Page {currentPage} of {Math.max(1, totalPages)}
         </span>
 
@@ -54,7 +54,7 @@ export const PaginationControl: React.FC<PaginationControlProps> = ({
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages || isLoading}
-          className="h-8 px-2.5 text-xs text-slate-600"
+          className="h-8 px-2.5 text-xs text-slate-600 dark:text-slate-300"
           aria-label="Next page"
         >
           <span className="hidden sm:inline">Next</span>

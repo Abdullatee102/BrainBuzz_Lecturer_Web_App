@@ -208,7 +208,7 @@ export const LoginPage: React.FC = () => {
           type="button"
           onClick={handleGoogleClick}
           disabled={isLoading}
-          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-semibold text-sm shadow-md shadow-black/20 border border-slate-200 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-semibold text-sm shadow-md shadow-black/20 border border-slate-200 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 dark:border-slate-800"
         >
           <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
             <path
@@ -356,15 +356,22 @@ export const LoginPage: React.FC = () => {
             <div className="mt-4 space-y-3">
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Simulated Token String
+                  Google ID Token / Test Token / Email
                 </label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={customToken}
                   onChange={(e) => setCustomToken(e.target.value)}
-                  placeholder="test-google-token:lecturer@university.edu.ng:Dr.+Jane:https://..."
+                  placeholder="test-google-token:lecturer@gmail.com:Dr.+Jane  OR  lecturer@gmail.com"
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <span className="text-[10px] text-slate-500 self-center">Format: </span>
+                <code className="text-[10px] bg-slate-900 text-indigo-400 px-2 py-0.5 rounded border border-slate-700">
+                  test-google-token:&lt;email&gt;:&lt;Name&gt;
+                </code>
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2">

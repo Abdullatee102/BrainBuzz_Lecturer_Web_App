@@ -86,12 +86,12 @@ export const AssessmentMonitorPage: React.FC = () => {
 
   if (isError && isForbiddenError(error)) {
     return (
-      <div className="max-w-xl mx-auto my-12 bg-white border border-rose-200 rounded-2xl p-8 text-center shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto mb-4">
+      <div className="max-w-xl mx-auto my-12 bg-white border border-rose-200 rounded-2xl p-8 text-center shadow-sm dark:bg-slate-900 dark:border-rose-800">
+        <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto mb-4 dark:text-rose-400 dark:border-rose-800">
           <ShieldAlert className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-slate-900">Access Denied (403 Forbidden)</h2>
-        <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Access Denied (403 Forbidden)</h2>
+        <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed dark:text-slate-300">
           You are not actively assigned to this course offering. Live examination monitoring is restricted to assigned academic staff.
         </p>
         <div className="mt-6">
@@ -108,11 +108,11 @@ export const AssessmentMonitorPage: React.FC = () => {
 
   if (isError && isNotFoundError(error)) {
     return (
-      <div className="max-w-xl mx-auto my-12 bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center mx-auto mb-4">
+      <div className="max-w-xl mx-auto my-12 bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm dark:bg-slate-900 dark:border-slate-800">
+        <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center mx-auto mb-4 dark:bg-slate-800">
           <HelpCircle className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-slate-900">Assessment Not Found</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Assessment Not Found</h2>
         <div className="mt-6">
           <Link to="/courses">
             <Button variant="outline" size="md">
@@ -157,13 +157,13 @@ export const AssessmentMonitorPage: React.FC = () => {
               <span>Back to Course</span>
             </Button>
           </Link>
-          <div className="h-4 w-px bg-slate-200" />
+          <div className="h-4 w-px bg-slate-200 dark:bg-slate-700" />
           <div className="flex items-center gap-2">
             <span className="flex h-2.5 w-2.5 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
             </span>
-            <span className="text-xs font-semibold text-slate-700">Live Monitor Active</span>
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Live Monitor Active</span>
             <span className="text-[11px] text-slate-400">(Refreshes every 5s)</span>
           </div>
         </div>
@@ -181,14 +181,14 @@ export const AssessmentMonitorPage: React.FC = () => {
       </div>
 
       {/* Header Banner */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm dark:bg-slate-900 dark:border-slate-800">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
                 {assessment.courseCode}
               </span>
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{assessment.title}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">{assessment.title}</h1>
               <Badge variant="purple" size="sm">{assessment.type}</Badge>
             </div>
             <p className="text-xs text-slate-500 mt-1">
@@ -196,15 +196,15 @@ export const AssessmentMonitorPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-slate-600 border-t md:border-t-0 pt-3 md:pt-0">
+          <div className="flex items-center gap-4 text-xs text-slate-600 border-t md:border-t-0 pt-3 md:pt-0 dark:text-slate-300">
             <div>
               <span className="block text-[11px] uppercase text-slate-400 font-semibold">Duration</span>
-              <span className="font-bold text-slate-800">{assessment.durationMinutes} minutes</span>
+              <span className="font-bold text-slate-800 dark:text-slate-200">{assessment.durationMinutes} minutes</span>
             </div>
-            <div className="h-6 w-px bg-slate-200" />
+            <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
             <div>
               <span className="block text-[11px] uppercase text-slate-400 font-semibold">Total Marks</span>
-              <span className="font-bold text-slate-800">{assessment.totalMarks} marks</span>
+              <span className="font-bold text-slate-800 dark:text-slate-200">{assessment.totalMarks} marks</span>
             </div>
           </div>
         </div>
@@ -224,12 +224,12 @@ export const AssessmentMonitorPage: React.FC = () => {
       )}
 
       {actionError && (
-        <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 flex items-center justify-between text-rose-800 text-xs">
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 flex items-center justify-between text-rose-800 text-xs dark:border-rose-800">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-600" />
+            <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
             <span>{actionError}</span>
           </div>
-          <button onClick={() => setActionError(null)} className="text-rose-600 font-bold">
+          <button onClick={() => setActionError(null)} className="text-rose-600 font-bold dark:text-rose-400">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -237,18 +237,18 @@ export const AssessmentMonitorPage: React.FC = () => {
 
       {/* Real-time KPI Stats Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <Card className="border border-slate-200">
+        <Card className="border border-slate-200 dark:border-slate-800">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Eligible</span>
               <Users className="w-4 h-4 text-slate-400" />
             </div>
-            <p className="text-2xl font-bold text-slate-900 mt-1">{stats.totalEligibleStudents}</p>
+            <p className="text-2xl font-bold text-slate-900 mt-1 dark:text-slate-100">{stats.totalEligibleStudents}</p>
             <p className="text-[10px] text-slate-400 mt-0.5">Enrolled students</p>
           </CardContent>
         </Card>
 
-        <Card className="border border-slate-200">
+        <Card className="border border-slate-200 dark:border-slate-800">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Started</span>
@@ -265,18 +265,18 @@ export const AssessmentMonitorPage: React.FC = () => {
               <span className="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider">Online</span>
               <Wifi className="w-4 h-4 text-emerald-600" />
             </div>
-            <p className="text-2xl font-bold text-emerald-700 mt-1">{stats.activeOnlineCount}</p>
+            <p className="text-2xl font-bold text-emerald-700 mt-1 dark:text-emerald-300">{stats.activeOnlineCount}</p>
             <p className="text-[10px] text-emerald-600/80 mt-0.5">Active heartbeats</p>
           </CardContent>
         </Card>
 
-        <Card className="border border-amber-200 bg-amber-50/40">
+        <Card className="border border-amber-200 bg-amber-50/40 dark:border-amber-800">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold text-amber-800 uppercase tracking-wider">Disconnected</span>
               <WifiOff className="w-4 h-4 text-amber-600" />
             </div>
-            <p className="text-2xl font-bold text-amber-700 mt-1">{stats.disconnectedCount}</p>
+            <p className="text-2xl font-bold text-amber-700 mt-1 dark:text-amber-300">{stats.disconnectedCount}</p>
             <p className="text-[10px] text-amber-600/80 mt-0.5">App bg or network</p>
           </CardContent>
         </Card>
@@ -292,13 +292,13 @@ export const AssessmentMonitorPage: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="border border-slate-200 bg-slate-50">
+        <Card className="border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-800">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Timed Out</span>
               <Clock className="w-4 h-4 text-slate-400" />
             </div>
-            <p className="text-2xl font-bold text-slate-700 mt-1">{stats.timedOutCount}</p>
+            <p className="text-2xl font-bold text-slate-700 mt-1 dark:text-slate-300">{stats.timedOutCount}</p>
             <p className="text-[10px] text-slate-400 mt-0.5">Auto-finalized</p>
           </CardContent>
         </Card>
@@ -308,9 +308,9 @@ export const AssessmentMonitorPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Student Roster (2 cols) */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 dark:bg-slate-900 dark:border-slate-800">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 dark:text-slate-100">
                 <Users className="w-4 h-4 text-indigo-600" />
                 Student Examination Roster ({filteredRoster.length})
               </h2>
@@ -324,7 +324,7 @@ export const AssessmentMonitorPage: React.FC = () => {
                     className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
                       statusFilter === filter
                         ? 'bg-slate-900 text-white'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
                     }`}
                   >
                     {filter === 'ALL' ? 'All' : filter}
@@ -341,14 +341,14 @@ export const AssessmentMonitorPage: React.FC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by student name, email, or matric number..."
-                className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200 rounded-xl focus:border-indigo-500 focus:outline-hidden"
+                className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200 rounded-xl focus:border-indigo-500 focus:outline-hidden dark:border-slate-800"
               />
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto border border-slate-100 rounded-xl">
+            <div className="overflow-x-auto border border-slate-100 rounded-xl dark:border-slate-800">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
+                <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200 dark:bg-slate-800 dark:border-slate-800">
                   <tr>
                     <th className="py-2.5 px-3">Student</th>
                     <th className="py-2.5 px-3">Status</th>
@@ -357,7 +357,7 @@ export const AssessmentMonitorPage: React.FC = () => {
                     <th className="py-2.5 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {filteredRoster.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="py-8 text-center text-slate-400 italic">
@@ -368,9 +368,9 @@ export const AssessmentMonitorPage: React.FC = () => {
                     filteredRoster.map((item) => {
                       const att = item.attempt;
                       return (
-                        <tr key={item.studentId} className="hover:bg-slate-50/70 transition-colors">
+                        <tr key={item.studentId} className="hover:bg-slate-50/70 transition-colors dark:hover:bg-slate-800/50">
                           <td className="py-3 px-3">
-                            <span className="font-semibold text-slate-900 block truncate max-w-[160px]">
+                            <span className="font-semibold text-slate-900 block truncate max-w-[160px] dark:text-slate-100">
                               {item.fullName}
                             </span>
                             <span className="text-[11px] text-slate-400 block font-mono">
@@ -410,7 +410,7 @@ export const AssessmentMonitorPage: React.FC = () => {
                                     %
                                   </span>
                                 </div>
-                                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden dark:bg-slate-800">
                                   <div
                                     className="h-full bg-indigo-600 rounded-full transition-all"
                                     style={{
@@ -430,7 +430,7 @@ export const AssessmentMonitorPage: React.FC = () => {
 
                           <td className="py-3 px-3">
                             {att && att.status === 'IN_PROGRESS' ? (
-                              <span className="font-mono text-xs font-semibold text-slate-700">
+                              <span className="font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">
                                 {Math.floor(att.remainingSeconds / 60)}m {att.remainingSeconds % 60}s
                               </span>
                             ) : att && att.submittedAt ? (
@@ -447,7 +447,7 @@ export const AssessmentMonitorPage: React.FC = () => {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 text-[11px] py-1 px-2 h-auto"
+                                className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 text-[11px] py-1 px-2 h-auto dark:text-rose-400 dark:hover:text-rose-300 dark:hover:bg-rose-950/50"
                                 onClick={() => {
                                   setForceSubmitTarget(item);
                                   setForceSubmitReason('');
@@ -469,8 +469,8 @@ export const AssessmentMonitorPage: React.FC = () => {
 
         {/* Right Column: Live Examination Events Stream (1 col) */}
         <div className="space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3 dark:bg-slate-900 dark:border-slate-800">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 dark:text-slate-100">
               <History className="w-4 h-4 text-indigo-600" />
               Live Examination Activity Stream
             </h3>
@@ -485,10 +485,10 @@ export const AssessmentMonitorPage: React.FC = () => {
                 recentEvents.map((evt) => (
                   <div
                     key={evt.id}
-                    className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-xs space-y-1"
+                    className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-xs space-y-1 dark:bg-slate-800 dark:border-slate-800"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-slate-900">{evt.studentName}</span>
+                      <span className="font-semibold text-slate-900 dark:text-slate-100">{evt.studentName}</span>
                       <span className="text-[10px] text-slate-400">
                         {new Date(evt.serverTimestamp).toLocaleTimeString()}
                       </span>
@@ -512,19 +512,19 @@ export const AssessmentMonitorPage: React.FC = () => {
       {/* Force Submit Modal */}
       {forceSubmitTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
-            <h3 className="text-base font-bold text-rose-600 flex items-center gap-2">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 dark:bg-slate-900">
+            <h3 className="text-base font-bold text-rose-600 flex items-center gap-2 dark:text-rose-400">
               <ShieldAlert className="w-5 h-5" />
               Emergency Force-Submit Attempt
             </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed dark:text-slate-300">
               You are about to force-submit the ongoing examination for{' '}
               <strong>{forceSubmitTarget.fullName}</strong>. Their currently saved answers will be locked,
               and this emergency action will be recorded in the official audit log.
             </p>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">
                 Mandatory Reason for Force-Submission
               </label>
               <textarea
@@ -532,7 +532,7 @@ export const AssessmentMonitorPage: React.FC = () => {
                 value={forceSubmitReason}
                 onChange={(e) => setForceSubmitReason(e.target.value)}
                 placeholder="e.g., Student left examination hall, verbal walkout, or verified incident..."
-                className="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:border-rose-500 focus:outline-hidden"
+                className="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:border-rose-500 focus:outline-hidden dark:border-slate-700"
               />
             </div>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, LogOut, GraduationCap, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Badge } from '../ui/Badge';
+import { formatUserDisplayId } from '../../lib/utils';
 
 interface HeaderProps {
   onOpenSidebar: () => void;
@@ -52,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
             </p>
             {user && (
               <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/60">
-                {user.customId || `LECTURER-${user.id ? user.id.replace(/-/g, '').slice(-4).toUpperCase() : 'STAFF'}`}
+                {formatUserDisplayId(user)}
               </span>
             )}
           </div>

@@ -185,7 +185,7 @@ export const CoursesPage: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={handleClearFilters}
-              className="text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 px-2.5"
+              className="text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 px-2.5 dark:text-rose-400"
             >
               Clear
             </Button>

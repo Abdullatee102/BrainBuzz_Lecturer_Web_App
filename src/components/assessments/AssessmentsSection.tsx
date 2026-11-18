@@ -232,15 +232,15 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
     <div className="space-y-6">
       {/* Action error banner */}
       {actionError && (
-        <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 flex items-start gap-3 text-rose-800 text-sm">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-rose-600" />
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 flex items-start gap-3 text-rose-800 text-sm dark:border-rose-800">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-rose-600 dark:text-rose-400" />
           <div className="flex-1">
             <span className="font-semibold">Action Failed: </span>
             <span>{actionError}</span>
           </div>
           <button
             onClick={() => setActionError(null)}
-            className="text-rose-500 hover:text-rose-700 text-xs font-bold px-2 py-1"
+            className="text-rose-500 hover:text-rose-700 text-xs font-bold px-2 py-1 dark:hover:text-rose-300"
           >
             Dismiss
           </button>
@@ -274,7 +274,7 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto text-xs font-medium">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto text-xs font-medium dark:border-slate-800">
         {(['ALL', 'DRAFT', 'PUBLISHED', 'CANCELLED'] as const).map((st) => (
           <button
             key={st}
@@ -282,11 +282,11 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
             className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
               selectedStatus === st
                 ? 'bg-indigo-600 text-white font-semibold'
-                : 'text-slate-600 hover:bg-slate-100'
+                : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
             }`}
           >
             {st === 'ALL' ? 'All Assessments' : st}
-            <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] bg-slate-200/50 text-slate-700">
+            <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] bg-slate-200/50 text-slate-700 dark:text-slate-300">
               {st === 'ALL'
                 ? assessments.length
                 : assessments.filter((a) => a.status === st).length}
@@ -299,20 +299,20 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
       {isLoading ? (
         <LoadingSpinner label="Loading assessments..." size="md" className="py-12" />
       ) : isError ? (
-        <div className="bg-rose-50 border border-rose-200 rounded-xl p-6 text-center text-rose-800">
-          <AlertCircle className="w-8 h-8 mx-auto mb-2 text-rose-600" />
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-6 text-center text-rose-800 dark:border-rose-800">
+          <AlertCircle className="w-8 h-8 mx-auto mb-2 text-rose-600 dark:text-rose-400" />
           <h3 className="font-bold">Failed to load assessments</h3>
-          <p className="text-xs text-rose-600 mt-1">{getErrorMessage(error)}</p>
+          <p className="text-xs text-rose-600 mt-1 dark:text-rose-400">{getErrorMessage(error)}</p>
           <Button variant="outline" size="sm" onClick={() => refetch()} className="mt-4">
             Retry
           </Button>
         </div>
       ) : filteredAssessments.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm dark:bg-slate-900 dark:border-slate-800">
           <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-3">
             <CalendarClock className="w-6 h-6" />
           </div>
-          <h3 className="font-bold text-slate-800">No assessments found</h3>
+          <h3 className="font-bold text-slate-800 dark:text-slate-200">No assessments found</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
             {selectedStatus === 'ALL'
               ? 'No assessments have been created for this offering yet. Click Create Assessment above to get started.'
@@ -330,7 +330,7 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
             const isOpen = now >= start && now <= end;
 
             return (
-              <Card key={item.id} className="border border-slate-200 hover:border-slate-300 transition-colors">
+              <Card key={item.id} className="border border-slate-200 hover:border-slate-300 transition-colors dark:border-slate-800 dark:hover:border-slate-700">
                 <CardContent className="p-5">
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                     {/* Left Meta */}
@@ -343,7 +343,7 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                       {item.description && (
                         <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">{item.description}</p>
                       )}
-                      <div className="flex items-center gap-4 text-[11px] text-slate-500 flex-wrap pt-1">
+                      <div className="flex items-center gap-4 text-[11px] text-slate-500 dark:text-slate-400 flex-wrap pt-1">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-slate-400" />
                           {item.durationMinutes} minutes
@@ -352,14 +352,14 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                           <Layers className="w-3.5 h-3.5 text-slate-400" />
                           {item.questionCount ?? (item.questions?.length || 0)} Questions
                         </span>
-                        <span className="flex items-center gap-1 font-semibold text-slate-700">
+                        <span className="flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300">
                           Total Marks: {item.totalMarks}
                           {item.passMarks ? ` (Pass: ${item.passMarks})` : ''}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-[11px] text-slate-500 flex-wrap">
+                      <div className="flex items-center gap-4 text-[11px] text-slate-500 dark:text-slate-400 flex-wrap">
                         <span>
-                          <strong className="text-slate-700">Window:</strong> {formatWAT(item.startTime)} — {formatWAT(item.endTime)}
+                          <strong className="text-slate-700 dark:text-slate-300">Window:</strong> {formatWAT(item.startTime)} — {formatWAT(item.endTime)}
                         </span>
                       </div>
                     </div>
@@ -407,7 +407,7 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:text-rose-300 dark:hover:bg-rose-950/50"
                             onClick={() => {
                               setCancelAssessment(item);
                               setCancelReason('');
@@ -437,9 +437,9 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-purple-700 border-purple-300 hover:bg-purple-50"
+                              className="text-purple-700 border-purple-300 hover:bg-purple-50 dark:text-purple-300 dark:border-purple-800 dark:hover:bg-purple-950/50"
                             >
-                              <FileText className="w-3.5 h-3.5 mr-1 text-purple-600" />
+                              <FileText className="w-3.5 h-3.5 mr-1 text-purple-600 dark:text-purple-400" />
                               Gradebook
                             </Button>
                           </Link>
@@ -448,9 +448,9 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+                              className="text-emerald-700 border-emerald-300 hover:bg-emerald-50 dark:text-emerald-300 dark:border-emerald-800 dark:hover:bg-emerald-950/50"
                             >
-                              <Activity className="w-3.5 h-3.5 mr-1 text-emerald-600" />
+                              <Activity className="w-3.5 h-3.5 mr-1 text-emerald-600 dark:text-emerald-400" />
                               Live Monitor
                             </Button>
                           </Link>
@@ -493,7 +493,7 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:text-rose-300 dark:hover:bg-rose-950/50"
                             onClick={() => {
                               setCancelAssessment(item);
                               setCancelReason('');
@@ -524,31 +524,31 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
 
                   {/* Expanded Details Drawer */}
                   {isExpanded && (
-                    <div className="mt-4 pt-4 border-t border-slate-100 space-y-3 bg-slate-50/70 -mx-5 -mb-5 p-5 rounded-b-xl">
+                    <div className="mt-4 pt-4 border-t border-slate-100 space-y-3 bg-slate-50/70 -mx-5 -mb-5 p-5 rounded-b-xl dark:border-slate-800 dark:bg-slate-800/60">
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                         <div>
-                          <span className="font-semibold text-slate-500 block">Assessment ID:</span>
-                          <span className="font-mono text-slate-700 break-all">{item.id}</span>
+                          <span className="font-semibold text-slate-500 dark:text-slate-400 block">Assessment ID:</span>
+                          <span className="font-mono text-slate-700 break-all dark:text-slate-300">{item.id}</span>
                         </div>
                         <div>
-                          <span className="font-semibold text-slate-500 block">Release Policy:</span>
-                          <span className="text-slate-800">{item.resultReleasePolicy}</span>
+                          <span className="font-semibold text-slate-500 dark:text-slate-400 block">Release Policy:</span>
+                          <span className="text-slate-800 dark:text-slate-200">{item.resultReleasePolicy}</span>
                         </div>
                         <div>
-                          <span className="font-semibold text-slate-500 block">Randomized:</span>
-                          <span className="text-slate-800">{item.isRandomized ? 'Yes (Questions & Options)' : 'No (Sequential)'}</span>
+                          <span className="font-semibold text-slate-500 dark:text-slate-400 block">Randomized:</span>
+                          <span className="text-slate-800 dark:text-slate-200">{item.isRandomized ? 'Yes (Questions & Options)' : 'No (Sequential)'}</span>
                         </div>
                       </div>
 
                       {item.cancellationReason && (
-                        <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800">
+                        <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800 dark:border-rose-800">
                           <strong>Cancellation Reason:</strong> {item.cancellationReason}
                         </div>
                       )}
 
                       {item.questions && item.questions.length > 0 && (
                         <div className="mt-2">
-                          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 dark:text-slate-300">
                             Assigned Questions ({item.questions.length})
                           </h4>
                           <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
@@ -688,23 +688,23 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
 
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">New Closing Time (End Time)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">New Closing Time (End Time)</label>
                 <input
                   type="datetime-local"
                   value={extendEnd}
                   onChange={(e) => setExtendEnd(e.target.value)}
-                  className="w-full text-xs border border-slate-300 rounded-lg p-2"
+                  className="w-full text-xs border border-slate-300 rounded-lg p-2 dark:border-slate-700"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Reason for Extension</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">Reason for Extension</label>
                 <textarea
                   rows={2}
                   value={extendReason}
                   onChange={(e) => setExtendReason(e.target.value)}
                   placeholder="e.g., Extended due to network outage"
-                  className="w-full text-xs border border-slate-300 rounded-lg p-2"
+                  className="w-full text-xs border border-slate-300 rounded-lg p-2 dark:border-slate-700"
                 />
               </div>
             </div>
@@ -735,8 +735,8 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
       {/* Cancel Assessment Modal */}
       {cancelAssessment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
-            <h3 className="text-base font-bold text-rose-600 flex items-center gap-2">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 dark:bg-slate-900">
+            <h3 className="text-base font-bold text-rose-600 flex items-center gap-2 dark:text-rose-400">
               <XCircle className="w-5 h-5" />
               Cancel Assessment
             </h3>
@@ -745,13 +745,13 @@ export const AssessmentsSection: React.FC<AssessmentsSectionProps> = ({
             </p>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Cancellation Reason</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1 dark:text-slate-300">Cancellation Reason</label>
               <textarea
                 rows={3}
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
                 placeholder="Reason is required for auditing..."
-                className="w-full text-xs border border-slate-300 rounded-lg p-2"
+                className="w-full text-xs border border-slate-300 rounded-lg p-2 dark:border-slate-700"
               />
             </div>
 

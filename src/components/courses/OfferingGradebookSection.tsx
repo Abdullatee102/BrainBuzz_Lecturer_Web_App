@@ -78,7 +78,7 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase text-slate-400">Enrolled Students</p>
-              <p className="text-xl font-bold text-slate-900 mt-0.5">{summary.totalEnrolledStudents}</p>
+              <p className="text-xl font-bold text-slate-900 mt-0.5 dark:text-slate-100">{summary.totalEnrolledStudents}</p>
             </div>
           </CardContent>
         </Card>
@@ -90,7 +90,7 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase text-slate-400">Total Assessments</p>
-              <p className="text-xl font-bold text-slate-900 mt-0.5">{summary.totalAssessments}</p>
+              <p className="text-xl font-bold text-slate-900 mt-0.5 dark:text-slate-100">{summary.totalAssessments}</p>
             </div>
           </CardContent>
         </Card>
@@ -140,7 +140,7 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
             />
           </div>
         </CardHeader>
@@ -149,19 +149,19 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
           {students.length === 0 ? (
             <div className="p-12 text-center text-slate-400 text-xs">
               <Users className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-              <p className="font-medium text-slate-600">No enrolled students found.</p>
+              <p className="font-medium text-slate-600 dark:text-slate-300">No enrolled students found.</p>
               <p className="mt-1">Students will appear here once registered for this offering.</p>
             </div>
           ) : (
             <table className="w-full text-xs text-left border-collapse">
-              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-800">
                 <tr>
                   <th className="py-3 px-4 min-w-[200px]">Student Name</th>
                   <th className="py-3 px-4">Matric / ID</th>
                   {assessments.map((a) => (
                     <th key={a.id} className="py-3 px-4 text-center min-w-[120px]">
                       <div>
-                        <span className="font-bold text-slate-800 block truncate" title={a.title}>
+                        <span className="font-bold text-slate-800 block truncate dark:text-slate-200" title={a.title}>
                           {a.title}
                         </span>
                         <span className="text-[10px] text-slate-400 font-normal">
@@ -170,15 +170,15 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
                       </div>
                     </th>
                   ))}
-                  <th className="py-3 px-4 text-center font-bold text-slate-900 bg-indigo-50/50">
+                  <th className="py-3 px-4 text-center font-bold text-slate-900 bg-indigo-50/50 dark:text-slate-100">
                     Cohort Avg
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {students.map(({ student, assessments: studentAssessments, averagePercentage }) => (
-                  <tr key={student.studentId} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-medium text-slate-900">
+                  <tr key={student.studentId} className="hover:bg-slate-50/70 transition-colors dark:hover:bg-slate-800/50">
+                    <td className="py-3 px-4 font-medium text-slate-900 dark:text-slate-100">
                       <div>
                         <span>{student.fullName}</span>
                         <span className="block text-[11px] text-slate-400 font-normal">
@@ -187,7 +187,7 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
                       </div>
                     </td>
 
-                    <td className="py-3 px-4 font-mono text-slate-700">
+                    <td className="py-3 px-4 font-mono text-slate-700 dark:text-slate-300">
                       {student.matricNumber || '—'}
                     </td>
 
@@ -197,7 +197,7 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
                           <span className="text-slate-300">—</span>
                         ) : sa.totalScore !== null ? (
                           <div>
-                            <span className="font-bold text-slate-800 block">
+                            <span className="font-bold text-slate-800 block dark:text-slate-200">
                               {sa.totalScore} / {sa.maxPossibleScore}
                             </span>
                             <span className="text-[10px] font-semibold text-indigo-600 block">
@@ -212,7 +212,7 @@ export const OfferingGradebookSection: React.FC<OfferingGradebookSectionProps> =
                       </td>
                     ))}
 
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 bg-indigo-50/30">
+                    <td className="py-3 px-4 text-center font-bold text-slate-900 bg-indigo-50/30 dark:text-slate-100">
                       {averagePercentage !== null ? (
                         <span className="text-indigo-700 font-bold">{averagePercentage}%</span>
                       ) : (

@@ -25,18 +25,18 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         className
       )}
     >
-      <div className="w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 mb-3">
+      <div className="w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 mb-3 dark:text-rose-400">
         <AlertCircle className="w-6 h-6" />
       </div>
       <h4 className="text-sm font-semibold text-rose-900">{title}</h4>
-      <p className="text-xs text-rose-700 max-w-md mt-1 leading-relaxed">{message}</p>
+      <p className="text-xs text-rose-700 max-w-md mt-1 leading-relaxed dark:text-rose-300">{message}</p>
       {!isForbidden && onRetry && (
         <div className="mt-4">
           <Button
             variant="outline"
             size="sm"
             onClick={onRetry}
-            className="border-rose-300 text-rose-800 hover:bg-rose-100"
+            className="border-rose-300 text-rose-800 hover:bg-rose-100 dark:border-rose-800"
           >
             <RotateCcw className="w-3.5 h-3.5 mr-1" />
             Retry Request

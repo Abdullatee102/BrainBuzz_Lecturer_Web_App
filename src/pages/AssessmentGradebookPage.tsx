@@ -193,10 +193,10 @@ export const AssessmentGradebookPage: React.FC = () => {
 
   if (isError && isForbiddenError(error)) {
     return (
-      <div className="max-w-xl mx-auto my-12 bg-white border border-rose-200 rounded-2xl p-8 text-center shadow-sm">
+      <div className="max-w-xl mx-auto my-12 bg-white border border-rose-200 rounded-2xl p-8 text-center shadow-sm dark:bg-slate-900 dark:border-rose-800">
         <ShieldAlert className="w-12 h-12 text-rose-500 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-slate-900">Access Denied (403 Forbidden)</h2>
-        <p className="text-xs sm:text-sm text-slate-600 mt-2">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Access Denied (403 Forbidden)</h2>
+        <p className="text-xs sm:text-sm text-slate-600 mt-2 dark:text-slate-300">
           You are not authorized to access this assessment gradebook. Access is restricted to assigned course lecturers.
         </p>
         <div className="mt-6">
@@ -236,7 +236,7 @@ export const AssessmentGradebookPage: React.FC = () => {
       {/* Top Breadcrumb & Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <Link to={`/courses/${assessment.courseId}`}>
-          <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
+          <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             <span>Back to {assessment.courseCode}</span>
           </Button>
@@ -279,7 +279,7 @@ export const AssessmentGradebookPage: React.FC = () => {
           </div>
           <button
             onClick={() => setActionSuccessMessage(null)}
-            className="text-emerald-500 hover:text-emerald-700 p-1"
+            className="text-emerald-500 hover:text-emerald-700 p-1 dark:hover:text-emerald-300"
           >
             <X className="w-4 h-4" />
           </button>
@@ -288,14 +288,14 @@ export const AssessmentGradebookPage: React.FC = () => {
 
       {/* Rejection Warning Banner if Returned */}
       {assessment.resultsPublicationStatus === 'REJECTED' && assessment.resultsRejectionReason && (
-        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl flex items-start gap-3 text-xs">
-          <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl flex items-start gap-3 text-xs dark:border-rose-800">
+          <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5 dark:text-rose-400" />
           <div>
             <p className="font-bold text-rose-900">Publication Request Returned by Administrator</p>
-            <p className="mt-1 text-slate-700 leading-relaxed">
+            <p className="mt-1 text-slate-700 leading-relaxed dark:text-slate-300">
               <span className="font-semibold text-rose-800">Reason:</span> {assessment.resultsRejectionReason}
             </p>
-            <p className="mt-2 text-rose-600">
+            <p className="mt-2 text-rose-600 dark:text-rose-400">
               Please review the flagged evaluations or theory marks below, moderate as necessary, and re-submit for approval.
             </p>
           </div>
@@ -303,13 +303,13 @@ export const AssessmentGradebookPage: React.FC = () => {
       )}
 
       {/* Assessment Header Card */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm dark:bg-slate-900 dark:border-slate-800">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="font-bold text-lg text-slate-900">{assessment.courseCode}</span>
+              <span className="font-bold text-lg text-slate-900 dark:text-slate-100">{assessment.courseCode}</span>
               <span className="text-slate-400">•</span>
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{assessment.title}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">{assessment.title}</h1>
               {getPublicationBadge(assessment.resultsPublicationStatus)}
             </div>
             <p className="text-xs text-slate-500 mt-1.5">
@@ -317,10 +317,10 @@ export const AssessmentGradebookPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-slate-600 border-t lg:border-t-0 pt-3 lg:pt-0">
+          <div className="flex items-center gap-4 text-xs text-slate-600 border-t lg:border-t-0 pt-3 lg:pt-0 dark:text-slate-300">
             <div>
               <span className="block font-semibold text-slate-500">Max Possible</span>
-              <span className="text-base font-bold text-slate-900">{assessment.totalMarks} pts</span>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-100">{assessment.totalMarks} pts</span>
             </div>
             {assessment.passMarks !== null && (
               <div>
@@ -341,7 +341,7 @@ export const AssessmentGradebookPage: React.FC = () => {
         <Card>
           <CardContent className="p-4">
             <p className="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Submissions</p>
-            <p className="text-xl font-bold text-slate-900 mt-1">{stats.totalSubmissions}</p>
+            <p className="text-xl font-bold text-slate-900 mt-1 dark:text-slate-100">{stats.totalSubmissions}</p>
           </CardContent>
         </Card>
 
@@ -406,7 +406,7 @@ export const AssessmentGradebookPage: React.FC = () => {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
               />
             </div>
 
@@ -416,7 +416,7 @@ export const AssessmentGradebookPage: React.FC = () => {
                 setSelectedStatus(e.target.value);
                 setPage(1);
               }}
-              className="text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
             >
               <option value="ALL">All Statuses</option>
               <option value="COMPLETED">Completed</option>
@@ -437,7 +437,7 @@ export const AssessmentGradebookPage: React.FC = () => {
             </div>
           ) : (
             <table className="w-full text-xs text-left border-collapse">
-              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Student</th>
                   <th className="py-3 px-4">Matric / ID</th>
@@ -450,10 +450,10 @@ export const AssessmentGradebookPage: React.FC = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {grades.map((row) => (
-                  <tr key={row.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-medium text-slate-900">
+                  <tr key={row.id} className="hover:bg-slate-50/70 transition-colors dark:hover:bg-slate-800/50">
+                    <td className="py-3 px-4 font-medium text-slate-900 dark:text-slate-100">
                       <div>
                         <span>{row.studentName}</span>
                         <span className="block text-[11px] text-slate-400 font-normal">{row.studentEmail}</span>
@@ -464,11 +464,11 @@ export const AssessmentGradebookPage: React.FC = () => {
                       {row.matricNumber || formatUserDisplayId({ id: row.studentId, role: 'STUDENT' })}
                     </td>
 
-                    <td className="py-3 px-4 text-center font-medium text-slate-700">
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 dark:text-slate-300">
                       {row.cbtScore}
                     </td>
 
-                    <td className="py-3 px-4 text-center font-medium text-slate-700">
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 dark:text-slate-300">
                       {row.status === 'NEEDS_THEORY_GRADING' ? (
                         <span className="text-amber-600 font-bold">Pending</span>
                       ) : (
@@ -476,11 +476,11 @@ export const AssessmentGradebookPage: React.FC = () => {
                       )}
                     </td>
 
-                    <td className="py-3 px-4 text-center font-bold text-slate-900">
+                    <td className="py-3 px-4 text-center font-bold text-slate-900 dark:text-slate-100">
                       {row.totalScore} / {row.maxPossibleScore}
                     </td>
 
-                    <td className="py-3 px-4 text-center font-semibold text-slate-800">
+                    <td className="py-3 px-4 text-center font-semibold text-slate-800 dark:text-slate-200">
                       {row.percentage}%
                     </td>
 
@@ -514,7 +514,7 @@ export const AssessmentGradebookPage: React.FC = () => {
                           </span>
                         )}
                         {row.isFlaggedForReview && (
-                          <span className="text-[10px] font-bold text-rose-600 flex items-center gap-0.5" title={row.flagReason || 'Flagged for review'}>
+                          <span className="text-[10px] font-bold text-rose-600 flex items-center gap-0.5 dark:text-rose-400" title={row.flagReason || 'Flagged for review'}>
                             <Flag className="w-3 h-3" /> Flagged
                           </span>
                         )}
@@ -543,10 +543,10 @@ export const AssessmentGradebookPage: React.FC = () => {
       {/* Moderation Drawer / Modal */}
       {moderatingGrade && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 dark:bg-slate-900 dark:border-slate-800">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Moderate Assessment Grade</h3>
+                <h3 className="font-bold text-slate-900 text-base dark:text-slate-100">Moderate Assessment Grade</h3>
                 <p className="text-xs text-slate-500 mt-0.5">
                   Student: {moderatingGrade.studentName} ({moderatingGrade.matricNumber})
                 </p>
@@ -560,25 +560,25 @@ export const AssessmentGradebookPage: React.FC = () => {
             </div>
 
             {moderationError && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-lg flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-lg flex items-center gap-2 dark:border-rose-800">
+                <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0 dark:text-rose-400" />
                 <span>{moderationError}</span>
               </div>
             )}
 
             <form onSubmit={handleModerateSubmit} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200/60">
+              <div className="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200/60 dark:bg-slate-800 dark:border-slate-800">
                 <div>
                   <span className="block text-slate-400 font-semibold uppercase text-[10px]">CBT Score</span>
-                  <span className="font-bold text-slate-900 text-sm">{moderatingGrade.cbtScore} pts</span>
+                  <span className="font-bold text-slate-900 text-sm dark:text-slate-100">{moderatingGrade.cbtScore} pts</span>
                 </div>
                 <div>
                   <span className="block text-slate-400 font-semibold uppercase text-[10px]">Theory Score</span>
-                  <span className="font-bold text-slate-900 text-sm">{moderatingGrade.theoryScore} pts</span>
+                  <span className="font-bold text-slate-900 text-sm dark:text-slate-100">{moderatingGrade.theoryScore} pts</span>
                 </div>
                 <div>
                   <span className="block text-slate-400 font-semibold uppercase text-[10px]">Current Total</span>
-                  <span className="font-bold text-slate-900 text-sm">
+                  <span className="font-bold text-slate-900 text-sm dark:text-slate-100">
                     {moderatingGrade.totalScore} / {moderatingGrade.maxPossibleScore}
                   </span>
                 </div>
@@ -589,7 +589,7 @@ export const AssessmentGradebookPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1 dark:text-slate-300">
                   Adjusted Total Score (Max {moderatingGrade.maxPossibleScore})
                 </label>
                 <input
@@ -599,13 +599,13 @@ export const AssessmentGradebookPage: React.FC = () => {
                   max={moderatingGrade.maxPossibleScore}
                   value={newScore}
                   onChange={(e) => setNewScore(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-sm"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-sm dark:border-slate-700"
                   required
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1 dark:text-slate-300">
                   Moderator Notes (Internal Staff Documentation)
                 </label>
                 <textarea
@@ -613,17 +613,17 @@ export const AssessmentGradebookPage: React.FC = () => {
                   value={moderationNotes}
                   onChange={(e) => setModerationNotes(e.target.value)}
                   placeholder="Record qualitative remarks on this adjustment..."
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
                 />
               </div>
 
-              <div className="space-y-2 border-t border-slate-100 pt-3">
-                <label className="flex items-center gap-2 font-medium text-slate-700 cursor-pointer">
+              <div className="space-y-2 border-t border-slate-100 pt-3 dark:border-slate-800">
+                <label className="flex items-center gap-2 font-medium text-slate-700 cursor-pointer dark:text-slate-300">
                   <input
                     type="checkbox"
                     checked={isFlaggedForReview}
                     onChange={(e) => setIsFlaggedForReview(e.target.checked)}
-                    className="w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500"
+                    className="w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500 dark:text-rose-400 dark:border-slate-700"
                   />
                   <span>Flag this grade for departmental or external review</span>
                 </label>
@@ -634,14 +634,14 @@ export const AssessmentGradebookPage: React.FC = () => {
                     value={flagReason}
                     onChange={(e) => setFlagReason(e.target.value)}
                     placeholder="Specify reason for review flag..."
-                    className="w-full px-3 py-1.5 border border-rose-300 bg-rose-50/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-xs"
+                    className="w-full px-3 py-1.5 border border-rose-300 bg-rose-50/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-xs dark:border-rose-800"
                     required
                   />
                 )}
               </div>
 
-              <div className="border-t border-slate-100 pt-3">
-                <label className="block font-semibold text-slate-800 mb-1">
+              <div className="border-t border-slate-100 pt-3 dark:border-slate-800">
+                <label className="block font-semibold text-slate-800 mb-1 dark:text-slate-200">
                   Mandatory Audit Reason <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -649,12 +649,12 @@ export const AssessmentGradebookPage: React.FC = () => {
                   value={moderationReason}
                   onChange={(e) => setModerationReason(e.target.value)}
                   placeholder="Why is this grade being adjusted? (Recorded in audit trail)"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700"
                   required
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   type="button"
                   variant="outline"
@@ -681,29 +681,29 @@ export const AssessmentGradebookPage: React.FC = () => {
       {/* Approval Confirmation Modal */}
       {isApprovalModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 dark:bg-slate-900 dark:border-slate-800">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0">
                 <Send className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Submit Results for Approval</h3>
+                <h3 className="font-bold text-slate-900 text-base dark:text-slate-100">Submit Results for Approval</h3>
                 <p className="text-xs text-slate-500">Official Institutional Verification</p>
               </div>
             </div>
 
             {approvalError && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-lg">
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-lg dark:border-rose-800">
                 {approvalError}
               </div>
             )}
 
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed dark:text-slate-300">
               Submitting results locks the assessment evaluation roster and notifies the examination office for publication sign-off.
             </p>
 
             {stats.needsTheoryCount > 0 && (
-              <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs p-3 rounded-lg space-y-2">
+              <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs p-3 rounded-lg space-y-2 dark:border-amber-800">
                 <p className="font-bold">Notice: {stats.needsTheoryCount} submission(s) pending theory grading</p>
                 <p>
                   To proceed without evaluating these submissions, an explicit institutional override reason is required.
@@ -713,13 +713,13 @@ export const AssessmentGradebookPage: React.FC = () => {
                   value={overrideReason}
                   onChange={(e) => setOverrideReason(e.target.value)}
                   placeholder="State reason for partial submission..."
-                  className="w-full px-3 py-1.5 border border-amber-300 rounded-lg text-xs"
+                  className="w-full px-3 py-1.5 border border-amber-300 rounded-lg text-xs dark:border-amber-800"
                   required
                 />
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
               <Button
                 variant="outline"
                 size="sm"
@@ -758,18 +758,18 @@ export const AssessmentGradebookPage: React.FC = () => {
               No audit log entries recorded for this assessment yet.
             </div>
           ) : (
-            <div className="divide-y divide-slate-100 text-xs">
+            <div className="divide-y divide-slate-100 text-xs dark:divide-slate-800">
               {auditLogs.map((log) => (
-                <div key={log.id} className="p-4 flex items-start justify-between gap-3 hover:bg-slate-50/50">
+                <div key={log.id} className="p-4 flex items-start justify-between gap-3 hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <Badge variant="purple" size="sm">{log.action.replace(/_/g, ' ')}</Badge>
-                      <span className="font-semibold text-slate-800">{log.actorFullName || log.actorRole}</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{log.actorFullName || log.actorRole}</span>
                       <span className="text-[11px] text-slate-400">({log.actorRole})</span>
                     </div>
                     {log.reason && (
-                      <p className="text-slate-600">
-                        <span className="font-semibold text-slate-700">Reason:</span> {log.reason}
+                      <p className="text-slate-600 dark:text-slate-300">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">Reason:</span> {log.reason}
                       </p>
                     )}
                     {log.previousScore !== null && log.newScore !== null && (

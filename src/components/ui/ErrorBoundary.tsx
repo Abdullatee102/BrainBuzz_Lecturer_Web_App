@@ -34,19 +34,19 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="min-h-[50vh] flex flex-col items-center justify-center p-6 text-center">
-          <div className="max-w-md w-full bg-white border border-rose-200 rounded-2xl p-6 shadow-sm space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-100">
+          <div className="max-w-md w-full bg-white border border-rose-200 rounded-2xl p-6 shadow-sm space-y-4 dark:bg-slate-900 dark:border-rose-800">
+            <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-100 dark:text-rose-400">
               <AlertTriangle className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                 {this.props.fallbackTitle || 'Something went wrong on this screen'}
               </h3>
               <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                 An unexpected application rendering error occurred. You can retry loading this view or navigate back to the dashboard.
               </p>
               {this.state.error?.message && (
-                <div className="mt-3 p-2.5 bg-slate-50 rounded-lg text-slate-700 font-mono text-[11px] text-left overflow-x-auto border border-slate-200">
+                <div className="mt-3 p-2.5 bg-slate-50 rounded-lg text-slate-700 font-mono text-[11px] text-left overflow-x-auto border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-800">
                   {this.state.error.message}
                 </div>
               )}

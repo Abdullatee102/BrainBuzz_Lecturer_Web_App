@@ -23,14 +23,14 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-white border border-dashed border-slate-200 rounded-xl',
+        'flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-white border border-dashed border-slate-200 rounded-xl dark:bg-slate-900 dark:border-slate-800',
         className
       )}
     >
-      <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 mb-4">
+      <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 mb-4 dark:bg-slate-800">
         <Icon className="w-6 h-6" />
       </div>
-      <h4 className="text-base font-semibold text-slate-800">{title}</h4>
+      <h4 className="text-base font-semibold text-slate-800 dark:text-slate-200">{title}</h4>
       <p className="text-xs text-slate-500 max-w-sm mt-1.5 leading-relaxed">{description}</p>
       {actionLabel && onAction && (
         <div className="mt-5">

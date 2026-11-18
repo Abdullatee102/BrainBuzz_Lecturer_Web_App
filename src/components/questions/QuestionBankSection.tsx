@@ -240,7 +240,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
           <div className="flex-1">
             <span className="font-semibold">Action Error:</span> {actionError}
           </div>
-          <button onClick={() => setActionError(null)} className="text-rose-500 hover:text-rose-700">
+          <button onClick={() => setActionError(null)} className="text-rose-500 hover:text-rose-700 dark:hover:text-rose-300">
             &times;
           </button>
         </div>
@@ -287,7 +287,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
       {isLoading ? (
         <LoadingSpinner label="Loading questions..." className="py-12" />
       ) : isError ? (
-        <div className="p-6 bg-rose-50 border border-rose-200 rounded-xl text-center text-xs text-rose-800">
+        <div className="p-6 bg-rose-50 border border-rose-200 rounded-xl text-center text-xs text-rose-800 dark:border-rose-800">
           Failed to load questions. {getErrorMessage(error)}
         </div>
       ) : filteredQuestions.length === 0 ? (
@@ -375,7 +375,7 @@ export const QuestionBankSection: React.FC<QuestionBankSectionProps> = ({
                           size="sm"
                           onClick={() => withdrawMutation.mutate(q.id)}
                           disabled={withdrawMutation.isPending}
-                          className="h-7 text-xs px-2.5 text-amber-700 hover:bg-amber-50"
+                          className="h-7 text-xs px-2.5 text-amber-700 hover:bg-amber-50 dark:text-amber-300 dark:hover:bg-amber-950/50"
                         >
                           <Undo2 className="w-3 h-3 mr-1" />
                           <span>Withdraw</span>
