@@ -149,16 +149,83 @@ export function clearLecturerSession(): void {
   }
 }
 
+export function humanizeErrorMessage(raw: string): string {
+  if (!raw || typeof raw !== 'string') return 'An unexpected error occurred.';
+
+  // If message contains technical Zod validation artifacts
+  if (
+    raw.includes('body.') ||
+    raw.includes('query.') ||
+    raw.includes('params.') ||
+    raw.includes('Invalid input:') ||
+    raw.includes('Invalid option:') ||
+    raw.includes('expected string') ||
+    raw.includes('received undefined')
+  ) {
+    const segments = raw.split(/,\s*(?=(?:body|query|params)\.)/i);
+    const friendlySegments = segments.map((seg) => {
+      let clean = seg.replace(/^(?:body|query|params)\./i, '');
+
+      clean = clean
+        .replace(/^id:\s*/i, 'Identifier: ')
+        .replace(/^title:\s*/i, 'Title: ')
+        .replace(/^description:\s*/i, 'Description: ')
+        .replace(/^courseId:\s*/i, 'Course: ')
+        .replace(/^questionText:\s*/i, 'Question Text: ')
+        .replace(/^options:\s*/i, 'Answer Options: ')
+        .replace(/^correctOption:\s*/i, 'Correct Option: ')
+        .replace(/^userId:\s*/i, 'Student / User: ')
+        .replace(/^email:\s*/i, 'Email Address: ')
+        .replace(/^fullName:\s*/i, 'Full Name: ')
+        .replace(/^password:\s*/i, 'Password: ')
+        .replace(/^reason:\s*/i, 'Reason: ');
+
+      clean = clean.replace(
+        /Invalid input:\s*expected\s+(\w+),\s*received\s+undefined/i,
+        'is required. Please provide a valid value.'
+      );
+      clean = clean.replace(
+        /Invalid input:\s*expected\s+(\w+),\s*received\s+(\w+)/i,
+        'must be a valid $1.'
+      );
+
+      if (clean.includes('Invalid option:')) {
+        clean = clean.replace(
+          /Invalid option:\s*expected one of\s+("[^"]+"(?:\|"[^"]+")*)/i,
+          (_, optionsStr) => {
+            const opts = optionsStr
+              .replace(/"/g, '')
+              .split('|')
+              .slice(0, 4)
+              .map((s: string) =>
+                s.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase())
+              )
+              .join(', ');
+            return `Please select a valid option (e.g. ${opts}).`;
+          }
+        );
+      }
+
+      clean = clean.replace(/^([^:]+):\s*is required\./i, '$1 is required.');
+      return clean.trim();
+    });
+
+    return friendlySegments.join(' ');
+  }
+
+  return raw;
+}
+
 export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
-    return (
+    const rawMsg =
       error.response?.data?.message ||
       error.message ||
-      'An unexpected server error occurred.'
-    );
+      'An unexpected server error occurred.';
+    return humanizeErrorMessage(rawMsg);
   }
   if (error instanceof Error) {
-    return error.message;
+    return humanizeErrorMessage(error.message);
   }
   return 'An unexpected error occurred.';
 }
