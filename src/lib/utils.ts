@@ -94,6 +94,12 @@ export const CANONICAL_USER_MAP: Record<string, string> = {
   '543c3632-df05-47ab-8631-5a9e315d75ac': 'BB-STU-008',
 };
 
+export function getAvatarInitial(name?: string | null, fallback = 'L'): string {
+  if (!name) return fallback;
+  const clean = name.replace(/^[@\s'"`\-_.]+/, '').trim();
+  return (clean.charAt(0) || fallback).toUpperCase();
+}
+
 export function formatUserDisplayId(user?: {
   id?: string;
   email?: string | null;
@@ -106,16 +112,21 @@ export function formatUserDisplayId(user?: {
   matricNumber?: string | null;
 } | null): string {
   if (!user) return '—';
-  // Strictly prioritize new generic BB- format
-  if (user.displayId && user.displayId.startsWith('BB-')) return user.displayId;
-  if (user.customId && user.customId.startsWith('BB-')) return user.customId;
 
-  // Check canonical user map by email or ID
+  // 1. Strictly prioritize canonical user map by email or ID
   if (user.email && CANONICAL_USER_MAP[user.email.toLowerCase()]) {
     return CANONICAL_USER_MAP[user.email.toLowerCase()];
   }
   if (user.id && CANONICAL_USER_MAP[user.id.toLowerCase()]) {
     return CANONICAL_USER_MAP[user.id.toLowerCase()];
+  }
+
+  // 2. Prioritize clean generic BB- sequential 3+ digit format (e.g. BB-STU-001, BB-LEC-002, BB-ADMIN-001)
+  if (user.displayId && /^BB-(STU|LEC|ADMIN)-\d{3,}$/i.test(user.displayId)) {
+    return user.displayId.toUpperCase();
+  }
+  if (user.customId && /^BB-(STU|LEC|ADMIN)-\d{3,}$/i.test(user.customId)) {
+    return user.customId.toUpperCase();
   }
 
   if (!user.id) return '—';

@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!saved) return null;
       const parsed = JSON.parse(saved);
       if (parsed) {
-        parsed.displayId = parsed.displayId || formatUserDisplayId(parsed);
+        parsed.displayId = formatUserDisplayId(parsed);
       }
       return parsed;
     } catch {
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.data?.user) {
         const enriched = {
           ...response.data.user,
-          displayId: response.data.user.displayId || formatUserDisplayId(response.data.user),
+          displayId: formatUserDisplayId(response.data.user),
         };
         setUser(enriched);
         localStorage.setItem(USER_KEY, JSON.stringify(enriched));
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (tokens: AuthTokens, newUser: LecturerUser) => {
     const enriched = {
       ...newUser,
-      displayId: newUser.displayId || formatUserDisplayId(newUser),
+      displayId: formatUserDisplayId(newUser),
     };
     setToken(tokens.accessToken);
     setUser(enriched);

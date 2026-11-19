@@ -4,7 +4,7 @@ import { useTheme, type Theme } from '../context/ThemeContext';
 import { apiClient, getErrorMessage } from '../lib/api';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
-import { getAssetUrl, formatUserDisplayId } from '../lib/utils';
+import { getAssetUrl, formatUserDisplayId, getAvatarInitial } from '../lib/utils';
 import { groupLecturerPrivileges } from '../lib/permissions';
 import {
   User,
@@ -246,7 +246,7 @@ export const SettingsPage: React.FC = () => {
                 />
               ) : (
                 <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                  {user?.fullName?.charAt(0) || 'L'}
+                  {getAvatarInitial(user?.fullName || user?.email, 'L')}
                 </span>
               )}
             </div>

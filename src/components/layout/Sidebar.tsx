@@ -20,7 +20,7 @@ import {
   Moon,
 } from 'lucide-react';
 import { Badge } from '../ui/Badge';
-import { cn, getAssetUrl } from '../../lib/utils';
+import { cn, getAssetUrl, getAvatarInitial } from '../../lib/utils';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -217,7 +217,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     onError={() => setImgError(true)}
                   />
                 ) : (
-                  user?.fullName?.charAt(0) || 'L'
+                  getAvatarInitial(user?.fullName || user?.email, 'L')
                 )}
               </div>
               <div className="min-w-0 flex-1">
