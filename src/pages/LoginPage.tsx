@@ -15,6 +15,9 @@ import {
   KeyRound,
   X,
   Info,
+  BookOpen,
+  Sparkles,
+  CheckCircle,
 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -163,8 +166,70 @@ export const LoginPage: React.FC = () => {
       {/* Background radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/30 via-slate-950 to-slate-950 pointer-events-none" />
 
-      {/* Auth Card */}
-      <div className="relative w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-2xl shadow-2xl backdrop-blur-xl p-6 sm:p-8 z-10">
+      {/* Main Grid Wrapper: Visual Academic Hero + Auth Card */}
+      <div className="relative w-full max-w-5xl z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        {/* Left Visual Academic Brand Panel (Desktop) */}
+        <div className="hidden lg:flex lg:col-span-6 flex-col justify-between p-8 rounded-3xl bg-gradient-to-br from-indigo-950 via-indigo-900 to-purple-950 border border-indigo-500/30 shadow-2xl relative overflow-hidden text-white min-h-[580px]">
+          {/* Subtle background ambient grid */}
+          <div className="absolute inset-0 bg-[radial-gradient(#818cf8_1px,transparent_1px)] [background-size:20px_20px] opacity-15 pointer-events-none" />
+
+          {/* Header Badge */}
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-950/70 border border-indigo-400/30 text-indigo-200 text-xs font-semibold uppercase tracking-wider mb-6">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>University Faculty Portal</span>
+            </div>
+
+            <h2 className="text-3xl font-black tracking-tight leading-tight mb-3">
+              Academic Assessment & Student Evaluation
+            </h2>
+            <p className="text-sm text-indigo-100/90 leading-relaxed max-w-md">
+              Authorized academic portal for university course lecturers. Design accredited CBT & Theory assessments, monitor live exam hall participation, and publish authenticated gradebooks.
+            </p>
+          </div>
+
+          {/* Feature Highlights Grid */}
+          <div className="relative z-10 space-y-3.5 my-6">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-black/20 border border-white/10 backdrop-blur-sm">
+              <div className="w-9 h-9 rounded-xl bg-indigo-400/20 flex items-center justify-center text-indigo-300 flex-shrink-0">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-indigo-200">Departmental Question Banks</p>
+                <p className="text-xs text-white/80">Author, review & submit multi-version CBT and theory items</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-black/20 border border-white/10 backdrop-blur-sm">
+              <div className="w-9 h-9 rounded-xl bg-purple-400/20 flex items-center justify-center text-purple-300 flex-shrink-0">
+                <GraduationCap className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-purple-200">Automated & Rubric Grading</p>
+                <p className="text-xs text-white/80">Instant CBT scoring & structured rubric evaluation for theory</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-black/20 border border-white/10 backdrop-blur-sm">
+              <div className="w-9 h-9 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300 flex-shrink-0">
+                <CheckCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Session Attendance & Materials</p>
+                <p className="text-xs text-white/80">Track cohort attendance and securely distribute lecture notes</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Badge */}
+          <div className="relative z-10 pt-4 border-t border-indigo-400/20 flex items-center justify-between text-xs text-indigo-200/80">
+            <span>Brain Buzz Faculty Suite</span>
+            <span>LAUTECH Academic System</span>
+          </div>
+        </div>
+
+        {/* Right Auth Card */}
+        <div className="lg:col-span-6 w-full max-w-md mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl p-6 sm:p-8">
         {/* Academic Brand Header */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 mb-4 shadow-inner">
@@ -330,6 +395,7 @@ export const LoginPage: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Google Token Dev/Fallback Modal (Accessible only via explicit developer toggle) */}
